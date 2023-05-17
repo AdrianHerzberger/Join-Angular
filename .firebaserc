@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "join-angular-ef323": {
+      "hosting": {
+        "join-angular": [
+          "join-angular-ef323"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "join-angular-ef323"
+  }
+}

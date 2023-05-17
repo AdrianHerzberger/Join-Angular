@@ -1,0 +1,37 @@
+<header class="login-header">
+    <div>
+        <p>Not a join user?</p>
+    </div>
+    <div class='column3'>
+        <button (click)="renderSignUp()">Sign up</button>
+    </div>
+</header>
+<form class='form-card' id="login-form">
+    <h1>Log in</h1>
+    <img src="./assets/img/icon_line.png" class="line">
+    <div class='user-input'>
+        <input id='login-mail' type='email' placeholder='Email' required
+            oninvalid="event.preventDefault(); generateTooltip(event)" />
+        <img src='./assets/img/icon_mail.png' />
+    </div>
+    <div class='user-input'>
+        <p id="invalid"></p>
+        <p id="success"></p>
+        <input id='login-password' type='password' placeholder='Password' required
+            oninvalid="event.preventDefault(); generateTooltip(event)" />
+        <img src='assets/img/icon_lock.png' />
+    </div>
+    <div class='login-options-container'>
+        <div class='column1'>
+            <div>
+                <input type='checkbox' id="checkbox" />
+                <p>Remember me</p>
+            </div>
+            <button>Log in</button>
+        </div>
+        <div class='column2'>
+            <p onclick="renderForgotPassword()">Forgot my password</p>
+            <button id="guestLogin">Guest Log in</button>
+        </div>
+    </div>
+</form>

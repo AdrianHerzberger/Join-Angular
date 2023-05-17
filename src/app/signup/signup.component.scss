@@ -1,0 +1,186 @@
+.form-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.form-card h1 {
+    margin: 0;
+}
+
+.line {
+    margin-bottom: 2rem;
+    margin-top: .6rem;
+}
+
+.user-input {
+    width: 70%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.user-input input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+
+}
+
+.user-input input::placeholder {
+    color: var(--dimmed);
+}
+
+.user-input img {
+    position: absolute;
+    right: 10px;
+    width: 2%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+
+.sign-up {
+    background: var(--c-darkblue);
+    color: white;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    margin-top: 1rem;
+    transition: all 225MS ease-in-out;
+    padding: 8px 20px 8px 20px;
+}
+
+.sign-up:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    background: var(--c-lightblue);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.4);
+}
+
+.go-back {
+    position: absolute;
+    top: 30px;
+    left: 20px;
+    width: 3.5%;
+    cursor: pointer;
+}
+
+#invalid,
+#noUser {
+    margin: 0;
+    position: absolute;
+    bottom: -22px;
+    font-size: .8rem;
+    color: red;
+}
+
+#success {
+    margin: 0;
+    position: absolute;
+    bottom: -22px;
+    font-size: .8rem;
+    font-weight: 600;
+    color: green;
+}
+
+#invalid:empty,
+#success:empty,
+#noUser:empty {
+    display: none;
+}
+
+.validation-tooltip {
+    display: flex;
+    position: absolute;
+    bottom: -55px;
+    align-items: center;
+    z-index: 10000;
+    background: white;
+    font-size: .85rem;
+    border: 0.5px solid black;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.validation-tooltip::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    position: absolute;
+    border-left: 8px solid transparent;
+    border-bottom: 8px solid black;
+    border-right: 8px solid transparent;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.validation-tooltip p {
+    margin: 0;
+}
+
+.validation-tooltip p:first-of-type {
+    padding: 7px 12px 7px 12px;
+    background: var(--c-lightblue);
+    color: white;
+    margin-right: .85rem;
+}
+
+
+@media screen and (max-width: 750px) {
+    #card-container {
+        width: 90%;
+        margin-top: 3rem;
+    }
+
+    .signup-wrapper {
+        right: 2rem;
+    }
+
+    .signup-wrapper p {
+        font-size: 1.1rem;
+    }
+
+    .signup-wrapper button {
+        margin-left: 1rem;
+        font-size: 1rem;
+    }
+
+
+    .column1,
+    .column2 {
+        margin-right: 0;
+    }
+
+    .login-options-container {
+        width: 100%;
+    }
+
+    .column1 div p,
+    .column2 p {
+        font-weight: 200;
+        font-size: 1rem;
+    }
+
+    .login-options-container {
+        display: flex;
+        max-width: 80%;
+        flex-direction: inherit;
+        align-items: center;
+
+    }
+
+    .column2 p {
+        margin-top: 25px;
+        font-size: 13px !important;
+    }
+}

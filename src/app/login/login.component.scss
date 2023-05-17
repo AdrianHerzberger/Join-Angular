@@ -1,0 +1,190 @@
+.login-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    column-gap: 50px;
+    padding: 2rem;
+}
+
+.signup-wrapper {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 3rem;
+    top: 3rem;
+}
+
+.signup-wrapper p {
+    margin: 0;
+}
+
+.signup-wrapper button {
+    border: none;
+    border-radius: 5px;
+    height: max-content;
+    padding: 10px;
+    margin-left: 1.8rem;
+    background: var(--c-darkblue);
+    color: white;
+    transition: all 225ms ease-in-out;
+}
+
+.signup-wrapper button:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    background: var(--c-lightblue);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.4);
+}
+
+
+#card-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    max-width: 500px;
+}
+
+.form-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.form-card h1 {
+    margin: 0;
+}
+
+.line {
+    margin-bottom: 2rem;
+    margin-top: .6rem;
+}
+
+.user-input {
+    width: 70%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.user-input input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+
+}
+
+.user-input input::placeholder {
+    color: var(--dimmed);
+}
+
+.user-input img {
+    position: absolute;
+    right: 10px;
+    width: 2%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.login-options-container {
+    display: flex;
+    width: 80%;
+    justify-content: center;
+}
+
+.column1 {
+    margin-right: 1.8rem;
+}
+
+.column1 button,
+.column2 button,
+.column3 button {
+    width: 100%;
+    padding: 8px 0 8px 0;
+    font-weight: 600;
+}
+
+.column1 button {
+    background: var(--c-darkblue);
+    color: white;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    margin-top: 1rem;
+    transition: all 225MS ease-in-out;
+}
+
+.column1 button:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    background: var(--c-lightblue);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.4);
+}
+
+.column2 button {
+    color: var(--c-darkblue);
+    border: 1px solid var(--c-darkblue);
+    background: white;
+    border-radius: 5px;
+    margin-top: 1rem;
+}
+
+.column2 button:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    border: 1px solid var(--c-lightblue);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.4);
+    color: var(--c-lightblue);
+}
+
+.column3 button {
+    color: var(--c-darkblue);
+    border: 1px solid var(--c-darkblue);
+    background: white;
+    border-radius: 5px;
+}
+
+.column3 button:hover {
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+    border: 1px solid var(--c-lightblue);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.4);
+    color: var(--c-lightblue);
+}
+
+.column1 div {
+    display: flex;
+}
+
+.column1 div input {
+    margin-right: .5rem;
+}
+
+.column1 div p,
+.column2 p {
+    font-weight: 200;
+    font-size: .7rem;
+}
+
+.column2 p {
+    color: var(--c-lightblue);
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+}
+
+.column2 p:hover {
+    transform: scale(1.1);
+    transition: all 225ms ease-in-out;
+}
+
+
+

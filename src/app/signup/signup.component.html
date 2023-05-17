@@ -1,0 +1,27 @@
+<form [formGroup]="form" class="form-card">
+    <img src="assets/img/icon_back.png" alt="arrow" class="go-back" (click)="renderLogin()">
+    <h1>Sign Up</h1>
+    <img src="assets/img/icon_line.png" class="line">
+    <div class="user-input">
+        <input type="text" [(ngModel)]="user.name" name="name" placeholder="Your Name" formControlName="name">
+        <img src="assets/img/icon_name.png"/>
+        <div *ngIf="form.controls[user.name].invalid && form.controls[user.name].touched">
+            <div *ngIf="form.controls[user.name].errors?.['required']">Username is required.</div>
+        </div>
+    </div>
+    <div class="user-input">
+        <input type="email" [(ngModel)]="user.email" name="name" placeholder="Email" formControlName="email">
+        <img src="assets/img/icon_mail.png" />
+        <div *ngIf="form.controls[user.email].invalid && form.controls[user.email].touched">
+            <div *ngIf="form.controls[user.email].errors?.['required']">Email is required.</div>
+        </div>
+    </div>
+    <div class="user-input">
+        <input type="password" [(ngModel)]="user.password" name="name" placeholder="Password" formControlName="password">
+        <img src="assets/img/icon_lock.png" />
+        <div *ngIf="form.controls[user.password].invalid && form.controls[user.password].touched">
+            <div *ngIf="form.controls[user.password].errors?.['required']">Password is required.</div>
+        </div>
+    </div>
+    <button class="sign-up" (click)="submit()" cdkFocusInitial>Submit</button>
+</form>
