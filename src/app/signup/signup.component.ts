@@ -17,7 +17,7 @@ export class SignupComponent implements OnInit {
     private router: Router,
     private firestore: Firestore,
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -32,18 +32,24 @@ export class SignupComponent implements OnInit {
   }
 
   submit() {
-
-    const userRef = collection(this.firestore, 'users');
-    const addUserRef = addDoc(userRef, this.user.toJson());
-    this.router.navigateByUrl('/signin');
-
     if (this.form.invalid) {
-      
+      this.form.markAllAsTouched(); 
+  
+      const invalidControl = document.querySelector('.ng-invalid');
+      if (invalidControl) {
+        invalidControl.scrollIntoView({ behavior: 'smooth' });
+      }
       return;
     }
 
-  }
+    if (this.form.valid) {
+      this.router.navigateByUrl('/signin');
+      const userRef = collection(this.firestore, 'users');
+      const addUserRef = addDoc(userRef, this.user.toJson());
+    }
 
+    this.clear();
+  }
   clear() {
     this.user.name = '';
     this.user.email = '';
