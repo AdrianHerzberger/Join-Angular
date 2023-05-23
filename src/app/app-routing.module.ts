@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { HeaderTemplateComponent } from './header-template/header-template.component';
 import { SignupComponent } from './signup/signup.component';
 import { BoardComponent } from './board/board.component';
+import { AddTaskComponent } from './add-task/add-task.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -11,6 +12,7 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'header', component: HeaderTemplateComponent },
   { path: 'board', component: BoardComponent },
+  { path: 'addTask', component: AddTaskComponent },
 ];
 
 @NgModule({

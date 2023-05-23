@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 
 import { LoginComponent } from './login/login.component';
@@ -16,6 +16,7 @@ import { IntroComponent } from './intro/intro.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BoardComponent } from './board/board.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { AddTaskComponent } from './add-task/add-task.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     SignupComponent,
     IntroComponent,
     BoardComponent,
-    SidebarComponent
+    SidebarComponent,
+    AddTaskComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +35,6 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     FormsModule,
     ReactiveFormsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore())
   ],
   providers: [],

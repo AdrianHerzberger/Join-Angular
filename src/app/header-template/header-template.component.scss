@@ -1,69 +1,24 @@
-.header {
-    grid-column: span 8;
-    grid-row: span 1;
-    box-shadow: 0 2px 10px 0 rgb(0 0 0 / 15%);
+.header-logo-container {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    box-shadow: 0 2px 10px 0 rgb(0 0 0 / 15%);
     background: white;
     z-index: 10;
-}
+ 
+    .header-image-container {
+        display: flex;
+        flex-direction: row;
+        column-gap: 20px;
+    }
 
-.header div:first-of-type {
-    margin-left: 2rem;
-}
+    .info {
+        width: 35px;
+        object-fit: contain;
+    }
 
-.header .header-image-container {
-    display: flex;
-    align-items: center;
-    margin-right: 2rem;
-    position: relative;
-}
-
-.header-logo {
-    height: 45px;
-    width: 45px;
-}
-
-.header-logo-container {
-    display: none;
-}
-
-.header-headline-container {
-    margin-left: 80px;
-    font-size: 21px;
-}
-.header .logout-tooltip {
-    background-color: var(--c-darkblue);
-    color: white;
-    padding: 15px;
-    border-radius: 7px 0 7px 7px;
-    position: absolute;
-    top: 120%;
-    right: 20%;
-    display: none;
-}
-
-.logout-tooltip:hover {
-    background-color: var(--c-lightblue);
-    transition: 225ms all ease-in-out;
-    cursor: pointer;
-}
-
-.nav-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.nav-container div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 0.8rem;
-    color: #CDCDCD;
-    cursor: pointer;
-    width: 100%;
-    padding: 10px 0;
+    .user {
+        width: 60px;
+    }
 }

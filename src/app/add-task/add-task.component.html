@@ -1,0 +1,93 @@
+<div class="grid-view-component">
+    <div class="sidebar"><app-sidebar></app-sidebar></div>
+    <div class="header"><app-header-template></app-header-template></div>
+    <div class="add-task-container">
+        <h1>Add Task</h1>
+        <form [formGroup]="form" class="column-container">
+            <div class="column-left">
+                <label for="title">Title</label>
+                <input type="text" [(ngModel)]="title" placeholder="Enter a title" formControlName="title">
+                <div *ngIf="form.controls['title'].invalid && form.controls['title'].touched">
+                    <div class="error-massage" *ngIf="form.controls['title'].errors?.['required']">Title is required.
+                    </div>
+                </div>
+
+                <label for="name" class="mt-15">Description</label>
+                <textarea [(ngModel)]="description" placeholder="Enter a description"
+                    formControlName="description"></textarea>
+                <div *ngIf="form.controls['description'].invalid && form.controls['description'].touched">
+                    <div class="error-massage" *ngIf="form.controls['description'].errors?.['required']">Description is
+                        required.</div>
+                </div>
+
+                <label class="mt-15" for="selectCategory">Category</label>
+                <div class="category-input-container">
+                    <input readonly id="selectCategory" value="Select task category" #addCategoryIcon
+                        (click)="toggleEditCategory()">
+                    <img class="drop-down" src="./assets/img/icon_triangle.png">
+                    <div class="dropdown-container" [innerHTML]="editCategory" *ngIf="openDropdown"></div>
+                </div>
+
+                <div class="categoryOninput" [innerHTML]="addCategory" *ngIf="editingCategory">
+                    <input type="text" [(ngModel)]="newCategoryValue">
+                    <img src="assets/img/icon_clear.png" id="clearCategory">
+                    <img src="assets/img/icon_done.png" id="addCategory" (click)="addNewCategory()">
+                </div>
+
+                <div id="colorContainer">
+                    <div class="color-dot orange"></div>
+                    <div class="color-dot red"></div>
+                    <div class="color-dot blue"></div>
+                    <div class="color-dot lightblue"></div>
+                    <div class="color-dot pink"></div>
+                    <div class="color-dot lightpink"></div>
+                    <div class="color-dot green"></div>
+                    <div class="color-dot turquo"></div>
+                </div>
+
+
+                <label for="assignedTo">Assigned to</label>
+                <div class="contact-input-container">
+                    <input readonly="" id="assignedTo" value="Select contacts to assign">
+                    <img src="assets/img/icon_triangle.png" id="addContactIcon">
+                </div>
+                <div id="contactsDropdownContainer"></div>
+            </div>
+
+            <div class="column-right">
+                <label for="date">Due Date</label>
+                <input type="date" id="date" min="2023-05-22">
+                <p class="required"></p>
+                <label class="mt-15" for="prio">Prio</label>
+                <div id="prio" class="prio">
+                    <div class="prio-btn">Urgent
+                        <img src="assets/img/icon_up.png" alt="sda">
+                    </div>
+                    <div class="prio-btn">Medium
+                        <img src="assets/img/icon_medium.png" alt="sda">
+                    </div>
+                    <div class="prio-btn">Low
+                        <img src="assets/img/icon_down.png" alt="sda">
+                    </div>
+                </div>
+
+                <label for="addSubtask" class="mt-15">Subtasks</label>
+                <div class="subtask-input-container">
+                    <input type="text" id="addSubtask">
+                    <img src="assets/img/icon_plus.png" id="addSubtaskIcon">
+                    <div id="subtaskOninput">
+                        <img src="assets/img/icon_clear.png" id="clearSubtaskInput">
+                        <img src="assets/img/icon_done.png" id="finishEditingSubtask">
+                    </div>
+                </div>
+                <div id="subtaskContainer"></div>
+
+                <div class="action-button-container">
+                    <button (click)=" clearTaskForm()">Clear<img src="assets/img/icon_close.png">
+                    </button>
+                    <button (click)="createTask()">Create Task<img src="assets/img/icon_create.png"></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

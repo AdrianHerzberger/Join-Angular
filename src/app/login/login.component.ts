@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Firestore, collection, query, where, getDocs } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { Firestore, getDoc, doc } from '@angular/fire/firestore';
 import { User } from 'src/models/user.class';
 
 @Component({
@@ -17,7 +16,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private firestore: Firestore
+    private firestore: Firestore,
   ) { }
 
   ngOnInit(): void {
@@ -28,26 +27,23 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  logIn() {
-    const auth = getAuth();
-    const email = this.user.email;
-    const password = this.user.password;
+  async logIn() {
+    const email = this.form.value.email;
+    const password = this.form.value.password;
 
-    const userDocRef = doc(this.firestore, 'users', email);
-    getDoc(userDocRef)
-      .then((docSnapshot) => {
-        if (docSnapshot.exists()) {
-          signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-              const user = userCredential.user;
-              console.log("The user email is", email);
-              console.log("The user password is", password);
-              this.router.navigateByUrl('/board');
-            })
-        } else {
-          console.log("User does not exist");
-        }
-      })
+    try {
+      const usersCollection = collection(this.firestore, 'users');
+      const q = query(usersCollection, where('email', '==', email), where('password', '==', password));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        console.log('Invalid email or password');
+        return;
+      }
+      this.router.navigateByUrl('/board');
+    } catch (error) {
+      console.log('Error logging in:', error);
+    }
   }
   
   renderSignUp() {
