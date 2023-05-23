@@ -28,11 +28,7 @@
                     <div class="dropdown-container" [innerHTML]="editCategory" *ngIf="openDropdown"></div>
                 </div>
 
-                <div class="categoryOninput" [innerHTML]="addCategory" *ngIf="editingCategory">
-                    <input type="text" [(ngModel)]="newCategoryValue">
-                    <img src="assets/img/icon_clear.png" id="clearCategory">
-                    <img src="assets/img/icon_done.png" id="addCategory" (click)="addNewCategory()">
-                </div>
+                <div class="categoryOninput" [innerHTML]="addCategory" *ngIf="editingCategory"></div>
 
                 <div id="colorContainer">
                     <div class="color-dot orange"></div>

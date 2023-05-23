@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -71,16 +71,9 @@ export class AddTaskComponent implements OnInit {
     }
   }
 
-  @HostListener('document:click', ['$event'])
-  handleDocumentClick(event: Event) {
-    const target = event.target as HTMLElement;
-    if (!this.editingCategory && !target.closest('.categoryOninput')) {
-      this.editCategory = '';
-    }
-  }
-
   selectCategory(event: Event) {
-    if (this.editingCategory) {
+    this.editingCategory = true;
+    if (this.editingCategory === true) {
       const target = event.currentTarget as HTMLElement;
       const categoryText = target.querySelector('.category-text')?.textContent;
       this.addCategory = /*html*/`
