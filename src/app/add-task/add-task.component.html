@@ -38,10 +38,10 @@
                         <div class="category" *ngFor="let category of categories.slice(1); let i = index"
                             (click)="updateEditCategory($event)" attr.data-target="{{ i + 1 }}">
                             <div class="category-text">{{ category }}</div>
+                            <div class="color-dot" *ngFor="let color of assignedColors.slice(2); let c = index" attr.data-target="{{ c + 1 }}"></div>
                         </div>
                     </div>
-                    
-                    <div class="colorContainer" *ngIf="editingCategory">
+                    <div (click)="customizeCategory($event)" class="colorContainer" *ngIf="editingCategory">
                         <div class="color-dot orange"></div>
                         <div class="color-dot red"></div>
                         <div class="color-dot blue"></div>
@@ -52,13 +52,12 @@
                         <div class="color-dot turquo"></div>
                     </div>
                 </div>
-
                 <label for="assignedTo">Assigned to</label>
                 <div class="contact-input-container">
                     <input readonly id="assignedTo" value="Select contacts to assign" (click)="toggleAssigned()">
                     <img class="drop-down" src="./assets/img/icon_triangle.png">
                 </div>
-                <div id="contactsDropdownContainer"></div>
+                <div class="contactsDropdownContainer"></div>
             </div>
 
             <div class="column-right">

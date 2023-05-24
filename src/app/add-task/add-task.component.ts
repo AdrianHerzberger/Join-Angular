@@ -8,6 +8,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./add-task.component.scss']
 })
 export class AddTaskComponent implements OnInit {
+  @ViewChild('colorDot1') colorDot1!: ElementRef;
+  @ViewChild('colorDot2') colorDot2!: ElementRef;
+
   form!: FormGroup;
   title!: string;
   description!: string;
@@ -19,8 +22,8 @@ export class AddTaskComponent implements OnInit {
   showInput: boolean = false;
 
   categories = ["New Category", "Sales", "Marketing"];
-  assignedColors: (Element | null)[] = [];
-  
+  assignedColors: (ElementRef<any> | null)[] = [];
+  selectedColor: string | null = null;
 
   constructor(
     private firestore: Firestore,
@@ -37,8 +40,8 @@ export class AddTaskComponent implements OnInit {
 
     this.assignedColors = [
       null,
-      document.getElementsByClassName("color-dot")[1],
-      document.getElementsByClassName("color-dot")[2]
+      this.colorDot1,
+      this.colorDot2
     ];
   }
 
@@ -77,7 +80,29 @@ export class AddTaskComponent implements OnInit {
       this.addCategory = true;
     }
   }
-  
+
+  customizeCategory(event: any) {
+    if (this.editingCategory) {
+      event.preventDefault();
+      const target = event.target;
+      const colorDot = target as HTMLElement;
+      const selectedColorClass = colorDot.className;
+      console.log('Selected color class:', selectedColorClass);
+      if (selectedColorClass !== null) {
+        const index = parseInt(selectedColorClass, 10);
+        for (let c = 0; c < this.assignedColors.length; c++) {
+          if (c === index) {
+            if (c <= 1) {
+              const selectedColorDot = this.assignedColors[c];
+              const selectedColorClass = selectedColorDot?.nativeElement.className;
+              this.categories[index] = selectedColorClass;
+            }
+          }
+        }
+      }
+    }
+  }
+
   cancelInput() {
     this.showInput = false;
   }
