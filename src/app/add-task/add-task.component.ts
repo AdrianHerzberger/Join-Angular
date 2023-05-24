@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -8,22 +8,19 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./add-task.component.scss']
 })
 export class AddTaskComponent implements OnInit {
-  @ViewChild('addCategoryIcon') addCategoryIcon: any;
-  @ViewChild('newCategory', { static: false }) newCategoryRef!: ElementRef;
-
   form!: FormGroup;
   title!: string;
   description!: string;
-  editCategory!: string;
-  addCategory!: string;
-  newCategoryValue: string = '';
+  newCategory!:string;
 
-  openDropdown = false;
-  editingCategory = false;
+  openDropdown: boolean = false;
+  editingCategory:boolean  = false;
+  addCategory: boolean = false;
+  showInput: boolean = false;
 
   categories = ["New Category", "Sales", "Marketing"];
-  colorDots = document.getElementsByClassName("color-dot");
-  assignedColors = [null, this.colorDots[1], this.colorDots[2]];
+  assignedColors: (Element | null)[] = [];
+  
 
   constructor(
     private firestore: Firestore,
@@ -34,66 +31,69 @@ export class AddTaskComponent implements OnInit {
     this.form = this.fb.group({
       title: ['', Validators.required],
       description: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      newCategory: ['', Validators.required]
     });
 
-    this.updateEditCategory();
+    this.assignedColors = [
+      null,
+      document.getElementsByClassName("color-dot")[1],
+      document.getElementsByClassName("color-dot")[2]
+    ];
   }
 
   toggleEditCategory() {
     this.openDropdown = !this.openDropdown;
-    if (this.openDropdown) {
-      this.updateEditCategory();
-    }
+  }
+  
+  toggleAssigned() {
+
   }
 
-  updateEditCategory() {
-    this.editCategory = /*html*/`
-      <div class="category" (click)="selectCategory($event)">
-        <div class="category-text">${this.categories[0]}</div>
-      </div>
-    `;
-
-    if (this.categories.length > 1) {
-      for (let i = 1; i < this.categories.length; i++) {
-        let color = this.assignedColors[i];
-        if (color != null) {
-          color.classList.remove("selected");
-          this.editCategory += /*html*/`
-            <div class="category" (click)="selectCategory($event)"><div class="category-text">${this.categories[i]}</div> ${color.outerHTML}</div>
-          `;
-        } else {
-          this.editCategory += /*html*/`
-            <div class="category" (click)="selectCategory($event)"><div class="category-text">${this.categories[i]}</div></div>
-          `;
+  updateEditCategory(event: any) {
+    event.preventDefault();
+    const target = event.target;
+    const categoryIndex = target.getAttribute('data-target');
+    if (categoryIndex !== null) {
+      let index = parseInt(categoryIndex, 10);
+      for (let i = 0; i < this.categories.length; i++) {
+        if (i === index) {
+          if (i === 0) {
+            this.toggleShowInput();
+          } else if (i <= 1) {
+            this.editingCategory = true;
+          } else {
+            this.editingCategory = true;
+          }
+          break;
         }
       }
     }
   }
 
-  selectCategory(event: Event) {
-    this.editingCategory = true;
-    if (this.editingCategory === true) {
-      const target = event.currentTarget as HTMLElement;
-      const categoryText = target.querySelector('.category-text')?.textContent;
-      this.addCategory = /*html*/`
-        <div class="categoryOninput">
-          <input type="text" [(ngModel)]="newCategoryValue" value="${categoryText}">
-          <img src="assets/img/icon_clear.png" id="clearCategory">
-          <img src="assets/img/icon_done.png" id="addCategory" (click)="addNewCategory()">
-        </div>
-      `;
+  toggleShowInput() {
+    this.showInput = !this.showInput;
+    if (this.showInput) {
+      this.addCategory = true;
     }
   }
+  
+  cancelInput() {
+    this.showInput = false;
+  }
 
-  addNewCategory() {
-    if (this.newCategoryValue.trim() !== '') {
-      this.categories.push(this.newCategoryValue);
+  confirmInput() {
+    if (this.newCategory) {
+      this.categories.push(this.newCategory);
     }
-    this.editingCategory = false;
   }
   
   createTask() { }
 
   clearTaskForm() { }
+
 }
+
+
+  
+

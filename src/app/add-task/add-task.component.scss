@@ -85,14 +85,14 @@ textarea:focus {
     outline: none;
 }
 
-#selectCategory,
-#assignedTo {
+.selectCategory,
+.assignedTo {
     margin-bottom: 0;
     cursor: pointer;
 }
 
-#addCategoryIcon,
-#addContactIcon {
+.addCategoryIcon,
+.addContactIcon {
     position: absolute;
     right: 0;
     top: 50%;
@@ -128,12 +128,11 @@ textarea:focus {
     margin-bottom: 1rem;
 }
 
-#colorContainer {
+.colorContainer {
     display: flex;
     margin-top: 1rem;
     width: 100%;
     justify-content: space-evenly;
-    display: none;
 }
 
 .color-dot {
@@ -236,12 +235,12 @@ textarea {
     min-height: 100px;
 }
 
-/* input[type="date"]::after {
-    content: url("./assets/img/icon_calendar.png");
+input[type="date"]::after {
+    content: url("/assets/img/icon_calendar.png");
     display: inline-block;
     margin-right: 7px;
     transform: scale(0.7);
-  } */
+}
 
 input[type="date"] {
     padding-right: 7px;
@@ -327,12 +326,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     display: flex;
     align-items: center;
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 7px;
-    display: none;
+    top: 36%;
+    right: 20px;
     cursor: pointer;
-    background: white;
     z-index: 100;
 }
 
@@ -396,8 +392,8 @@ input[type="checkbox"]:checked::before {
 }
 
 
-#subtaskOninput img:last-of-type,
-#categoryOninput img:last-of-type {
+.subtaskOninput img:last-of-type,
+.categoryOninput img:last-of-type {
     width: 20px;
     margin-left: 0.6rem;
     border-left: 1px solid var(--dimmed);
@@ -491,11 +487,4 @@ input[type="checkbox"]:checked::before {
 .required:empty {
     visibility: hidden;
     height: 15px;
-}
-
-.required {
-    margin: 7px 0 0 0;
-    font-size: 12px;
-    padding-left: 7px;
-    color: red;
 }

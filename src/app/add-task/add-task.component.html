@@ -16,36 +16,47 @@
                 <textarea [(ngModel)]="description" placeholder="Enter a description"
                     formControlName="description"></textarea>
                 <div *ngIf="form.controls['description'].invalid && form.controls['description'].touched">
-                    <div class="error-massage" *ngIf="form.controls['description'].errors?.['required']">Description is
-                        required.</div>
+                    <div class="error-massage" *ngIf="form.controls['description'].errors?.['required']">Description is required.
+                    </div>
                 </div>
 
                 <label class="mt-15" for="selectCategory">Category</label>
                 <div class="category-input-container">
-                    <input readonly id="selectCategory" value="Select task category" #addCategoryIcon
-                        (click)="toggleEditCategory()">
+                    <input readonly value="Select task category" (click)="toggleEditCategory()">
                     <img class="drop-down" src="./assets/img/icon_triangle.png">
-                    <div class="dropdown-container" [innerHTML]="editCategory" *ngIf="openDropdown"></div>
+                    <div class="dropdown-container" *ngIf="openDropdown">
+                        <div class="category" (click)="updateEditCategory($event)" data-target="0">
+                            <div class="category-text" (click)="toggleShowInput()">
+                                <span *ngIf="!showInput">{{ categories[0] }}</span>
+                            </div>                             
+                            <input [hidden]="!showInput" [(ngModel)]="newCategory" formControlName="newCategory">
+                            <div class="categoryOninput" *ngIf="addCategory && showInput">
+                                <img src="assets/img/icon_clear.png" (click)="cancelInput()">
+                                <img src="assets/img/icon_done.png" (click)="confirmInput()">
+                            </div>
+                        </div>
+                        <div class="category" *ngFor="let category of categories.slice(1); let i = index"
+                            (click)="updateEditCategory($event)" attr.data-target="{{ i + 1 }}">
+                            <div class="category-text">{{ category }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="colorContainer" *ngIf="editingCategory">
+                        <div class="color-dot orange"></div>
+                        <div class="color-dot red"></div>
+                        <div class="color-dot blue"></div>
+                        <div class="color-dot lightblue"></div>
+                        <div class="color-dot pink"></div>
+                        <div class="color-dot lightpink"></div>
+                        <div class="color-dot green"></div>
+                        <div class="color-dot turquo"></div>
+                    </div>
                 </div>
-
-                <div class="categoryOninput" [innerHTML]="addCategory" *ngIf="editingCategory"></div>
-
-                <div id="colorContainer">
-                    <div class="color-dot orange"></div>
-                    <div class="color-dot red"></div>
-                    <div class="color-dot blue"></div>
-                    <div class="color-dot lightblue"></div>
-                    <div class="color-dot pink"></div>
-                    <div class="color-dot lightpink"></div>
-                    <div class="color-dot green"></div>
-                    <div class="color-dot turquo"></div>
-                </div>
-
 
                 <label for="assignedTo">Assigned to</label>
                 <div class="contact-input-container">
-                    <input readonly="" id="assignedTo" value="Select contacts to assign">
-                    <img src="assets/img/icon_triangle.png" id="addContactIcon">
+                    <input readonly id="assignedTo" value="Select contacts to assign" (click)="toggleAssigned()">
+                    <img class="drop-down" src="./assets/img/icon_triangle.png">
                 </div>
                 <div id="contactsDropdownContainer"></div>
             </div>
