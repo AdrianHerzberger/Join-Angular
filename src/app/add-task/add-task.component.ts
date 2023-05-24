@@ -89,15 +89,9 @@ export class AddTaskComponent implements OnInit {
       const selectedColorClass = colorDot.className;
       console.log('Selected color class:', selectedColorClass);
       if (selectedColorClass !== null) {
-        const index = parseInt(selectedColorClass, 10);
-        for (let c = 0; c < this.assignedColors.length; c++) {
-          if (c === index) {
-            if (c <= 1) {
-              const selectedColorDot = this.assignedColors[c];
-              const selectedColorClass = selectedColorDot?.nativeElement.className;
-              this.categories[index] = selectedColorClass;
-            }
-          }
+        const categoryIndex = parseInt(colorDot.parentElement?.getAttribute('data-target')?? '', 10);
+        if (!isNaN(categoryIndex) && categoryIndex < this.categories.length) {
+          this.categories[categoryIndex] = selectedColorClass;
         }
       }
     }
