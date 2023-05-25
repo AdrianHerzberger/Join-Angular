@@ -73,26 +73,30 @@
                 <label class="mt-15" for="prio">Prio</label>
                 <div class="prio">
                     <div class="prio-btn">Urgent
-                        <img src="assets/img/icon_up.png" alt="#">
+                        <img src="./assets/img/icon_up.png" alt="#">
                     </div>
                     <div class="prio-btn">Medium
-                        <img src="assets/img/icon_medium.png" alt="#">
+                        <img src="./assets/img/icon_medium.png" alt="#">
                     </div>
                     <div class="prio-btn">Low
-                        <img src="assets/img/icon_down.png" alt="#">
+                        <img src="./assets/img/icon_down.png" alt="#">
                     </div>
                 </div>
 
                 <label for="addSubtask" class="mt-15">Subtasks</label>
                 <div class="subtask-input-container">
-                    <input type="text" [(ngModel)]="newSubtask" placeholder="Enter a subtask" formControlName="newSubtask">
-                    <div class="subtask-oninput">
-                        <img src="assets/img/icon_clear.png" (click)="cancelSubtask()">
-                        <img src="assets/img/icon_done.png" (click)="confirmSubtask()">
+                    <input type="text" [(ngModel)]="newSubtask" placeholder="Enter a subtask"
+                        formControlName="newSubtask">
+                        <div class="subtask-oninput">
+                            <img src="./assets/img/icon_clear.png" (click)="cancelSubtask()">
+                            <img src="./assets/img/icon_done.png" (click)="confirmSubtask()">
+                        </div>
+                    <div class="dropdown-container" *ngIf="openSubtask">  
+                        <div class="category" *ngFor="let subtask of subtasks; let s = index"
+                            attr.data-target="{{ s + 1 }}">
+                            <div class="category-text">{{ subtask }}</div>
+                        </div>
                     </div>
-                </div>
-                <div class="subtask-container" *ngFor="let subtask of subtasks">
-                    <div class="category">{{ subtask }}</div>
                 </div>
                 <div class="action-button-container">
                     <button (click)=" clearTaskForm()">Clear<img src="./assets/img/icon_close.png"></button>

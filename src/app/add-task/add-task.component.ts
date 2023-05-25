@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './add-task.component.html',
   styleUrls: ['./add-task.component.scss']
 })
+
 export class AddTaskComponent implements OnInit {
   @ViewChild('colorDot1') colorDot1!: ElementRef;
   @ViewChild('colorDot2') colorDot2!: ElementRef;
@@ -20,13 +21,15 @@ export class AddTaskComponent implements OnInit {
   newSubtask!:string;
 
   openDropdown: boolean = false;
+  openSubtask:boolean = false;
+
   editingCategory:boolean  = false;
   addCategory: boolean = false;
   addSubtask:boolean = false;
   showInput: boolean = false;
 
   categories = ["New Category", "Sales", "Marketing"];
-  subtasks:any [] = [];
+  subtasks: string[] = [];
   assignedColors: (ElementRef<any> | null)[] = [];
   selectedCategoryIndex: number | null = null;
 
@@ -120,14 +123,19 @@ export class AddTaskComponent implements OnInit {
   }
 
   confirmSubtask() {
-     if (this.newSubtask) {
-      this.subtasks.push(this.newSubtask);
-      this.addSubtask = !this.addSubtask;
+    this.openSubtask = !this.openSubtask;
+    if (this.newSubtask) {
+      if (!this.subtasks.includes(this.newSubtask)) {
+        this.subtasks.push(this.newSubtask);
+      }
+      this.newSubtask = ''; 
     }
   }
   
   createTask() { 
-    
+    if(this.title) {
+
+    }
   }
 
   clearTaskForm() { 
