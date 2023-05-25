@@ -15,10 +15,10 @@ export class AddTaskComponent implements OnInit {
   title!: string;
   description!: string;
   date!:string;
-  subtask!: string;
 
   newCategory!:string;
   newSubtask!:string;
+
   openDropdown: boolean = false;
   editingCategory:boolean  = false;
   addCategory: boolean = false;
@@ -26,11 +26,11 @@ export class AddTaskComponent implements OnInit {
   showInput: boolean = false;
 
   categories = ["New Category", "Sales", "Marketing"];
+  subtasks:any [] = [];
   assignedColors: (ElementRef<any> | null)[] = [];
   selectedCategoryIndex: number | null = null;
 
   task:[] = [];
-  subtaskInput: any;
 
   constructor(
     private firestore: Firestore,
@@ -43,7 +43,7 @@ export class AddTaskComponent implements OnInit {
       description: ['', [Validators.required]],
       date:  ['', [Validators.required]],
       newCategory: ['', [Validators.required]],
-      subtask: ['', [Validators.required]]
+      newSubtask: ['', [Validators.required]]
     });
 
     this.assignedColors = [
@@ -95,7 +95,6 @@ export class AddTaskComponent implements OnInit {
       const target = event.target;
       const colorDot = target as HTMLElement;
       const selectedColorClass = colorDot.className;
-      console.log('Selected color class:', selectedColorClass);
       if (selectedColorClass !== null) {
         const categoryIndex = this.selectedCategoryIndex;
         if (categoryIndex < this.categories.length) {
@@ -121,12 +120,19 @@ export class AddTaskComponent implements OnInit {
   }
 
   confirmSubtask() {
-    
+     if (this.newSubtask) {
+      this.subtasks.push(this.newSubtask);
+      this.addSubtask = !this.addSubtask;
+    }
   }
   
-  createTask() { }
+  createTask() { 
+    
+  }
 
-  clearTaskForm() { }
+  clearTaskForm() { 
+
+  }
 
 }
 
