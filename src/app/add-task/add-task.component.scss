@@ -235,13 +235,6 @@ textarea {
     min-height: 100px;
 }
 
-input[type="date"]::after {
-    content: url("/assets/img/icon_calendar.png");
-    display: inline-block;
-    margin-right: 7px;
-    transform: scale(0.7);
-}
-
 input[type="date"] {
     padding-right: 7px;
     font-size: 1.2rem;
@@ -304,14 +297,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     box-sizing: border-box;
 }
 
-#addSubtaskIcon {
+.add-subtask-icon {
     top: 50%;
     transform: translateY(-50%) scale(0.8);
     right: 7px;
     position: absolute;
 }
 
-#subtaskOninput {
+.subtask-input {
     display: flex;
     align-items: center;
     position: absolute;
@@ -320,16 +313,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     right: 7px;
     display: none;
     cursor: pointer;
-}
-
-.categoryOninput {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    top: 36%;
-    right: 20px;
-    cursor: pointer;
-    z-index: 100;
 }
 
 .alert {
@@ -392,15 +375,28 @@ input[type="checkbox"]:checked::before {
 }
 
 
-.subtaskOninput img:last-of-type,
-.categoryOninput img:last-of-type {
+.subtask-oninput img:last-of-type,
+.category-oninput img:last-of-type {
     width: 20px;
     margin-left: 0.6rem;
     border-left: 1px solid var(--dimmed);
     padding-left: 0.6rem;
 }
+.category-oninput {
+    display: flex;
+    align-items: center;
+}
 
-#subtaskContainer {
+.subtask-oninput {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 30%;
+    right: 15px;
+    cursor: pointer;
+}
+
+.subtask-container {
     height: 150px;
     overflow-y: auto;
     overflow-x: hidden;

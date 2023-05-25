@@ -16,7 +16,8 @@
                 <textarea [(ngModel)]="description" placeholder="Enter a description"
                     formControlName="description"></textarea>
                 <div *ngIf="form.controls['description'].invalid && form.controls['description'].touched">
-                    <div class="error-massage" *ngIf="form.controls['description'].errors?.['required']">Description is required.
+                    <div class="error-massage" *ngIf="form.controls['description'].errors?.['required']">Description is
+                        required.
                     </div>
                 </div>
 
@@ -28,17 +29,18 @@
                         <div class="category" (click)="updateEditCategory($event)" data-target="0">
                             <div class="category-text" (click)="toggleShowInput()">
                                 <span *ngIf="!showInput">{{ categories[0] }}</span>
-                            </div>                             
+                            </div>
                             <input [hidden]="!showInput" [(ngModel)]="newCategory" formControlName="newCategory">
-                            <div class="categoryOninput" *ngIf="addCategory && showInput">
-                                <img src="assets/img/icon_clear.png" (click)="cancelInput()">
-                                <img src="assets/img/icon_done.png" (click)="confirmInput()">
+                            <div class="category-oninput" *ngIf="addCategory && showInput">
+                                <img src="assets/img/icon_clear.png" (click)="cancelCategory()">
+                                <img src="assets/img/icon_done.png" (click)="confirmCategory()">
                             </div>
                         </div>
                         <div class="category" *ngFor="let category of categories.slice(1); let i = index"
                             (click)="updateEditCategory($event)" attr.data-target="{{ i + 1 }}">
                             <div class="category-text">{{ category }}</div>
-                            <div class="color-dot" *ngFor="let color of assignedColors.slice(2); let c = index" attr.data-target="{{ c + 1 }}"></div>
+                            <div class="color-dot" *ngFor="let color of assignedColors.slice(2); let c = index"
+                                attr.data-target="{{ c + 1 }}"></div>
                         </div>
                     </div>
                     <div (click)="customizeCategory($event)" class="colorContainer" *ngIf="editingCategory">
@@ -52,6 +54,7 @@
                         <div class="color-dot turquo"></div>
                     </div>
                 </div>
+
                 <label for="assignedTo">Assigned to</label>
                 <div class="contact-input-container">
                     <input readonly id="assignedTo" value="Select contacts to assign" (click)="toggleAssigned()">
@@ -62,36 +65,41 @@
 
             <div class="column-right">
                 <label for="date">Due Date</label>
-                <input type="date" id="date" min="2023-05-22">
-                <p class="required"></p>
+                <input type="date" min="2023-05-22" [(ngModel)]="date" formControlName="date">
+                <div *ngIf="form.controls['date'].invalid && form.controls['date'].touched">
+                    <div class="error-massage" *ngIf="form.controls['date'].errors?.['required']">Title is required.
+                    </div>
+                </div>
                 <label class="mt-15" for="prio">Prio</label>
-                <div id="prio" class="prio">
+                <div class="prio">
                     <div class="prio-btn">Urgent
-                        <img src="assets/img/icon_up.png" alt="sda">
+                        <img src="assets/img/icon_up.png" alt="#">
                     </div>
                     <div class="prio-btn">Medium
-                        <img src="assets/img/icon_medium.png" alt="sda">
+                        <img src="assets/img/icon_medium.png" alt="#">
                     </div>
                     <div class="prio-btn">Low
-                        <img src="assets/img/icon_down.png" alt="sda">
+                        <img src="assets/img/icon_down.png" alt="#">
                     </div>
                 </div>
 
                 <label for="addSubtask" class="mt-15">Subtasks</label>
                 <div class="subtask-input-container">
-                    <input type="text" id="addSubtask">
-                    <img src="assets/img/icon_plus.png" id="addSubtaskIcon">
-                    <div id="subtaskOninput">
-                        <img src="assets/img/icon_clear.png" id="clearSubtaskInput">
-                        <img src="assets/img/icon_done.png" id="finishEditingSubtask">
+                    <input type="text" [(ngModel)]="newSubtask" placeholder="Enter a subtask" formControlName="subtask">
+                    <div class="subtask-oninput">
+                        <img src="assets/img/icon_clear.png" (click)="cancelSubtask()">
+                        <img src="assets/img/icon_done.png" (click)="confirmSubtask()">
                     </div>
+                    <!-- <div *ngIf="form.controls['subtask'].invalid && form.controls['subtask'].touched">
+                        <div class="error-massage" *ngIf="form.controls['subtask'].errors?.['required']">Title is
+                            required.
+                        </div>
+                    </div> -->
                 </div>
-                <div id="subtaskContainer"></div>
-
+                <div class="subtask-container" *ngIf="addSubtask"></div>
                 <div class="action-button-container">
-                    <button (click)=" clearTaskForm()">Clear<img src="assets/img/icon_close.png">
-                    </button>
-                    <button (click)="createTask()">Create Task<img src="assets/img/icon_create.png"></button>
+                    <button (click)=" clearTaskForm()">Clear<img src="./assets/img/icon_close.png"></button>
+                    <button (click)="createTask()">Create Task<img src="./assets/img/icon_create.png"></button>
                 </div>
             </div>
         </form>

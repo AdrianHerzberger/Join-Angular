@@ -14,16 +14,23 @@ export class AddTaskComponent implements OnInit {
   form!: FormGroup;
   title!: string;
   description!: string;
-  newCategory!:string;
+  date!:string;
+  subtask!: string;
 
+  newCategory!:string;
+  newSubtask!:string;
   openDropdown: boolean = false;
   editingCategory:boolean  = false;
   addCategory: boolean = false;
+  addSubtask:boolean = false;
   showInput: boolean = false;
 
   categories = ["New Category", "Sales", "Marketing"];
   assignedColors: (ElementRef<any> | null)[] = [];
-  selectedColor: string | null = null;
+  selectedCategoryIndex: number | null = null;
+
+  task:[] = [];
+  subtaskInput: any;
 
   constructor(
     private firestore: Firestore,
@@ -32,10 +39,11 @@ export class AddTaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      title: ['', Validators.required],
-      description: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      newCategory: ['', Validators.required]
+      title:  ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      date:  ['', [Validators.required]],
+      newCategory: ['', [Validators.required]],
+      subtask: ['', [Validators.required]]
     });
 
     this.assignedColors = [
@@ -82,29 +90,38 @@ export class AddTaskComponent implements OnInit {
   }
 
   customizeCategory(event: any) {
-    if (this.editingCategory) {
+    if (this.editingCategory && this.selectedCategoryIndex !== null) {
       event.preventDefault();
       const target = event.target;
       const colorDot = target as HTMLElement;
       const selectedColorClass = colorDot.className;
       console.log('Selected color class:', selectedColorClass);
       if (selectedColorClass !== null) {
-        const categoryIndex = parseInt(colorDot.parentElement?.getAttribute('data-target')?? '', 10);
-        if (!isNaN(categoryIndex) && categoryIndex < this.categories.length) {
+        const categoryIndex = this.selectedCategoryIndex;
+        if (categoryIndex < this.categories.length) {
           this.categories[categoryIndex] = selectedColorClass;
+          colorDot.style.backgroundColor = selectedColorClass;
         }
       }
     }
   }
 
-  cancelInput() {
+  cancelCategory() {
     this.showInput = false;
   }
 
-  confirmInput() {
+  confirmCategory() {
     if (this.newCategory) {
       this.categories.push(this.newCategory);
     }
+  }
+
+  cancelSubtask() {
+    this.newSubtask = ' ';
+  }
+
+  confirmSubtask() {
+    
   }
   
   createTask() { }
