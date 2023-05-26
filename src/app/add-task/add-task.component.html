@@ -30,7 +30,8 @@
                             <div class="category-text" (click)="toggleShowInput()">
                                 <span *ngIf="!showInput">{{ categories[0] }}</span>
                             </div>
-                            <input class="category-input" [hidden]="!showInput" [(ngModel)]="newCategory" formControlName="newCategory">
+                            <input class="category-input" [hidden]="!showInput" [(ngModel)]="newCategory"
+                                formControlName="newCategory">
                             <div class="category-oninput" *ngIf="addCategory && showInput">
                                 <img src="assets/img/icon_clear.png" (click)="cancelCategory()">
                                 <img src="assets/img/icon_done.png" (click)="confirmCategory()">
@@ -40,18 +41,26 @@
                             (click)="updateEditCategory($event)" attr.data-target="{{ i + 1 }}">
                             <div class="category-text">{{ category }}</div>
                             <div class="color-dot" *ngFor="let color of assignedColors.slice(2); let c = index"
-                                attr.data-target="{{ c + 1 }}"></div>
+                                [ngStyle]="{ 'background-color': color }"></div>
                         </div>
                     </div>
-                    <div (click)="customizeCategory($event)" class="colorContainer" *ngIf="editingCategory">
-                        <div class="color-dot orange"></div>
-                        <div class="color-dot red"></div>
-                        <div class="color-dot blue"></div>
-                        <div class="color-dot lightblue"></div>
-                        <div class="color-dot pink"></div>
-                        <div class="color-dot lightpink"></div>
-                        <div class="color-dot green"></div>
-                        <div class="color-dot turquo"></div>
+                    <div (click)="customizeColor($event)" class="colorContainer" *ngIf="editingCategory">
+                        <div (click)="selectedCategoryIndex = 0" class="color-dot orange"
+                            [class.selected]="selectedCategoryIndex === 0"></div>
+                        <div (click)="selectedCategoryIndex = 1" class="color-dot red"
+                            [class.selected]="selectedCategoryIndex === 1"></div>
+                        <div (click)="selectedCategoryIndex = 2" class="color-dot blue"
+                            [class.selected]="selectedCategoryIndex === 2"></div>
+                        <div (click)="selectedCategoryIndex = 3" class="color-dot lightblue"
+                            [class.selected]="selectedCategoryIndex === 3"></div>
+                        <div (click)="selectedCategoryIndex = 4" class="color-dot pink"
+                            [class.selected]="selectedCategoryIndex === 4"></div>
+                        <div (click)="selectedCategoryIndex = 5" class="color-dot lightpink"
+                            [class.selected]="selectedCategoryIndex === 5"></div>
+                        <div (click)="selectedCategoryIndex = 6" class="color-dot green"
+                            [class.selected]="selectedCategoryIndex === 6"></div>
+                        <div (click)="selectedCategoryIndex = 7" class="color-dot turquo"
+                            [class.selected]="selectedCategoryIndex === 7"></div>
                     </div>
                 </div>
 
@@ -93,7 +102,7 @@
                             <img src="./assets/img/icon_done.png" (click)="confirmSubtask()">
                         </div>
                     </div>
-                    <div class="dropdown-container" *ngIf="openSubtask">  
+                    <div class="dropdown-container" *ngIf="openSubtask">
                         <div class="category" *ngFor="let subtask of subtasks; let s = index"
                             attr.data-target="{{ s + 1 }}">
                             <div class="category-text">{{ subtask }}</div>

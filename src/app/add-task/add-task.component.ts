@@ -15,25 +15,25 @@ export class AddTaskComponent implements OnInit {
   form!: FormGroup;
   title!: string;
   description!: string;
-  date!:string;
+  date!: string;
 
-  newCategory!:string;
-  newSubtask!:string;
+  newCategory!: string;
+  newSubtask!: string;
 
   openCategory: boolean = false;
-  openSubtask:boolean = false;
+  openSubtask: boolean = false;
 
-  editingCategory:boolean  = false;
+  editingCategory: boolean = false;
   addCategory: boolean = false;
-  addSubtask:boolean = false;
+  addSubtask: boolean = false;
   showInput: boolean = false;
 
   categories = ["New Category", "Sales", "Marketing"];
   subtasks: string[] = [];
-  assignedColors: (ElementRef<any> | null)[] = [];
-  selectedCategoryIndex: number | null = null;
+  assignedColors: (ElementRef<HTMLElement> | null)[] = [];
+  selectedCategoryIndex!: number;
 
-  task:[] = [];
+  task: [] = [];
 
   constructor(
     private firestore: Firestore,
@@ -42,9 +42,9 @@ export class AddTaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      title:  ['', [Validators.required]],
+      title: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      date:  ['', [Validators.required]],
+      date: ['', [Validators.required]],
       newCategory: ['', [Validators.required]],
       newSubtask: ['', [Validators.required]]
     });
@@ -59,7 +59,7 @@ export class AddTaskComponent implements OnInit {
   toggleEditCategory() {
     this.openCategory = !this.openCategory;
   }
-  
+
   toggleAssigned() {
 
   }
@@ -92,19 +92,25 @@ export class AddTaskComponent implements OnInit {
     }
   }
 
-  customizeCategory(event: any) {
+  customizeColor(event: any) {
     if (this.editingCategory && this.selectedCategoryIndex !== null) {
       event.preventDefault();
       const target = event.target;
       const colorDot = target as HTMLElement;
+      console.log(colorDot);
       const selectedColorClass = colorDot.className;
+      console.log('Selected color class:', selectedColorClass);
       if (selectedColorClass !== null) {
         const categoryIndex = this.selectedCategoryIndex;
-        if (categoryIndex < this.categories.length) {
-          this.categories[categoryIndex] = selectedColorClass;
-          colorDot.style.backgroundColor = selectedColorClass;
+        console.log('Selected color class:', categoryIndex);
+        for (let l = 0; l < this.categories.length; l++) {
+          const categoryToColor = this.categories[l];
+          if(categoryToColor) {
+            
+          }
         }
       }
+
     }
   }
 
@@ -128,25 +134,25 @@ export class AddTaskComponent implements OnInit {
       if (!this.subtasks.includes(this.newSubtask)) {
         this.subtasks.push(this.newSubtask);
       }
-      this.newSubtask = ''; 
+      this.newSubtask = '';
       this.openSubtask = true;
     }
   }
-  
-  createTask() { 
-    if(this.title) {
+
+  createTask() {
+    if (this.title) {
 
     }
   }
 
-  clearTaskForm() { 
+  clearTaskForm() {
     this.title = '';
     this.description = '';
-    this.description = '';
+    this.newSubtask = '';
   }
 
 }
 
 
-  
+
 
