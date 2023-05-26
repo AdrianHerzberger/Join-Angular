@@ -10,7 +10,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 export class AddTaskComponent implements OnInit {
   @ViewChild('colorDot1') colorDot1!: ElementRef;
-  @ViewChild('colorDot2') colorDot2!: ElementRef;
 
   form!: FormGroup;
   title!: string;
@@ -50,9 +49,7 @@ export class AddTaskComponent implements OnInit {
     });
 
     this.assignedColors = [
-      null,
       this.colorDot1,
-      this.colorDot2
     ];
   }
 
@@ -96,23 +93,21 @@ export class AddTaskComponent implements OnInit {
     if (this.editingCategory && this.selectedCategoryIndex !== null) {
       event.preventDefault();
       const target = event.target;
-      const colorDot = target as HTMLElement;
-      console.log(colorDot);
-      const selectedColorClass = colorDot.className;
+      const colorDotElement = target as HTMLElement;
+      console.log(colorDotElement);
+      const selectedColorClass = colorDotElement.className;
       console.log('Selected color class:', selectedColorClass);
       if (selectedColorClass !== null) {
         const categoryIndex = this.selectedCategoryIndex;
-        console.log('Selected color class:', categoryIndex);
-        for (let l = 0; l < this.categories.length; l++) {
-          const categoryToColor = this.categories[l];
-          if(categoryToColor) {
-            
-          }
+        console.log('Selected category index:', categoryIndex);
+        if (categoryIndex >= 0 && categoryIndex < this.assignedColors.length) {
+          const colorDotRef = new ElementRef(colorDotElement);
+          this.assignedColors[categoryIndex] = colorDotRef;
         }
       }
-
     }
   }
+
 
   cancelCategory() {
     this.showInput = false;

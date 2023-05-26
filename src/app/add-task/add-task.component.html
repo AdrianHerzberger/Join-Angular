@@ -40,8 +40,9 @@
                         <div class="category" *ngFor="let category of categories.slice(1); let i = index"
                             (click)="updateEditCategory($event)" attr.data-target="{{ i + 1 }}">
                             <div class="category-text">{{ category }}</div>
-                            <div class="color-dot" *ngFor="let color of assignedColors.slice(2); let c = index"
-                                [ngStyle]="{ 'background-color': color }"></div>
+                            <div class="color-dot" *ngFor="let color of assignedColors; let c = index"
+                                [class.selected]="selectedCategoryIndex === c">
+                            </div>
                         </div>
                     </div>
                     <div (click)="customizeColor($event)" class="colorContainer" *ngIf="editingCategory">
@@ -63,7 +64,6 @@
                             [class.selected]="selectedCategoryIndex === 7"></div>
                     </div>
                 </div>
-
                 <label for="assignedTo">Assigned to</label>
                 <div class="contact-input-container">
                     <input readonly id="assignedTo" value="Select contacts to assign" (click)="toggleAssigned()">
