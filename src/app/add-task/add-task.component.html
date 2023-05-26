@@ -25,12 +25,12 @@
                 <div class="category-input-container">
                     <input readonly value="Select task category" (click)="toggleEditCategory()">
                     <img class="drop-down" src="./assets/img/icon_triangle.png">
-                    <div class="dropdown-container" *ngIf="openDropdown">
+                    <div class="dropdown-container" *ngIf="openCategory">
                         <div class="category" (click)="updateEditCategory($event)" data-target="0">
                             <div class="category-text" (click)="toggleShowInput()">
                                 <span *ngIf="!showInput">{{ categories[0] }}</span>
                             </div>
-                            <input [hidden]="!showInput" [(ngModel)]="newCategory" formControlName="newCategory">
+                            <input class="category-input" [hidden]="!showInput" [(ngModel)]="newCategory" formControlName="newCategory">
                             <div class="category-oninput" *ngIf="addCategory && showInput">
                                 <img src="assets/img/icon_clear.png" (click)="cancelCategory()">
                                 <img src="assets/img/icon_done.png" (click)="confirmCategory()">
@@ -85,12 +85,14 @@
 
                 <label for="addSubtask" class="mt-15">Subtasks</label>
                 <div class="subtask-input-container">
-                    <input type="text" [(ngModel)]="newSubtask" placeholder="Enter a subtask"
-                        formControlName="newSubtask">
+                    <div class="subtask">
+                        <input type="text" [(ngModel)]="newSubtask" placeholder="Enter a subtask"
+                            formControlName="newSubtask">
                         <div class="subtask-oninput">
                             <img src="./assets/img/icon_clear.png" (click)="cancelSubtask()">
                             <img src="./assets/img/icon_done.png" (click)="confirmSubtask()">
                         </div>
+                    </div>
                     <div class="dropdown-container" *ngIf="openSubtask">  
                         <div class="category" *ngFor="let subtask of subtasks; let s = index"
                             attr.data-target="{{ s + 1 }}">

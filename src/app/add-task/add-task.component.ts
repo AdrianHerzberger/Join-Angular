@@ -20,7 +20,7 @@ export class AddTaskComponent implements OnInit {
   newCategory!:string;
   newSubtask!:string;
 
-  openDropdown: boolean = false;
+  openCategory: boolean = false;
   openSubtask:boolean = false;
 
   editingCategory:boolean  = false;
@@ -57,7 +57,7 @@ export class AddTaskComponent implements OnInit {
   }
 
   toggleEditCategory() {
-    this.openDropdown = !this.openDropdown;
+    this.openCategory = !this.openCategory;
   }
   
   toggleAssigned() {
@@ -119,16 +119,17 @@ export class AddTaskComponent implements OnInit {
   }
 
   cancelSubtask() {
-    this.newSubtask = ' ';
+    this.newSubtask = '';
   }
 
   confirmSubtask() {
-    this.openSubtask = !this.openSubtask;
     if (this.newSubtask) {
+      this.openSubtask = !this.openSubtask;
       if (!this.subtasks.includes(this.newSubtask)) {
         this.subtasks.push(this.newSubtask);
       }
       this.newSubtask = ''; 
+      this.openSubtask = true;
     }
   }
   
@@ -139,7 +140,9 @@ export class AddTaskComponent implements OnInit {
   }
 
   clearTaskForm() { 
-
+    this.title = '';
+    this.description = '';
+    this.description = '';
   }
 
 }
