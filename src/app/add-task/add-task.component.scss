@@ -1,38 +1,113 @@
-.orange {
-    background: #ff8a00;
+.color-dot-orange {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #ffffff;
+    background-color: #ff8a00;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.2);
+        box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 20%);
+    }
 }
 
-.red {
+.color-dot-red {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #ffffff;
     background: #ff0000;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.2);
+        box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 20%);
+    }
 }
 
-.blue {
-    background: #0038ff;
+.color-dot-blue {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #ffffff;
+    background-color: #0038ff;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.2);
+        box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 20%);
+    }
 }
 
-.lightblue {
-    background: #8aa4ff;
+.color-dot-lightblue {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #ffffff;
+    background-color: #8aa4ff;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.2);
+        box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 20%);
+    }
 }
 
-.pink {
-    background: #e200be;
+.color-dot-pink {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #ffffff;
+    background-color: #e200be;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.2);
+        box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 20%);
+    }
 }
 
-.lightpink {
-    background: #fc71ff;
+.color-dot-lightpink {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #ffffff;
+    background-color: #fc71ff;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.2);
+        box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 20%);
+    }
 }
 
-.green {
-    background: #2ad300;
+.color-dot-green {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #ffffff;
+    background-color: #2ad300;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.2);
+        box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 20%);
+    }
 }
 
-.turquo {
-    background: #1fd7c1;
-}
+.color-dot-turquo {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #ffffff;
+    background-color: #1fd7c1;
+    border-radius: 50%;
+    cursor: pointer;
 
-
-.mt-15 {
-    margin-top: 1.5rem;
+    &:hover {
+        transform: scale(1.2);
+        box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 20%);
+    }
 }
 
 /* add task card */
@@ -152,11 +227,6 @@ textarea:focus {
 .color-dot:hover {
     transform: scale(1.2);
     box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 20%);
-}
-
-.selected {
-    transform: scale(1.2);
-    border: 2px solid var(--c-darkblue);
 }
 
 .category,

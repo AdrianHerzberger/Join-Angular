@@ -99,9 +99,10 @@ export class AddTaskComponent implements OnInit {
       if (selectedColorClass !== null) {
         const categoryIndex = this.selectedTargetIndex;
         console.log('Selected category index:', categoryIndex);
-        if (categoryIndex >= 0 && categoryIndex < this.selectedColorClass.length) {
-          const colorDotRef = new ElementRef(colorDotElement);
-          
+        if (categoryIndex >= 0 && categoryIndex < this.selectedColorClass.length) {  
+          colorDotElement.classList.remove(this.selectedColorClass);
+          this.selectedColorClass = selectedColorClass;
+          colorDotElement.classList.add(this.selectedColorClass);
         }
       }
     }
