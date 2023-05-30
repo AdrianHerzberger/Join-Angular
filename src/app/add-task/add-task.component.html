@@ -33,35 +33,33 @@
                             <input class="category-input" [hidden]="!showInput" [(ngModel)]="newCategory"
                                 formControlName="newCategory">
                             <div class="category-oninput" *ngIf="addCategory && showInput">
-                                <img src="assets/img/icon_clear.png" (click)="cancelCategory()">
-                                <img src="assets/img/icon_done.png" (click)="confirmCategory()">
+                                <img src="./assets/img/icon_clear.png" (click)="cancelCategory()">
+                                <img src="./assets/img/icon_done.png" (click)="confirmCategory()">
                             </div>
                         </div>
                         <div class="category" *ngFor="let category of categories.slice(1); let i = index"
                             (click)="updateEditCategory($event)" attr.data-target="{{ i + 1 }}">
                             <div class="category-text">{{ category }}</div>
-                            <div class="color-dot" *ngFor="let color of assignedColors; let c = index"
-                                [class.selected]="selectedCategoryIndex === c">
-                            </div>
+                            <div (click)="selectColor(i)" class="color-dot" [class.selected]="selectedTargetIndex === i"></div>
                         </div>
                     </div>
                     <div (click)="customizeColor($event)" class="colorContainer" *ngIf="editingCategory">
-                        <div (click)="selectedCategoryIndex = 0" class="color-dot orange"
-                            [class.selected]="selectedCategoryIndex === 0"></div>
-                        <div (click)="selectedCategoryIndex = 1" class="color-dot red"
-                            [class.selected]="selectedCategoryIndex === 1"></div>
-                        <div (click)="selectedCategoryIndex = 2" class="color-dot blue"
-                            [class.selected]="selectedCategoryIndex === 2"></div>
-                        <div (click)="selectedCategoryIndex = 3" class="color-dot lightblue"
-                            [class.selected]="selectedCategoryIndex === 3"></div>
-                        <div (click)="selectedCategoryIndex = 4" class="color-dot pink"
-                            [class.selected]="selectedCategoryIndex === 4"></div>
-                        <div (click)="selectedCategoryIndex = 5" class="color-dot lightpink"
-                            [class.selected]="selectedCategoryIndex === 5"></div>
-                        <div (click)="selectedCategoryIndex = 6" class="color-dot green"
-                            [class.selected]="selectedCategoryIndex === 6"></div>
-                        <div (click)="selectedCategoryIndex = 7" class="color-dot turquo"
-                            [class.selected]="selectedCategoryIndex === 7"></div>
+                        <div (click)="selectedTargetIndex = 0" class="color-dot orange"
+                            [class.selected]="selectedTargetIndex === 0"></div>
+                        <div (click)="selectedTargetIndex = 1" class="color-dot red"
+                            [class.selected]="selectedTargetIndex === 1"></div>
+                        <div (click)="selectedTargetIndex = 2" class="color-dot blue"
+                            [class.selected]="selectedTargetIndex === 2"></div>
+                        <div (click)="selectedTargetIndex = 3" class="color-dot lightblue"
+                            [class.selected]="selectedTargetIndex === 3"></div>
+                        <div (click)="selectedTargetIndex = 4" class="color-dot pink"
+                            [class.selected]="selectedTargetIndex === 4"></div>
+                        <div (click)="selectedTargetIndex = 5" class="color-dot lightpink"
+                            [class.selected]="selectedTargetIndex === 5"></div>
+                        <div (click)="selectedTargetIndex = 6" class="color-dot green"
+                            [class.selected]="selectedTargetIndex === 6"></div>
+                        <div (click)="selectedTargetIndex = 7" class="color-dot turquo"
+                            [class.selected]="selectedTargetIndex === 7"></div>
                     </div>
                 </div>
                 <label for="assignedTo">Assigned to</label>
@@ -74,7 +72,8 @@
 
             <div class="column-right">
                 <label for="date">Due Date</label>
-                <input type="date" min="2023-05-22" [(ngModel)]="date" formControlName="date">
+                <input type="date" min="2023-05-30" [(ngModel)]="date" (ngModelChange)="date = $event" [value]="date | date:'yyyy-MM-dd'" formControlName="date">
+                    <!-- {{ date | date:'yyyy-MM-dd' }} -->
                 <div *ngIf="form.controls['date'].invalid && form.controls['date'].touched">
                     <div class="error-massage" *ngIf="form.controls['date'].errors?.['required']">Title is required.
                     </div>
@@ -103,15 +102,15 @@
                         </div>
                     </div>
                     <div class="dropdown-container" *ngIf="openSubtask">
-                        <div class="category" *ngFor="let subtask of subtasks; let s = index"
+                        <div class="subtasks" *ngFor="let subtask of subtasks; let s = index"
                             attr.data-target="{{ s + 1 }}">
-                            <div class="category-text">{{ subtask }}</div>
+                            <div class="subtask-text">{{ subtask }}</div>
                         </div>
                     </div>
                 </div>
                 <div class="action-button-container">
                     <button (click)=" clearTaskForm()">Clear<img src="./assets/img/icon_close.png"></button>
-                    <button (click)="createTask()">Create Task<img src="./assets/img/icon_create.png"></button>
+                    <button type="submit" (click)="createTask()">Create Task<img src="./assets/img/icon_create.png"></button>
                 </div>
             </div>
         </form>

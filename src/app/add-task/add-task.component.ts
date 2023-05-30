@@ -9,8 +9,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 
 export class AddTaskComponent implements OnInit {
-  @ViewChild('colorDot1') colorDot1!: ElementRef;
-
   form!: FormGroup;
   title!: string;
   description!: string;
@@ -29,10 +27,11 @@ export class AddTaskComponent implements OnInit {
 
   categories = ["New Category", "Sales", "Marketing"];
   subtasks: string[] = [];
-  assignedColors: (ElementRef<HTMLElement> | null)[] = [];
-  selectedCategoryIndex!: number;
 
-  task: [] = [];
+  selectedColorClass: string = '';
+  selectedTargetIndex: number = -1;
+
+  task: { title: string, description: string, date: string, newCategory: string, newSubtask: string }[] = [];
 
   constructor(
     private firestore: Firestore,
@@ -47,10 +46,6 @@ export class AddTaskComponent implements OnInit {
       newCategory: ['', [Validators.required]],
       newSubtask: ['', [Validators.required]]
     });
-
-    this.assignedColors = [
-      this.colorDot1,
-    ];
   }
 
   toggleEditCategory() {
@@ -89,8 +84,12 @@ export class AddTaskComponent implements OnInit {
     }
   }
 
+  selectColor(index: number) {
+    this.selectedTargetIndex = index;
+  }
+  
   customizeColor(event: any) {
-    if (this.editingCategory && this.selectedCategoryIndex !== null) {
+    if (this.editingCategory && this.selectedTargetIndex !== null) {
       event.preventDefault();
       const target = event.target;
       const colorDotElement = target as HTMLElement;
@@ -98,16 +97,15 @@ export class AddTaskComponent implements OnInit {
       const selectedColorClass = colorDotElement.className;
       console.log('Selected color class:', selectedColorClass);
       if (selectedColorClass !== null) {
-        const categoryIndex = this.selectedCategoryIndex;
+        const categoryIndex = this.selectedTargetIndex;
         console.log('Selected category index:', categoryIndex);
-        if (categoryIndex >= 0 && categoryIndex < this.assignedColors.length) {
+        if (categoryIndex >= 0 && categoryIndex < this.selectedColorClass.length) {
           const colorDotRef = new ElementRef(colorDotElement);
-          this.assignedColors[categoryIndex] = colorDotRef;
+          
         }
       }
     }
   }
-
 
   cancelCategory() {
     this.showInput = false;
@@ -129,20 +127,24 @@ export class AddTaskComponent implements OnInit {
       if (!this.subtasks.includes(this.newSubtask)) {
         this.subtasks.push(this.newSubtask);
       }
-      this.newSubtask = '';
       this.openSubtask = true;
     }
   }
 
   createTask() {
-    if (this.title) {
-
-    }
+    if(this.form.valid) {
+      const formData = this.form.value;
+      formData.date = this.date;
+      this.task.push(formData);
+      console.log(this.task);
+    } 
   }
 
   clearTaskForm() {
     this.title = '';
     this.description = '';
+    this.newSubtask = '';
+    this.date = '';
     this.newSubtask = '';
   }
 
