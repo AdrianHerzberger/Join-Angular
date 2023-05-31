@@ -45,7 +45,7 @@ export class SignupComponent implements OnInit {
     if (this.form.valid) {
       this.router.navigateByUrl('/signin');
       const userRef = collection(this.firestore, 'users');
-      const addUserRef = addDoc(userRef, this.user.toJson());
+      const addUserRef = addDoc(userRef, this.user.toUserJson());
     }
 
     this.clear();

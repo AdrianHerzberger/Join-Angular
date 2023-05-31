@@ -12,7 +12,7 @@
                 </div>
             </div>
         </section>
-        <section id="contactInformation">
+        <section #contactInformation>
             <div class="contact-info-chart">
                 <div class="contact-great">
                     <div class="header-main">
@@ -53,54 +53,119 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="addContact">
-                    <div class="add-contact-overlay">
-                        <div class="left-overlay">
-                            <div>
-                                <img src="./assets/img/join_logo_light.png">
-                                <h1>Edit Contact</h1>
-                                <p>Change contact information</p>
-                                <img src="./assets/img/icon_line.png">
+            </div>
+            <div *ngIf="addContacts">
+                <div class="add-contact-overlay">
+                    <div class="left-overlay">
+                        <div>
+                            <img src="./assets/img/join_logo_light.png">
+                            <h1>Add Contact</h1>
+                            <p>Tasks are better with a team</p>
+                            <img src="./assets/img/icon_line.png">
+                        </div>
+                    </div>
+                    <div class="add-contact-inputs">
+                        <div class="profile"><img src="./assets/img/icon_person.png" alt="#"></div>
+                        <div class="input-fields">
+                            <form [formGroup]="form">
+                                <div class="fcf-form-group">
+                                    <div class="fcf-input-group">
+                                        <input type="text" [(ngModel)]="name" class="fcf-form-control"
+                                            placeholder="Your name" formControlName="name">
+                                        <img src="./assets/img/icon_name.png">
+                                    </div>
+                                    <div *ngIf="form.controls['name'].invalid && form.controls['name'].touched">
+                                        <div class="error-massage" *ngIf="form.controls['name'].errors?.['required']">
+                                            Title is required.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="fcf-form-group">
+                                    <div class="fcf-input-group">
+                                        <input type="email" [(ngModel)]="email" class="fcf-form-control"
+                                            placeholder="Your email address" formControlName="email">
+                                        <img src="./assets/img/icon_mail.png">
+                                    </div>
+                                    <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
+                                        <div class="error-massage" *ngIf="form.controls['email'].errors?.['required']">
+                                            Title is required.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="fcf-form-group">
+                                    <div class="fcf-input-group">
+                                        <input type="tel" [(ngModel)]="phone" class="fcf-form-control"
+                                            pattern="/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/"
+                                            formControlName="phone">
+                                        <img src="./assets/img/icon_phone.png">
+                                    </div>
+                                    <div *ngIf="form.controls['phone'].invalid && form.controls['phone'].touched">
+                                        <div class="error-massage" *ngIf="form.controls['phone'].errors?.['required']">
+                                            Title is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="button-container">
+                                <button class="button-style-cancel" (click)="cancelContactData()">Cancel<img
+                                        src="./assets/img/icon_close.png">
+                                </button>
+                                <button class="button-style-submit" (click)="createContactData()">Create
+                                    contact <img src="./assets/img/icon_create.png">
+                                </button>
                             </div>
                         </div>
-                        <div class="add-contact-inputs">
-                            <div class="profile"><img src="./assets/img/icon_person.png" alt="#"></div>
-                            <div class="input-fields">
-                                <form [formGroup]="form">
-                                    <div class="fcf-form-group">
-                                        <label for="Name" class="fcf-label"></label>
-                                        <div class="fcf-input-group">
-                                            <input type="text" id="name" value="${storedContactsArray[userId].userName}"
-                                                name="Name" class="fcf-form-control" placeholder="Your name" required>
-                                            <img src="./assets/img/icon_name.png">
-                                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="editContacts">
+                <div class="add-contact-overlay">
+                    <div class="left-overlay">
+                        <div>
+                            <img src="./assets/img/join_logo_light.png">
+                            <h1>Edit Contact</h1>
+                            <p>Change contact information</p>
+                            <img src="./assets/img/icon_line.png">
+                        </div>
+                    </div>
+                    <div class="add-contact-inputs">
+                        <div class="profile"><img src="./assets/img/icon_person.png" alt="#"></div>
+                        <div class="input-fields">
+                            <form [formGroup]="form">
+                                <div class="fcf-form-group">
+                                    <label class="fcf-label"></label>
+                                    <div class="fcf-input-group">
+                                        <input type="text" id="name" value="${storedContactsArray[userId].userName}"
+                                            name="Name" class="fcf-form-control" placeholder="Your name" required>
+                                        <img src="./assets/img/icon_name.png">
                                     </div>
-                                    <div class="fcf-form-group">
-                                        <label for="Email" class="fcf-label"></label>
-                                        <div class="fcf-input-group">
-                                            <input type="email" id="mail"
-                                                value="${storedContactsArray[userId].userMail}" name="Email"
-                                                class="fcf-form-control" placeholder="Your email address" required>
-                                            <img src="./assets/img/icon_mail.png">
-                                        </div>
-                                    </div>
-                                    <div class="fcf-form-group">
-                                        <label for="Phone" class="fcf-label"></label>
-                                        <div class="fcf-input-group">
-                                            <input type="tel" id="phone"
-                                                value="${storedContactsArray[userId].userPhone}" name="Phone"
-                                                placeholder="+49 1234 56789" required>
-                                            <img src="./assets/img/icon_phone.png">
-                                        </div>
-                                    </div>
-                                </form>
-                                <div class="button-container">
-                                    <button class="button-style-cancel" onclick="closeEditOverlay()">Cancel 
-                                        <img src="./assets/img/icon_close.png"></button>
-                                    <button class="button-style-submit" id="requireFill"
-                                        (click)="saveContactData()">Edit contact 
-                                        <img src="./assets/img/icon_create.png"></button>
                                 </div>
+                                <div class="fcf-form-group">
+                                    <label class="fcf-label"></label>
+                                    <div class="fcf-input-group">
+                                        <input type="email" id="mail" value="${storedContactsArray[userId].userMail}"
+                                            name="Email" class="fcf-form-control" placeholder="Your email address"
+                                            required>
+                                        <img src="./assets/img/icon_mail.png">
+                                    </div>
+                                </div>
+                                <div class="fcf-form-group">
+                                    <label for="Phone" class="fcf-label"></label>
+                                    <div class="fcf-input-group">
+                                        <input type="tel" id="phone" value="${storedContactsArray[userId].userPhone}"
+                                            name="Phone" placeholder="+49 1234 56789" required>
+                                        <img src="./assets/img/icon_phone.png">
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="button-container">
+                                <button class="button-style-cancel" onclick="closeEditOverlay()">Cancel
+                                    <img src="./assets/img/icon_close.png">
+                                </button>
+                                <button class="button-style-submit" id="requireFill" (click)="saveContactData()">Edit
+                                    contact
+                                    <img src="./assets/img/icon_create.png">
+                                </button>
                             </div>
                         </div>
                     </div>

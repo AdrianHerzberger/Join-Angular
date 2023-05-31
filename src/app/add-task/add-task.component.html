@@ -5,14 +5,14 @@
         <h1>Add Task</h1>
         <form [formGroup]="form" class="column-container">
             <div class="column-left">
-                <label for="title">Title</label>
+                <label>Title</label>
                 <input type="text" [(ngModel)]="title" placeholder="Enter a title" formControlName="title">
                 <div *ngIf="form.controls['title'].invalid && form.controls['title'].touched">
                     <div class="error-massage" *ngIf="form.controls['title'].errors?.['required']">Title is required.
                     </div>
                 </div>
 
-                <label for="name" class="mt-15">Description</label>
+                <label class="mt-15">Description</label>
                 <textarea [(ngModel)]="description" placeholder="Enter a description"
                     formControlName="description"></textarea>
                 <div *ngIf="form.controls['description'].invalid && form.controls['description'].touched">
@@ -20,8 +20,7 @@
                         required.
                     </div>
                 </div>
-
-                <label class="mt-15" for="selectCategory">Category</label>
+                <label class="mt-15">Category</label>
                 <div class="category-input-container">
                     <input readonly value="Select task category" (click)="toggleEditCategory()">
                     <img class="drop-down" src="./assets/img/icon_triangle.png">
@@ -61,16 +60,15 @@
                             [class.selected]="selectedTargetIndex === 7"></div>
                     </div>
                 </div>
-                <label for="assignedTo">Assigned to</label>
+                <label>Assigned to</label>
                 <div class="contact-input-container">
-                    <input readonly id="assignedTo" value="Select contacts to assign" (click)="toggleAssigned()">
+                    <input readonly value="Select contacts to assign" (click)="toggleAssigned()">
                     <img class="drop-down" src="./assets/img/icon_triangle.png">
                 </div>
                 <div class="contactsDropdownContainer"></div>
             </div>
-
             <div class="column-right">
-                <label for="date">Due Date</label>
+                <label>Due Date</label>
                 <input type="date" min="2023-05-30" [(ngModel)]="date" (ngModelChange)="date = $event"
                     [value]="date | date:'yyyy-MM-dd'" formControlName="date">
                 <!-- {{ date | date:'yyyy-MM-dd' }} -->
@@ -78,7 +76,7 @@
                     <div class="error-massage" *ngIf="form.controls['date'].errors?.['required']">Title is required.
                     </div>
                 </div>
-                <label class="mt-15" for="prio">Prio</label>
+                <label class="mt-15">Prio</label>
                 <div class="prio">
                     <div class="prio-btn">Urgent
                         <img src="./assets/img/icon_up.png" alt="#">
@@ -91,7 +89,7 @@
                     </div>
                 </div>
 
-                <label for="addSubtask" class="mt-15">Subtasks</label>
+                <label class="mt-15">Subtasks</label>
                 <div class="subtask-input-container">
                     <div class="subtask">
                         <input type="text" [(ngModel)]="newSubtask" placeholder="Enter a subtask"
@@ -110,7 +108,7 @@
                 </div>
                 <div class="action-button-container">
                     <button (click)=" clearTaskForm()">Clear<img src="./assets/img/icon_close.png"></button>
-                    <button type="submit" (click)="createTask()">Create Task<img
+                    <button type="submit" (ngSubmit)="createTask()">Create Task<img
                             src="./assets/img/icon_create.png"></button>
                 </div>
             </div>

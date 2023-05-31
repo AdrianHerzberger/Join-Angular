@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Firestore, addDoc, collection } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Task } from 'src/models/task.class';
 
 @Component({
   selector: 'app-add-task',
@@ -10,10 +11,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 export class AddTaskComponent implements OnInit {
   form!: FormGroup;
+  task = new Task();
+
   title!: string;
   description!: string;
   date!: string;
-
   newCategory!: string;
   newSubtask!: string;
 
@@ -32,11 +34,12 @@ export class AddTaskComponent implements OnInit {
   selectedColorClass: string = '';
   selectedTargetIndex: number = -1;
 
-  task: { title: string, description: string, date: string, newCategory: string, newSubtask: string }[] = [];
-
+  createdTaskArray: { title: string, description: string, date: string, newCategory: string, newSubtask: string }[] = [];
+  
   constructor(
     private firestore: Firestore,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -47,6 +50,16 @@ export class AddTaskComponent implements OnInit {
       newCategory: ['', [Validators.required]],
       newSubtask: ['', [Validators.required]]
     });
+
+    setTimeout(() => {
+      this.title = '';
+      this.description = '';
+      this.date = '';
+      this.newCategory = '';
+      this.newSubtask = '';
+      this.cdr.detectChanges();
+    }, 0);
+
   }
 
   toggleEditCategory() {
@@ -108,7 +121,6 @@ export class AddTaskComponent implements OnInit {
       event.preventDefault();
       const target = event.target;
       const colorDotElement = target as HTMLElement;
-      console.log(colorDotElement);
       const selectedColorClass = colorDotElement.className.split(' ');
       if (selectedColorClass.length > 0) {
         const colorIndex = this.selectedTargetIndex;
@@ -154,20 +166,21 @@ export class AddTaskComponent implements OnInit {
   }
 
   createTask() {
-    if(this.form.valid) {
+    debugger
+    if (this.form.valid) {
       const formData = this.form.value;
-      formData.date = this.date;
-      this.task.push(formData);
-      console.log(this.task);
-    } 
+      console.log(formData);
+      this.createdTaskArray.push(formData);
+      console.log(this.createdTaskArray);
+      const userRef = collection(this.firestore, 'tasks');
+      const addUserRef = addDoc(userRef, this.task.toTaskJson());
+      console.log("The json is ", addUserRef);
+      this.form.reset();
+    }
   }
-
+  
   clearTaskForm() {
-    this.title = '';
-    this.description = '';
-    this.newSubtask = '';
-    this.date = '';
-    this.newSubtask = '';
+    this.form.reset();
   }
 
 }
