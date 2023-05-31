@@ -34,7 +34,7 @@ export class AddTaskComponent implements OnInit {
   selectedColorClass: string = '';
   selectedTargetIndex: number = -1;
 
-  createdTaskArray: { title: string, description: string, date: string, newCategory: string, newSubtask: string }[] = [];
+  createdTaskArray: Task[] = [];
   
   constructor(
     private firestore: Firestore,
@@ -166,15 +166,16 @@ export class AddTaskComponent implements OnInit {
   }
 
   createTask() {
-    debugger
+    debugger;
     if (this.form.valid) {
       const formData = this.form.value;
-      console.log(formData);
-      this.createdTaskArray.push(formData);
-      console.log(this.createdTaskArray);
-      const userRef = collection(this.firestore, 'tasks');
-      const addUserRef = addDoc(userRef, this.task.toTaskJson());
-      console.log("The json is ", addUserRef);
+      const task = this.task.toTaskJson(formData);
+      this.createdTaskArray.push(task);
+      const tasksCollectionRef = collection(this.firestore, 'tasks');
+      this.createdTaskArray.forEach(async (task) => {
+        await addDoc(tasksCollectionRef, task.toTaskJson());
+      });
+
       this.form.reset();
     }
   }
