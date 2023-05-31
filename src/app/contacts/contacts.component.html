@@ -1,0 +1,116 @@
+<div class="grid-view-component">
+    <div class="sidebar"><app-sidebar></app-sidebar></div>
+    <div class="header"><app-header-template></app-header-template></div>
+    <div class="contacts-container">
+        <section>
+            <div class="contact-scroll-container" id="scroll-move">
+                <!-- <input type="text" name="" id="searchContacts" onkeyup="filterInputs()" placeholder="Search for names.."> -->
+                <div class="contact-list">
+                    <ul id="contactInList">
+                        <!-- Hier werden die Kontakte aus dem Array hinzugefügt -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section id="contactInformation">
+            <div class="contact-info-chart">
+                <div class="contact-great">
+                    <div class="header-main">
+                        <h1>Contacts</h1>
+                    </div>
+                    <div><img src="./assets/img/icon_line.png"></div>
+                    <div class="header-secondary">
+                        <p>Better with a team</p>
+                    </div>
+                    <img src="./assets/img/left-arrow.png" alt="arrow-left" id="left-arrow-mobile"
+                        (click)="closeContactDataMobile()">
+                </div>
+                <div *ngIf="updatedContacts">
+                    <div class="contact-info">
+                        <div class="contact-header">
+                            <div class="initials-big"></div>
+                            <div class="add-task-container-small">
+                                <h1></h1>
+                                <div class="contact-task" id="contact-task" (click)="renderTaskOverlay()">
+                                    <img src="./assets/img/icon_add_task_plus.png" alt="#">
+                                    <h2>Add Task</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="contact-edit">
+                            <div>
+                                <h2>Contact Information</h2>
+                            </div>
+                            <div (click)="editContact()"><img src="./assets/img/icon_edit_dark.png" alt="#">Edit</div>
+                        </div>
+                        <div class="contact-mail">
+                            <h3>Email</h3>
+                            <a href="mailto:ania.schulze@hotmail.com"></a>
+                        </div>
+                        <div class="contact-call">
+                            <h3>Phone</h3>
+                            <a href="tel:+49 123-456-7890"></a>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="addContact">
+                    <div class="add-contact-overlay">
+                        <div class="left-overlay">
+                            <div>
+                                <img src="./assets/img/join_logo_light.png">
+                                <h1>Edit Contact</h1>
+                                <p>Change contact information</p>
+                                <img src="./assets/img/icon_line.png">
+                            </div>
+                        </div>
+                        <div class="add-contact-inputs">
+                            <div class="profile"><img src="./assets/img/icon_person.png" alt="#"></div>
+                            <div class="input-fields">
+                                <form [formGroup]="form">
+                                    <div class="fcf-form-group">
+                                        <label for="Name" class="fcf-label"></label>
+                                        <div class="fcf-input-group">
+                                            <input type="text" id="name" value="${storedContactsArray[userId].userName}"
+                                                name="Name" class="fcf-form-control" placeholder="Your name" required>
+                                            <img src="./assets/img/icon_name.png">
+                                        </div>
+                                    </div>
+                                    <div class="fcf-form-group">
+                                        <label for="Email" class="fcf-label"></label>
+                                        <div class="fcf-input-group">
+                                            <input type="email" id="mail"
+                                                value="${storedContactsArray[userId].userMail}" name="Email"
+                                                class="fcf-form-control" placeholder="Your email address" required>
+                                            <img src="./assets/img/icon_mail.png">
+                                        </div>
+                                    </div>
+                                    <div class="fcf-form-group">
+                                        <label for="Phone" class="fcf-label"></label>
+                                        <div class="fcf-input-group">
+                                            <input type="tel" id="phone"
+                                                value="${storedContactsArray[userId].userPhone}" name="Phone"
+                                                placeholder="+49 1234 56789" required>
+                                            <img src="./assets/img/icon_phone.png">
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="button-container">
+                                    <button class="button-style-cancel" onclick="closeEditOverlay()">Cancel 
+                                        <img src="./assets/img/icon_close.png"></button>
+                                    <button class="button-style-submit" id="requireFill"
+                                        (click)="saveContactData()">Edit contact 
+                                        <img src="./assets/img/icon_create.png"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="button-position" (click)="addContact()">
+                <button class="button-style" id="addContact">
+                    New contact <img src="./assets/img/icon_add_contact.png" />
+                </button>
+            </div>
+        </section>
+    </div>
+</div>

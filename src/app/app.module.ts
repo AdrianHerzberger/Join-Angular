@@ -16,6 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BoardComponent } from './board/board.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { AddTaskComponent } from './add-task/add-task.component';
+import { ContactsComponent } from './contacts/contacts.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AddTaskComponent } from './add-task/add-task.component';
     IntroComponent,
     BoardComponent,
     SidebarComponent,
-    AddTaskComponent
+    AddTaskComponent,
+    ContactsComponent
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@ import { HeaderTemplateComponent } from './header-template/header-template.compo
 import { SignupComponent } from './signup/signup.component';
 import { BoardComponent } from './board/board.component';
 import { AddTaskComponent } from './add-task/add-task.component';
+import { ContactsComponent } from './contacts/contacts.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'header', component: HeaderTemplateComponent },
   { path: 'board', component: BoardComponent },
   { path: 'addTask', component: AddTaskComponent },
+  { path: 'contacts', component: ContactsComponent },
 ];
 
 @NgModule({

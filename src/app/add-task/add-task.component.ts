@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -28,6 +28,7 @@ export class AddTaskComponent implements OnInit {
   categories = ["New Category", "Sales", "Marketing"];
   subtasks: string[] = [];
 
+  categoryColors: string[] = [];
   selectedColorClass: string = '';
   selectedTargetIndex: number = -1;
 
@@ -84,6 +85,20 @@ export class AddTaskComponent implements OnInit {
     }
   }
 
+  getColorClass(index: number) {
+    const selectedColor = this.categoryColors[index];
+    return {
+      'color-dot-orange': selectedColor === 'step0',
+      'color-dot-red': selectedColor === 'step1',
+      'color-dot-blue': selectedColor === 'step2',
+      'color-dot-lightblue': selectedColor === 'step3',
+      'color-dot-pink': selectedColor === 'step4',
+      'color-dot-lightpink': selectedColor === 'step5',
+      'color-dot-green': selectedColor === 'step6',
+      'color-dot-turquo': selectedColor === 'step7',
+    };
+  }
+
   selectColor(index: number) {
     this.selectedTargetIndex = index;
   }
@@ -94,28 +109,34 @@ export class AddTaskComponent implements OnInit {
       const target = event.target;
       const colorDotElement = target as HTMLElement;
       console.log(colorDotElement);
-      const selectedColorClass = colorDotElement.className;
-      console.log('Selected color class:', selectedColorClass);
-      if (selectedColorClass !== null) {
-        const categoryIndex = this.selectedTargetIndex;
-        console.log('Selected category index:', categoryIndex);
-        if (categoryIndex >= 0 && categoryIndex < this.selectedColorClass.length) {  
-          colorDotElement.classList.remove(this.selectedColorClass);
-          this.selectedColorClass = selectedColorClass;
-          colorDotElement.classList.add(this.selectedColorClass);
+      const selectedColorClass = colorDotElement.className.split(' ');
+      if (selectedColorClass.length > 0) {
+        const colorIndex = this.selectedTargetIndex;
+        if (colorIndex >= 0 && colorIndex < selectedColorClass.length) {
+          const previousColorClass = selectedColorClass[colorIndex];
+          colorDotElement.classList.remove(previousColorClass);
+          const newColorClass = 'color-dot-orange';
+          colorDotElement.classList.add(newColorClass);
+          selectedColorClass[colorIndex] = newColorClass;
+          this.categoryColors[colorIndex] = 'step' + colorIndex;
         }
       }
     }
   }
-
-  cancelCategory() {
-    this.showInput = false;
-  }
-
+  
   confirmCategory() {
     if (this.newCategory) {
       this.categories.push(this.newCategory);
+      this.categoryColors.push('');
+      this.addCategory = false;
+      this.showInput = false;
+      this.newCategory = '';
     }
+  }
+
+  cancelCategory() {
+    this.addCategory = false;
+    this.showInput = false;
   }
 
   cancelSubtask() {
