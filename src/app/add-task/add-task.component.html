@@ -6,14 +6,14 @@
         <form [formGroup]="form" class="column-container">
             <div class="column-left">
                 <label>Title</label>
-                <input type="text" [(ngModel)]="title" placeholder="Enter a title" formControlName="title">
+                <input type="text"  placeholder="Enter a title" formControlName="title">
                 <div *ngIf="form.controls['title'].invalid && form.controls['title'].touched">
                     <div class="error-massage" *ngIf="form.controls['title'].errors?.['required']">Title is required.
                     </div>
                 </div>
 
                 <label class="mt-15">Description</label>
-                <textarea [(ngModel)]="description" placeholder="Enter a description"
+                <textarea placeholder="Enter a description"
                     formControlName="description"></textarea>
                 <div *ngIf="form.controls['description'].invalid && form.controls['description'].touched">
                     <div class="error-massage" *ngIf="form.controls['description'].errors?.['required']">Description is
@@ -29,7 +29,7 @@
                             <div class="category-text" (click)="toggleShowInput()">
                                 <span *ngIf="!showInput">{{ categories[0] }}</span>
                             </div>
-                            <input class="category-input" [hidden]="!showInput" [(ngModel)]="newCategory"
+                            <input class="category-input" [hidden]="!showInput" 
                                 formControlName="newCategory">
                             <div class="category-oninput" *ngIf="addCategory && showInput">
                                 <img src="./assets/img/icon_clear.png" (click)="cancelCategory()">
@@ -69,8 +69,8 @@
             </div>
             <div class="column-right">
                 <label>Due Date</label>
-                <input type="date" min="2023-05-30" [(ngModel)]="date" (ngModelChange)="date = $event"
-                    [value]="date | date:'yyyy-MM-dd'" formControlName="date">
+                <input type="date" min="2023-05-30"  
+                    formControlName="date">
                 <!-- {{ date | date:'yyyy-MM-dd' }} -->
                 <div *ngIf="form.controls['date'].invalid && form.controls['date'].touched">
                     <div class="error-massage" *ngIf="form.controls['date'].errors?.['required']">Title is required.
@@ -88,11 +88,10 @@
                         <img src="./assets/img/icon_down.png" alt="#">
                     </div>
                 </div>
-
                 <label class="mt-15">Subtasks</label>
                 <div class="subtask-input-container">
                     <div class="subtask">
-                        <input type="text" [(ngModel)]="newSubtask" placeholder="Enter a subtask"
+                        <input type="text"  placeholder="Enter a subtask"
                             formControlName="newSubtask">
                         <div class="subtask-oninput">
                             <img src="./assets/img/icon_clear.png" (click)="cancelSubtask()">
@@ -108,7 +107,7 @@
                 </div>
                 <div class="action-button-container">
                     <button (click)=" clearTaskForm()">Clear<img src="./assets/img/icon_close.png"></button>
-                    <button type="submit" (click)="createTask()">Create Task<img
+                    <button (click)="createTask()">Create Task<img
                             src="./assets/img/icon_create.png"></button>
                 </div>
             </div>

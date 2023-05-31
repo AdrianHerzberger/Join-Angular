@@ -1,7 +1,19 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Firestore, addDoc, collection } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Task } from 'src/models/task.class';
+
+interface Category{
+  name: string,
+  color: string
+}
+
+interface TaskInterface {
+  title: string,
+  description: string,
+  date: Date | string,
+  newCategory: string,
+  newSubtask: string,
+}
 
 @Component({
   selector: 'app-add-task',
@@ -11,13 +23,6 @@ import { Task } from 'src/models/task.class';
 
 export class AddTaskComponent implements OnInit {
   form!: FormGroup;
-  task = new Task();
-
-  title!: string;
-  description!: string;
-  date!: string;
-  newCategory!: string;
-  newSubtask!: string;
 
   openCategory: boolean = false;
   openSubtask: boolean = false;
@@ -34,8 +39,8 @@ export class AddTaskComponent implements OnInit {
   selectedColorClass: string = '';
   selectedTargetIndex: number = -1;
 
-  createdTaskArray: Task[] = [];
-  
+  createdTaskArray:TaskInterface[] = [];
+
   constructor(
     private firestore: Firestore,
     private fb: FormBuilder,
@@ -47,18 +52,9 @@ export class AddTaskComponent implements OnInit {
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
       date: ['', [Validators.required]],
-      newCategory: ['', [Validators.required]],
+      newCategory: [''],
       newSubtask: ['', [Validators.required]]
     });
-
-    setTimeout(() => {
-      this.title = '';
-      this.description = '';
-      this.date = '';
-      this.newCategory = '';
-      this.newSubtask = '';
-      this.cdr.detectChanges();
-    }, 0);
 
   }
 
@@ -115,7 +111,7 @@ export class AddTaskComponent implements OnInit {
   selectColor(index: number) {
     this.selectedTargetIndex = index;
   }
-  
+
   customizeColor(event: any) {
     if (this.editingCategory && this.selectedTargetIndex !== null) {
       event.preventDefault();
@@ -135,14 +131,14 @@ export class AddTaskComponent implements OnInit {
       }
     }
   }
-  
+
   confirmCategory() {
-    if (this.newCategory) {
-      this.categories.push(this.newCategory);
+    if (this.form.get('newCategory')?.value) {
+      this.categories.push(this.form.get('newCategory')?.value);
       this.categoryColors.push('');
       this.addCategory = false;
       this.showInput = false;
-      this.newCategory = '';
+      this.form.get('newCategory')?.patchValue('');
     }
   }
 
@@ -152,34 +148,29 @@ export class AddTaskComponent implements OnInit {
   }
 
   cancelSubtask() {
-    this.newSubtask = '';
+    this.form.get('newSubtask')?.patchValue('');
   }
 
   confirmSubtask() {
-    if (this.newSubtask) {
+    if (this.form.get('newSubtask')?.value) {
       this.openSubtask = !this.openSubtask;
-      if (!this.subtasks.includes(this.newSubtask)) {
-        this.subtasks.push(this.newSubtask);
+      if (!this.subtasks.includes((this.form.get('newSubtask')?.value))) {
+        this.subtasks.push(this.form.get('newSubtask')?.value);
       }
       this.openSubtask = true;
     }
   }
 
-  createTask() {
-    debugger;
+  async createTask() {
     if (this.form.valid) {
-      const formData = this.form.value;
-      const task = this.task.toTaskJson(formData);
-      this.createdTaskArray.push(task);
+      this.createdTaskArray.push(this.form.value);
+      console.log(this.form.value)
       const tasksCollectionRef = collection(this.firestore, 'tasks');
-      this.createdTaskArray.forEach(async (task) => {
-        await addDoc(tasksCollectionRef, task.toTaskJson());
-      });
-
-      this.form.reset();
+      await addDoc(tasksCollectionRef, this.form.value);
+      this.clearTaskForm();
     }
   }
-  
+
   clearTaskForm() {
     this.form.reset();
   }
