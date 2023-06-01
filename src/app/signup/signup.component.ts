@@ -31,7 +31,7 @@ export class SignupComponent implements OnInit {
     this.router.navigateByUrl('/signin');
   }
 
-  submit() {
+  async submit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched(); 
   
@@ -45,11 +45,12 @@ export class SignupComponent implements OnInit {
     if (this.form.valid) {
       this.router.navigateByUrl('/signin');
       const userRef = collection(this.firestore, 'users');
-      const addUserRef = addDoc(userRef, this.user.toUserJson());
+      const addUserRef = await addDoc(userRef, this.user.toUserJson());
     }
 
     this.clear();
   }
+
   clear() {
     this.user.name = '';
     this.user.email = '';

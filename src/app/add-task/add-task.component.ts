@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Firestore, addDoc, collection } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -44,7 +44,6 @@ export class AddTaskComponent implements OnInit {
   constructor(
     private firestore: Firestore,
     private fb: FormBuilder,
-    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -52,7 +51,7 @@ export class AddTaskComponent implements OnInit {
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
       date: ['', [Validators.required]],
-      newCategory: [''],
+      newCategory: ['', [Validators.required]],
       newSubtask: ['', [Validators.required]]
     });
 
@@ -62,7 +61,7 @@ export class AddTaskComponent implements OnInit {
     this.openCategory = !this.openCategory;
   }
 
-  toggleAssigned() {
+  toggleAssignedToContact() {
 
   }
 
@@ -138,7 +137,7 @@ export class AddTaskComponent implements OnInit {
       this.categoryColors.push('');
       this.addCategory = false;
       this.showInput = false;
-      this.form.get('newCategory')?.patchValue('');
+      /* this.form.get('newCategory')?.patchValue(''); */
     }
   }
 

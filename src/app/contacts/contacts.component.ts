@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
+import { DocumentData, Firestore, addDoc, collection, doc, getDocs, query, where } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+interface ContactsInterface {
+  name: string;
+  email: string;
+  phone: string;
+}
 
 @Component({
   selector: 'app-contacts',
@@ -8,19 +14,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./contacts.component.scss']
 })
 
-
 export class ContactsComponent implements OnInit {
   form!: FormGroup;
 
-  name!:string;
-  email!: string;
-  phone!: number;
+  contacts: ContactsInterface[] = [];
 
-  contacts:{name: string, email:string; phone: number}[] = [];
-
-  addContacts:boolean = false;
-  editContacts:boolean = false
-  updatedContacts:boolean = false;
+  addContacts: boolean = false;
+  editContacts: boolean = false
+  updatedContacts: boolean = false;
+  contactInList: boolean = true;
 
   constructor(
     private firestore: Firestore,
@@ -30,23 +32,14 @@ export class ContactsComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       name: ['', [Validators.required]],
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required]],
     });
+    this.showContactInList();
   }
 
   addContact() {
     this.addContacts = true;
-  }
-
-  createContactData() {
-    if(this.form.valid) {
-      var formData = this.form.value;
-      formData.createdTime = new Date().getTime();
-      formData.color = this.newColor();
-      this.contacts.push(formData);
-      console.log("Form field", this.contacts);
-    }
   }
 
   newColor() {
@@ -57,9 +50,50 @@ export class ContactsComponent implements OnInit {
     return randomColor;
   }
 
-  cancelContactData() {
+  async createContacts() {
+    if (this.form.valid) {
+      const contactsCollectionRef = collection(this.firestore, 'contacts');
+      await addDoc(contactsCollectionRef, this.form.value);
+      this.cancelContactsForm();
+      this.showContactInList();
+    }
+  }
+
+  cancelContactsForm() {
     this.addContacts = false;
-    console.log("Cliked");
+    this.form.reset();
+  }
+
+  async showContactInList() {
+    if (this.contactInList !== null) {
+      try {
+        const contactsCollection = collection(this.firestore, 'contacts');
+        const q = query(contactsCollection);
+        const querySnapshotfromContacts = await getDocs(q);
+
+        const storedContactData: DocumentData[] = [];
+
+        querySnapshotfromContacts.forEach((doc) => {
+          const data = doc.data();
+          const { name, email, phone } = data;
+          const contact: ContactsInterface = {
+            /* id: doc.id, */
+            name: name,
+            email: email,
+            phone: phone
+          };
+          storedContactData.push(contact);
+          console.log(storedContactData);
+        });
+
+      } catch (error) {
+        console.log('Error logging in:', error);
+      }
+    }
+  }
+
+  toggleBetweenContacts() {
+
   }
 
   saveContactData() {

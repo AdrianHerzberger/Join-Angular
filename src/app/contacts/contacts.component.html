@@ -6,13 +6,24 @@
             <div class="contact-scroll-container" id="scroll-move">
                 <!-- <input type="text" name="" id="searchContacts" onkeyup="filterInputs()" placeholder="Search for names.."> -->
                 <div class="contact-list">
-                    <ul id="contactInList">
-                        <!-- Hier werden die Kontakte aus dem Array hinzugefügt -->
+                    <ul *ngIf="contactInList">
+                        <li *ngFor="let contact of contacts">
+                            <div class="sorter">{{ contact.name[0] }}</div>
+                            <div class="contact-box" (click)="toggleBetweenContacts()">
+                                <a href="#">
+                                    <div id="initialsContainer"></div>
+                                </a>
+                                <div class="name-mail-container">
+                                    <div>{{ contact.name }}</div>
+                                    <div>{{ contact.email }}</div>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
         </section>
-        <section #contactInformation>
+        <section>
             <div class="contact-info-chart">
                 <div class="contact-great">
                     <div class="header-main">
@@ -70,47 +81,47 @@
                             <form [formGroup]="form">
                                 <div class="fcf-form-group">
                                     <div class="fcf-input-group">
-                                        <input type="text" [(ngModel)]="name" class="fcf-form-control"
-                                            placeholder="Your name" formControlName="name">
+                                        <input type="text" class="fcf-form-control" placeholder="Your name"
+                                            formControlName="name">
                                         <img src="./assets/img/icon_name.png">
                                     </div>
                                     <div *ngIf="form.controls['name'].invalid && form.controls['name'].touched">
                                         <div class="error-massage" *ngIf="form.controls['name'].errors?.['required']">
-                                            Title is required.
+                                            Name is required.
                                         </div>
                                     </div>
                                 </div>
                                 <div class="fcf-form-group">
                                     <div class="fcf-input-group">
-                                        <input type="email" [(ngModel)]="email" class="fcf-form-control"
-                                            placeholder="Your email address" formControlName="email">
+                                        <input type="email" class="fcf-form-control" placeholder="Your email address"
+                                            formControlName="email">
                                         <img src="./assets/img/icon_mail.png">
                                     </div>
                                     <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
-                                        <div class="error-massage" *ngIf="form.controls['email'].errors?.['required']">
-                                            Title is required.
+                                        <div class="error-message" *ngIf="form.controls['email'].errors?.['required']">
+                                            Email is required.
                                         </div>
                                     </div>
                                 </div>
                                 <div class="fcf-form-group">
                                     <div class="fcf-input-group">
-                                        <input type="tel" [(ngModel)]="phone" class="fcf-form-control"
-                                            pattern="/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/"
-                                            formControlName="phone">
+                                        <input type="tel" class="fcf-form-control"
+                                            pattern="^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"
+                                            formControlName="phone" (blur)="form.controls['phone'].markAsTouched()">
                                         <img src="./assets/img/icon_phone.png">
                                     </div>
                                     <div *ngIf="form.controls['phone'].invalid && form.controls['phone'].touched">
                                         <div class="error-massage" *ngIf="form.controls['phone'].errors?.['required']">
-                                            Title is required.
+                                            Phone is required.
                                         </div>
                                     </div>
                                 </div>
                             </form>
                             <div class="button-container">
-                                <button class="button-style-cancel" (click)="cancelContactData()">Cancel<img
+                                <button class="button-style-cancel" (click)="cancelContactsForm()">Cancel<img
                                         src="./assets/img/icon_close.png">
                                 </button>
-                                <button class="button-style-submit" (click)="createContactData()">Create
+                                <button class="button-style-submit" (click)="createContacts()">Create
                                     contact <img src="./assets/img/icon_create.png">
                                 </button>
                             </div>

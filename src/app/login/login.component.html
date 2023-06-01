@@ -14,7 +14,7 @@
         <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
             <div class="error-massage" *ngIf="form.controls['email'].errors?.['required']">Email is required.</div>
         </div>
-        <img src='./assets/img/icon_mail.png' />
+        <img src="./assets/img/icon_mail.png"/>
     </div>
     <div class="user-input">
         <input [(ngModel)]="user.password" placeholder="Your Password" formControlName="password" />
@@ -22,12 +22,12 @@
             <div class="error-massage" *ngIf="form.controls['password'].errors?.['required']">Password is required.
             </div>
         </div>
-        <img src='./assets/img/icon_lock.png' />
+        <img src="./assets/img/icon_lock.png" />
     </div>
-    <div class='login-options-container'>
+    <div class="login-options-container">
         <div class="column1">
             <div>
-                <input type='checkbox' id="checkbox" />
+                <input type="checkbox" id="checkbox" />
                 <p>Remember me</p>
             </div>
             <button (click)="logIn()">Log in</button>
