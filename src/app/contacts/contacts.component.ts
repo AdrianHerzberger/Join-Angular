@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { DocumentData, Firestore, addDoc, collection, doc, getDocs, query, where } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, getDocs, query } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 interface ContactsInterface {
   name: string;
   email: string;
   phone: string;
+  id: string;
 }
 
 @Component({
@@ -23,6 +24,8 @@ export class ContactsComponent implements OnInit {
   editContacts: boolean = false
   updatedContacts: boolean = false;
   contactInList: boolean = true;
+  currentUser!: void;
+
 
   constructor(
     private firestore: Firestore,
@@ -71,20 +74,22 @@ export class ContactsComponent implements OnInit {
         const q = query(contactsCollection);
         const querySnapshotfromContacts = await getDocs(q);
 
-        const storedContactData: DocumentData[] = [];
+        const storedContactData: ContactsInterface[] = [];
 
         querySnapshotfromContacts.forEach((doc) => {
           const data = doc.data();
           const { name, email, phone } = data;
           const contact: ContactsInterface = {
-            /* id: doc.id, */
+            id: doc.id,
             name: name,
             email: email,
-            phone: phone
+            phone: phone,
           };
           storedContactData.push(contact);
           console.log(storedContactData);
         });
+
+        this.contacts = storedContactData;
 
       } catch (error) {
         console.log('Error logging in:', error);
@@ -92,8 +97,21 @@ export class ContactsComponent implements OnInit {
     }
   }
 
-  toggleBetweenContacts() {
+  toggleBetweenContacts(userID: any) {
+    var currentUser = this.getUserById(userID);
+    if(this.currentUser !== null) {
+      this.updatedContacts = true;
+    }
+    console.log(currentUser);
+  }
 
+  getUserById(userID: any) {
+    var currentUser = this.contacts.filter((v) =>
+      v != null && v.id == userID
+    );
+    console.log(currentUser);
+
+    return currentUser.length > 0 ? currentUser[0] : null;
   }
 
   saveContactData() {

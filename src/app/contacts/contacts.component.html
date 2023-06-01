@@ -9,7 +9,7 @@
                     <ul *ngIf="contactInList">
                         <li *ngFor="let contact of contacts">
                             <div class="sorter">{{ contact.name[0] }}</div>
-                            <div class="contact-box" (click)="toggleBetweenContacts()">
+                            <div class="contact-box" (click)="toggleBetweenContacts($event)">
                                 <a href="#">
                                     <div id="initialsContainer"></div>
                                 </a>
