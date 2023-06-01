@@ -183,6 +183,11 @@ body {
   margin: 0;
 }
 
+a {
+  text-decoration: none;
+  color: var(--c-lightblue);
+}
+
 .mt-15 {
   margin-top: 1.5rem;
 }

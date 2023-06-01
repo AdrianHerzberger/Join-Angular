@@ -7,6 +7,7 @@ interface ContactsInterface {
   email: string;
   phone: string;
   id: string;
+  selected: boolean;
 }
 
 @Component({
@@ -24,8 +25,6 @@ export class ContactsComponent implements OnInit {
   editContacts: boolean = false
   updatedContacts: boolean = false;
   contactInList: boolean = true;
-  currentUser!: void;
-
 
   constructor(
     private firestore: Firestore,
@@ -84,6 +83,7 @@ export class ContactsComponent implements OnInit {
             name: name,
             email: email,
             phone: phone,
+            selected: false
           };
           storedContactData.push(contact);
           console.log(storedContactData);
@@ -99,21 +99,19 @@ export class ContactsComponent implements OnInit {
 
   toggleBetweenContacts(userID: any) {
     var currentUser = this.getUserById(userID);
-    if(this.currentUser !== null) {
+    if(currentUser !== null) {
+      this.contacts.forEach(contact => {
+        contact.selected = contact.id === userID ? true : false;
+      });
       this.updatedContacts = true;
     }
     console.log(currentUser);
   }
 
   getUserById(userID: any) {
-    var currentUser = this.contacts.filter((v) =>
-      v != null && v.id == userID
-    );
-    console.log(currentUser);
-
-    return currentUser.length > 0 ? currentUser[0] : null;
+    return this.contacts.find(contact => contact.id === userID) || null;
   }
-
+  
   saveContactData() {
 
   }
