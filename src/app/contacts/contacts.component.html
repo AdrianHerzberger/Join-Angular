@@ -11,7 +11,7 @@
                             <div class="sorter">{{ contact.name[0] }}</div>
                             <div class="contact-box" (click)="toggleBetweenContacts(contact.id)">
                                 <a href="#">
-                                    <div class="initialsContainer" style="background: {{contact.color}}">{{
+                                    <div class="initialsContainer" [style.background]="contact.color">{{
                                         contact.initials }}</div>
                                 </a>
                                 <div class="name-mail-container">
@@ -40,11 +40,11 @@
                 <div *ngIf="updatedContacts">
                     <div class="contact-info" *ngIf="selectedContact">
                         <div class="contact-header">
-                            <div class="initials-big" style="background: {{selectedContact.color}}">
+                            <div class="initials-big" [style.background]="selectedContact.color">
                                 {{selectedContact.initials }}</div>
                             <div class="add-task-container-small">
                                 <h1>{{ selectedContact.name }}</h1>
-                                <div class="contact-task" (click)="renderTaskOverlay()">
+                                <div class="contact-task" (click)="renderTaskOverlay(selectedContact.id)">
                                     <img src="./assets/img/icon_add_task_plus.png" alt="#">
                                     <h2>Add Task</h2>
                                 </div>
@@ -69,7 +69,7 @@
                 </div>
             </div>
             <div class="contact-overlay-container">
-                <div *ngIf="addContacts">
+                <div class="overlay" *ngIf="addContacts">
                     <div class="add-contact-overlay">
                         <div class="left-overlay">
                             <div>
@@ -136,7 +136,7 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="editContacts">
+                <div class="overlay" *ngIf="editContacts">
                     <div class="edit-contact-overlay">
                         <div class="left-overlay">
                             <div>
@@ -213,12 +213,12 @@
                     <div class="popup-container">
                         <div id="taskCard" class="task-card">
                             <h1>Add Task</h1>
-                            <form [formGroup]="form" class="column-container">
+                            <div [formGroup]="taskForm" class="column-container">
                                 <div class="column-left">
                                     <label>Title</label>
                                     <input type="text" placeholder="Enter a title" formControlName="title">
-                                    <div *ngIf="form.controls['title'].invalid && form.controls['title'].touched">
-                                        <div class="error-massage" *ngIf="form.controls['title'].errors?.['required']">
+                                    <div *ngIf="taskForm.controls['title'].invalid && taskForm.controls['title'].touched">
+                                        <div class="error-massage" *ngIf="taskForm.controls['title'].errors?.['required']">
                                             Title is required.
                                         </div>
                                     </div>
@@ -226,9 +226,9 @@
                                     <textarea placeholder="Enter a description"
                                         formControlName="description"></textarea>
                                     <div
-                                        *ngIf="form.controls['description'].invalid && form.controls['description'].touched">
+                                        *ngIf="taskForm.controls['description'].invalid && taskForm.controls['description'].touched">
                                         <div class="error-massage"
-                                            *ngIf="form.controls['description'].errors?.['required']">Description is
+                                            *ngIf="taskForm.controls['description'].errors?.['required']">Description is
                                             required.
                                         </div>
                                     </div>
@@ -288,8 +288,8 @@
                                     <label>Due Date</label>
                                     <input type="date" min="2023-05-30" formControlName="date">
                                     <!-- {{ date | date:'yyyy-MM-dd' }} -->
-                                    <div *ngIf="form.controls['date'].invalid && form.controls['date'].touched">
-                                        <div class="error-massage" *ngIf="form.controls['date'].errors?.['required']">
+                                    <div *ngIf="taskForm.controls['date'].invalid && taskForm.controls['date'].touched">
+                                        <div class="error-massage" *ngIf="taskForm.controls['date'].errors?.['required']">
                                             Title is required.
                                         </div>
                                     </div>
@@ -329,7 +329,7 @@
                                                 src="./assets/img/icon_create.png"></button>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>

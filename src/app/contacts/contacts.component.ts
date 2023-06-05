@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { Firestore, addDoc, collection, getDocs, query } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, doc, getDocs, query, updateDoc } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 interface ContactsInterface {
+  tasks: any;
   name: string;
   email: string;
   phone: string;
   id: string;
   selected: boolean;
   initials: any;
-  color:any;
+  color: any;
 }
 
 interface TaskInterface {
@@ -28,9 +29,12 @@ interface TaskInterface {
 
 export class ContactsComponent implements OnInit {
   form!: FormGroup;
+  taskForm!: FormGroup;
 
   contacts: ContactsInterface[] = [];
-  selectedContact: ContactsInterface | null = null;
+  selectedContact: ContactsInterface | null | undefined = null;
+
+  tasks: TaskInterface[] = [];
 
   addContacts: boolean = false;
   editContacts: boolean = false;
@@ -45,7 +49,7 @@ export class ContactsComponent implements OnInit {
   addSubtask: boolean = false;
   showInput: boolean = false;
 
-  categories: any;
+  categories = ["New Category", "Sales", "Marketing"];
   subtasks: string[] = [];
 
   categoryColors: string[] = [];
@@ -63,8 +67,16 @@ export class ContactsComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required]],
     });
+
+    this.taskForm = this.fb.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      date: ['', Validators.required],
+      newCategory: ['', Validators.required],
+      newSubtask: '',
+    });
     this.showContactInList();
-    this.showTaskInContacts();
+    this.showTaskskInContacts();
   }
 
   addContact() {
@@ -105,10 +117,10 @@ export class ContactsComponent implements OnInit {
             phone: phone,
             selected: false,
             initials: this.createInitials(name),
-            color: this.newColor()
+            color: this.newColor(),
+            tasks: undefined
           };
           storedContactData.push(contact);
-          console.log(storedContactData);
         });
 
         this.contacts = storedContactData;
@@ -119,7 +131,7 @@ export class ContactsComponent implements OnInit {
     }
   }
 
-  async showTaskInContacts() {
+  async showTaskskInContacts() {
     try {
       const taskCollection = collection(this.firestore, 'tasks');
       const q = query(taskCollection);
@@ -127,10 +139,19 @@ export class ContactsComponent implements OnInit {
 
       const storedTaskData: TaskInterface[] = [];
 
-      querySnapshotfromTasks.forEach(() => {
-
-      }) 
-
+      querySnapshotfromTasks.forEach((doc) => {
+        const data = doc.data();
+        const { newCategory, title, description, date, newSubtask } = data;
+        const task: TaskInterface = {
+          newCategory: newCategory,
+          title: title,
+          description: description,
+          date: date,
+          newSubtask: newSubtask,
+        }
+        storedTaskData.push(task);
+        console.log(storedTaskData);
+      })
 
     } catch (error) {
       console.log('Error logging tasks:', error);
@@ -148,14 +169,16 @@ export class ContactsComponent implements OnInit {
 
   editContact(userID: any) {
     this.selectedContact = this.getUserById(userID);
-    this.form.patchValue({
-      name: this.selectedContact?.name,
-      email: this.selectedContact?.email,
-      phone: this.selectedContact?.phone
-    });
-    this.toggleToEdit();
+    if (this.selectedContact) {
+      this.form.patchValue({
+        name: this.selectedContact.name,
+        email: this.selectedContact.email,
+        phone: this.selectedContact.phone,
+      });
+      this.toggleToEdit();
+    }
   }
-  
+
   getUserById(userID: any) {
     return this.contacts.find(contact => contact.id === userID) || null;
   }
@@ -189,9 +212,10 @@ export class ContactsComponent implements OnInit {
     this.form.reset();
   }
 
-  renderTaskOverlay() {
-    if(this.addTaskToContact = true) {
-      this.showTaskInContacts();
+  renderTaskOverlay(contactId: string) {
+    this.selectedContact = this.contacts.find(contact => contact.id === contactId);
+    if (this.selectedContact) {
+      this.addTaskToContact = true;
     }
   }
 
@@ -207,7 +231,7 @@ export class ContactsComponent implements OnInit {
       let index = parseInt(categoryIndex, 10);
       for (let i = 0; i < this.categories.length; i++) {
         if (i === index) {
-          if (i === 0) {
+          if (i === 0)    {
             this.toggleShowInput();
           } else if (i <= 1) {
             this.editingCategory = true;
@@ -228,12 +252,12 @@ export class ContactsComponent implements OnInit {
   }
 
   confirmCategory() {
-    if (this.form.get('newCategory')?.value) {
-      this.categories.push(this.form.get('newCategory')?.value);
+    if (this.taskForm.get('newCategory')?.value) {
+      this.categories.push(this.taskForm.get('newCategory')?.value);
       this.categoryColors.push('');
       this.addCategory = false;
       this.showInput = false;
-      this.form.get('newCategory')?.patchValue('');
+      /* this.taskForm.get('newCategory')?.patchValue(''); */
     }
   }
 
@@ -285,31 +309,46 @@ export class ContactsComponent implements OnInit {
   }
 
   cancelSubtask() {
-    this.form.get('newSubtask')?.patchValue('');
+    this.taskForm.get('newSubtask')?.patchValue('');
   }
 
   confirmSubtask() {
-    if (this.form.get('newSubtask')?.value) {
+    if (this.taskForm.get('newSubtask')?.value) {
       this.openSubtask = !this.openSubtask;
-      if (!this.subtasks.includes((this.form.get('newSubtask')?.value))) {
-        this.subtasks.push(this.form.get('newSubtask')?.value);
+      if (!this.subtasks.includes((this.taskForm.get('newSubtask')?.value))) {
+        this.subtasks.push(this.taskForm.get('newSubtask')?.value);
       }
       this.openSubtask = true;
     }
   }
 
   async createTask() {
-    if (this.form.valid) {
-      const tasksCollectionRef = collection(this.firestore, 'tasks');
-      await addDoc(tasksCollectionRef, this.form.value);
-      this.clearTaskForm();
+    if (this.taskForm.valid && this.selectedContact) {
+      const task: TaskInterface = {
+        title: this.taskForm.value.title,
+        description: this.taskForm.value.description,
+        date: this.taskForm.value.date,
+        newCategory: this.taskForm.value.newCategory,
+        newSubtask: this.taskForm.value.newSubtask,
+      }
+
+      this.selectedContact.tasks = this.selectedContact.tasks || [];
+      this.selectedContact.tasks.push(task);
+
+      const contactsCollectionRef = collection(this.firestore, 'contacts');
+      await updateDoc(doc(contactsCollectionRef, this.selectedContact.id), {
+        tasks: this.selectedContact.tasks,
+      });
+
+      this.taskForm.reset();
+      this.addTaskToContact = false;
     }
   }
 
   clearTaskForm() {
-    this.form.reset();
+    this.addTaskToContact = false;
+    this.taskForm.reset();
   }
-
 
   closeContactDataMobile() {
 
