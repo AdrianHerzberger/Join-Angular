@@ -3,21 +3,21 @@
     <h1>Sign Up</h1>
     <img src="./assets/img/icon_line.png" class="line">
     <div class="user-input">
-        <input type="text" [(ngModel)]="user.name" placeholder="Your Name" formControlName="name">
+        <input type="text" placeholder="Your Name" formControlName="name">
         <img src="./assets/img/icon_name.png"/>
         <div *ngIf="form.controls['name'].invalid && form.controls['name'].touched">
             <div class="error-massage" *ngIf="form.controls['name'].errors?.['required']">Username is required.</div>
         </div>
     </div>
     <div class="user-input">
-        <input type="email" [(ngModel)]="user.email" placeholder="Email" formControlName="email">
+        <input type="email" placeholder="Email" formControlName="email">
         <img src="./assets/img/icon_mail.png" />
         <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
             <div class="error-massage" *ngIf="form.controls['email'].errors?.['required']">Email is required.</div>
         </div>
     </div>
     <div class="user-input">
-        <input type="password" [(ngModel)]="user.password" placeholder="Password" formControlName="password">
+        <input type="password" placeholder="Password" formControlName="password">
         <img src="./assets/img/icon_lock.png" />
         <div *ngIf="form.controls['password'].invalid && form.controls['password'].touched">
             <div class="error-massage" *ngIf="form.controls['password'].errors?.['required']">Password is required.</div>

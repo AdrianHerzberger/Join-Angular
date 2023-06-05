@@ -143,7 +143,7 @@ ul {
     margin-top: 0;
 }
 
-#initialsContainer {
+.initialsContainer {
     border-radius: 100%;
     padding: 7px;
     width: 30px;
@@ -152,7 +152,6 @@ ul {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background: var(--c-lightblue); */
     margin-right: 1rem;
 }
 
@@ -274,60 +273,67 @@ ul {
     z-index: 100000;
 }
 
-.add-contact-overlay {
-    position: relative;
-    right: 150px;
-    top: 50px;
-    display: flex;
-    border: 1px solid black;
-    border-radius: 15px;
+.contact-overlay-container {
+    position: absolute;
+    left:0;
+    right:0;
+    margin-left: 20%;
+    margin-right: 20%;
 
-    .add-contact-inputs {
+    .add-contact-overlay, .edit-contact-overlay {
+        position: relative;
         display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: white;
-        width: 60%;
-        height: 436px;
-        border-radius: 0 15px 15px 0;
+        border: 1px solid black;
+        border-radius: 15px;
+    
+        .add-contact-inputs {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            width: 60%;
+            height: 436px;
+            border-radius: 0 15px 15px 0;
+        }
+    
+        .left-overlay {
+            width: 40%;
+            height: 436px;
+            background-color: #2a3647;
+            border-radius: 15px 0 0 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px 0 20px;
+        }
+    
+        .left-overlay div {
+            display: flex;
+            flex-direction: column;
+            color: white;
+        }
+        
+        .left-overlay div>h1 {
+            margin: 0;
+            font-size: 3.5rem;
+            margin: 1rem 0px 1rem 0;
+        }
+        
+        .left-overlay div>p {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        
+        .left-overlay div>img:first-of-type {
+            width: 70px;
+        }
+        
+        .left-overlay div>img:last-of-type {
+            width: 150px;
+            margin-top: 7px;
+        }  
     }
 
-    .left-overlay {
-        width: 40%;
-        height: 436px;
-        background-color: #2a3647;
-        border-radius: 15px 0 0 15px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0 20px 0 20px;
-    }
-
-    .left-overlay div {
-        display: flex;
-        flex-direction: column;
-        color: white;
-    }
-    
-    .left-overlay div>h1 {
-        margin: 0;
-        font-size: 3.5rem;
-        margin: 1rem 0px 1rem 0;
-    }
-    
-    .left-overlay div>p {
-        font-size: 1.5rem;
-        margin: 0;
-    }
-    
-    .left-overlay div>img:first-of-type {
-        width: 70px;
-    }
-    
-    .left-overlay div>img:last-of-type {
-        width: 150px;
-        margin-top: 7px;
-    }  
 }
 
 #searchContacts {
@@ -468,15 +474,6 @@ form input {
     margin-right: .85rem;
 }
 
-
-
-
-
-
-/* input:invalid {
-    border-color: red;
-  } */
-
 form input::placeholder {
     color: var(--dimmed);
     font-size: 1.2rem;
@@ -487,11 +484,9 @@ form input::placeholder {
     margin-right: 3rem;
 }
 
-/* add task layover !!Achtung viel! */
+/* add task overlay */
 
-
-
-.layover {
+.overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -505,13 +500,15 @@ form input::placeholder {
 }
 
 .popup-container {
+    
     width: 80%;
     height: 800px;
     background-color: white;
     border-radius: 25px;
     box-shadow: 2px 11px 7px -6px #afafaf;
-    padding: 15px;
+    padding: 50px;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .layover-plus {
@@ -520,78 +517,126 @@ form input::placeholder {
     transition: all 225ms ease-in-out;
 }
 
-.popup-container {
-    width: 850px;
-    height: 650px;
-    background-color: white;
-    border-radius: 25px;
-    box-shadow: 2px 11px 7px -6px #afafaf;
+.color-dot-orange {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #ffffff;
+    background-color: #ff8a00;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.2);
+        box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 20%);
+    }
 }
 
-.layover-plus {
-    width: 120%;
-    height: 100%;
-    transition: all 225ms ease-in-out;
-}
-
-.mt-15 {
-    margin-top: 1.5rem;
-}
-
-.mt-15-plus {
-    margin-top: 0.1rem !important;
-    font-size: 1rem !important;
-}
-
-.orange {
-    background: #ff8a00;
-}
-
-.red {
+.color-dot-red {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #ffffff;
     background: #ff0000;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.2);
+        box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 20%);
+    }
 }
 
-.blue {
-    background: #0038ff;
+.color-dot-blue {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #ffffff;
+    background-color: #0038ff;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.2);
+        box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 20%);
+    }
 }
 
-.lightblue {
-    background: #8aa4ff;
+.color-dot-lightblue {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #ffffff;
+    background-color: #8aa4ff;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.2);
+        box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 20%);
+    }
 }
 
-.pink {
-    background: #e200be;
+.color-dot-pink {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #ffffff;
+    background-color: #e200be;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.2);
+        box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 20%);
+    }
 }
 
-.lightpink {
-    background: #fc71ff;
+.color-dot-lightpink {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #ffffff;
+    background-color: #fc71ff;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.2);
+        box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 20%);
+    }
 }
 
-.green {
-    background: #2ad300;
+.color-dot-green {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #ffffff;
+    background-color: #2ad300;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.2);
+        box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 20%);
+    }
 }
 
-.turquo {
-    background: #1fd7c1;
+.color-dot-turquo {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #ffffff;
+    background-color: #1fd7c1;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.2);
+        box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 20%);
+    }
 }
 
 /* add task card */
-.task-card {
-    grid-row-start: 4;
-    grid-column: 4/ 10;
-    max-width: 800px;
-    padding-left: 25px;
-}
 
 .task-card h1 {
     font-size: 2.7rem;
 }
 
-.task-card-plus h1 {
-    font-size: 2.2rem;
-}
-
 /* two add task columns*/
+
 .column-container {
     display: flex;
     justify-content: space-between;
@@ -608,7 +653,7 @@ form input::placeholder {
 .column-left {
     padding-right: 50px;
     position: relative;
-    border-right: 1px solid lightgray;
+    border-right: 1px solid grey;
 }
 
 .column-left::after {
@@ -616,8 +661,7 @@ form input::placeholder {
     display: block;
     position: absolute;
     height: 20%;
-    /* border-right: 1px solid var(--bg-body); */
-    border-right: 1px solid lightgray;
+    border-right: 1px solid var(--bg-body);
     bottom: 0;
     right: -1px;
 }
@@ -632,33 +676,23 @@ textarea {
     border: 1px solid #ccc;
     border-radius: 10px;
     padding-left: 10px;
-    /* font-size: 1.2rem; */
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-family: "Inter", sans-serif;
-
-    padding-top: 5px;
-    padding-bottom: 5px;
 }
-
-input {
-    height: 2.8rem;
-}
-
 
 input:focus,
 textarea:focus {
     outline: none;
 }
 
-#selectCategory,
-#assignedTo {
+.selectCategory,
+.assignedTo {
     margin-bottom: 0;
     cursor: pointer;
-    overflow: scroll;
 }
 
-#addCategoryIcon,
-#addContactIcon {
+.addCategoryIcon,
+.addContactIcon {
     position: absolute;
     right: 0;
     top: 50%;
@@ -668,8 +702,22 @@ textarea:focus {
     width: 10px;
 }
 
-#dropdownContainer,
-#contactsDropdownContainer {
+.dropdown-container {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 0 0 7px 7px;
+    border-top: none;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.drop-down {
+    position: absolute;
+    left: 370px;
+    top: 20px;
+}
+
+.contactsDropdownContainer {
     background: white;
     border: 1px solid #ccc;
     border-radius: 0 0 7px 7px;
@@ -677,14 +725,14 @@ textarea:focus {
     max-height: 100px;
     overflow-y: auto;
     display: none;
+    margin-bottom: 1rem;
 }
 
-#colorContainer {
+.colorContainer {
     display: flex;
     margin-top: 1rem;
     width: 100%;
     justify-content: space-evenly;
-    display: none;
 }
 
 .color-dot {
@@ -700,42 +748,32 @@ textarea:focus {
     box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 20%);
 }
 
-#categoryDot {
-    width: 10px;
-    height: 10px;
-    border: 2px solid #ffffff;
-    border-radius: 50%;
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    display: none;
-}
-
-.selected {
-    transform: scale(1.2);
-    border: 2px solid var(--c-darkblue);
-}
-
 .category,
-.contact {
+.contact,
+.subtasks {
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 1.2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 7px;
+
+    &:hover {
+        background: lightgrey;
+        transition: all 200ms ease-in-out;
+    }
 }
 
 .contact {
     margin: 0;
     cursor: auto;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 .contact div {
     display: flex;
     align-items: center;
-    overflow: scroll;
 }
 
 .contact div>img {
@@ -746,12 +784,6 @@ textarea:focus {
 .contact input {
     margin: 0;
     cursor: pointer;
-}
-
-.category:hover,
-.contact:hover {
-    background: lightgrey;
-    transition: all 200ms ease-in-out;
 }
 
 textarea {
@@ -778,6 +810,10 @@ label:nth-of-type(4) {
     margin-top: 1.5rem;
 }
 
+input {
+    height: 2.8rem;
+}
+
 textarea {
     min-height: 100px;
 }
@@ -796,33 +832,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     background-size: 15px 15px;
     background-position: center;
     cursor: pointer;
-}
-
-input[type="checkbox"] {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    width: 18px;
-    height: 18px;
-    border-radius: 5px;
-    border: 2px solid var(--c-darkblue);
-    outline: none;
-    background: rgb(237, 236, 236);
-    cursor: pointer;
-    position: relative;
-}
-
-input[type="checkbox"]:checked::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--c-darkblue);
-    transition: all 0.3s;
 }
 
 /* prio container */
@@ -862,12 +871,7 @@ input[type="checkbox"]:checked::before {
 .contact-input-container {
     position: relative;
     width: 100%;
-    overflow: scroll;
 }
-
-/* .contact-input-container::-webkit-scrollbar {
-    display: none;
-  } */
 
 .subtask-input-container input,
 .category-input-container input,
@@ -876,14 +880,18 @@ input[type="checkbox"]:checked::before {
     box-sizing: border-box;
 }
 
-#addSubtaskIcon {
+.category-input {
+    max-width: 300px;
+}
+
+.add-subtask-icon {
     top: 50%;
     transform: translateY(-50%) scale(0.8);
     right: 7px;
     position: absolute;
 }
 
-#subtaskOninput {
+.subtask-input {
     display: flex;
     align-items: center;
     position: absolute;
@@ -894,28 +902,92 @@ input[type="checkbox"]:checked::before {
     cursor: pointer;
 }
 
-#categoryOninput {
+.alert {
     display: flex;
-    align-items: center;
+    background: var(--c-darkblue);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 7px;
-    display: none;
-    cursor: pointer;
-    background: white;
-    z-index: 100;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    font-size: 1.2rem;
+    animation: transition 1s forwards;
 }
 
-#subtaskOninput img:last-of-type,
-#categoryOninput img:last-of-type {
+@keyframes transition {
+    0% {
+        bottom: 0px;
+        opacity: 0;
+    }
+
+    100% {
+        bottom: 50px;
+        opacity: 1;
+    }
+}
+
+.alert img {
+    margin-left: 1rem;
+}
+
+
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    border: 2px solid var(--c-darkblue);
+    outline: none;
+    background: rgb(237, 236, 236);
+    cursor: pointer;
+    position: relative;
+}
+
+input[type="checkbox"]:checked::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--c-darkblue);
+    transition: all 0.3s;
+}
+
+.subtask-oninput img:last-of-type,
+.category-oninput img:last-of-type {
     width: 20px;
     margin-left: 0.6rem;
     border-left: 1px solid var(--dimmed);
     padding-left: 0.6rem;
 }
 
-#subtaskContainer {
+.category-oninput {
+    display: flex;
+    align-items: center;
+}
+
+.subtask-oninput {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 38%;
+    right: 20px;
+}
+
+.subtask-container {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 0 0 7px 7px;
+    border-top: none;
+    max-height: 150px;
+    overflow-y: auto;
     height: 150px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -925,16 +997,21 @@ input[type="checkbox"]:checked::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 7px;
-    margin-top: 0.8rem;
+    padding: 7px 0;
 }
 
-.subtask p {
-    margin: 0;
+.category img {
+    width: 50%;
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+}
+
+.category img:hover {
+    transform: scale(1.2);
 }
 
 .subtask img {
-    width: 6%;
+    width: 50%;
     cursor: pointer;
     transition: all 225ms ease-in-out;
 }
@@ -948,7 +1025,7 @@ input[type="checkbox"]:checked::before {
 .action-button-container {
     display: flex;
     justify-content: flex-end;
-    margin-top: 3rem;
+    margin-top: 2rem;
 }
 
 .action-button-container button {
@@ -996,36 +1073,4 @@ input[type="checkbox"]:checked::before {
     position: absolute;
     right: 0.5rem;
     transform: scale(0.8);
-}
-
-.required:empty {
-    visibility: hidden;
-    min-height: 16px;
-}
-
-.required {
-    margin: 7px 0 0 0;
-    font-size: 13px;
-    padding-left: 7px;
-    color: red;
-}
-
-.chosenContact {
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 100%;
-    width: 20px;
-    height: 20px;
-    color: white;
-    box-shadow: 0 2px 10px 0 rgb(0 0 0 / 15%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#left-arrow-mobile {
-    width: 30px;
-    height: 30px;
-    display: none;
-    margin-left: 3rem;
 }

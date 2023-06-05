@@ -11,7 +11,8 @@
                             <div class="sorter">{{ contact.name[0] }}</div>
                             <div class="contact-box" (click)="toggleBetweenContacts(contact.id)">
                                 <a href="#">
-                                    <div id="initialsContainer"></div>
+                                    <div class="initialsContainer" style="background: {{contact.color}}">{{
+                                        contact.initials }}</div>
                                 </a>
                                 <div class="name-mail-container">
                                     <div>{{ contact.name }}</div>
@@ -33,16 +34,17 @@
                     <div class="header-secondary">
                         <p>Better with a team</p>
                     </div>
-                    <img src="./assets/img/left-arrow.png" alt="arrow-left" id="left-arrow-mobile"
-                        (click)="closeContactDataMobile()">
+                  <!--   <img src="./assets/img/left-arrow.png" alt="arrow-left" id="left-arrow-mobile"
+                        (click)="closeContactDataMobile()"> -->
                 </div>
                 <div *ngIf="updatedContacts">
-                    <div class="contact-info" *ngFor="let contact of contacts">
+                    <div class="contact-info" *ngIf="selectedContact">
                         <div class="contact-header">
-                            <div class="initials-big"></div>
+                            <div class="initials-big" style="background: {{selectedContact.color}}">
+                                {{selectedContact.initials }}</div>
                             <div class="add-task-container-small">
-                                <h1>{{ contact.name }}</h1>
-                                <div class="contact-task" id="contact-task" (click)="renderTaskOverlay()">
+                                <h1>{{ selectedContact.name }}</h1>
+                                <div class="contact-task" (click)="renderTaskOverlay()">
                                     <img src="./assets/img/icon_add_task_plus.png" alt="#">
                                     <h2>Add Task</h2>
                                 </div>
@@ -52,132 +54,282 @@
                             <div>
                                 <h2>Contact Information</h2>
                             </div>
-                            <div (click)="editContact()"><img src="./assets/img/icon_edit_dark.png" alt="#">Edit</div>
+                            <div (click)="editContact(selectedContact.id)"><img src="./assets/img/icon_edit_dark.png"
+                                    alt="#">Edit</div>
                         </div>
                         <div class="contact-mail">
                             <h3>Email</h3>
-                            <a href="mailto:ania.schulze@hotmail.com">{{ contact.email }}</a>
+                            <a href="mailto:ania.schulze@hotmail.com">{{ selectedContact.email }}</a>
                         </div>
                         <div class="contact-call">
                             <h3>Phone</h3>
-                            <a href="tel:+49 123-456-7890">{{ contact.phone }}</a>
+                            <a href="tel:+49 123-456-7890">{{ selectedContact.phone }}</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div *ngIf="addContacts">
-                <div class="add-contact-overlay">
-                    <div class="left-overlay">
-                        <div>
-                            <img src="./assets/img/join_logo_light.png">
-                            <h1>Add Contact</h1>
-                            <p>Tasks are better with a team</p>
-                            <img src="./assets/img/icon_line.png">
+            <div class="contact-overlay-container">
+                <div *ngIf="addContacts">
+                    <div class="add-contact-overlay">
+                        <div class="left-overlay">
+                            <div>
+                                <img src="./assets/img/join_logo_light.png">
+                                <h1>Add Contact</h1>
+                                <p>Tasks are better with a team</p>
+                                <img src="./assets/img/icon_line.png">
+                            </div>
                         </div>
-                    </div>
-                    <div class="add-contact-inputs">
-                        <div class="profile"><img src="./assets/img/icon_person.png" alt="#"></div>
-                        <div class="input-fields">
-                            <form [formGroup]="form">
-                                <div class="fcf-form-group">
-                                    <div class="fcf-input-group">
-                                        <input type="text" class="fcf-form-control" placeholder="Your name"
-                                            formControlName="name">
-                                        <img src="./assets/img/icon_name.png">
-                                    </div>
-                                    <div *ngIf="form.controls['name'].invalid && form.controls['name'].touched">
-                                        <div class="error-massage" *ngIf="form.controls['name'].errors?.['required']">
-                                            Name is required.
+                        <div class="add-contact-inputs">
+                            <div class="profile"><img src="./assets/img/icon_person.png" alt="#"></div>
+                            <div class="input-fields">
+                                <form [formGroup]="form">
+                                    <div class="fcf-form-group">
+                                        <div class="fcf-input-group">
+                                            <input type="text" class="fcf-form-control" placeholder="Your name"
+                                                formControlName="name">
+                                            <img src="./assets/img/icon_name.png">
+                                        </div>
+                                        <div *ngIf="form.controls['name'].invalid && form.controls['name'].touched">
+                                            <div class="error-massage"
+                                                *ngIf="form.controls['name'].errors?.['required']">
+                                                Name is required.
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="fcf-form-group">
-                                    <div class="fcf-input-group">
-                                        <input type="email" class="fcf-form-control" placeholder="Your email address"
-                                            formControlName="email">
-                                        <img src="./assets/img/icon_mail.png">
-                                    </div>
-                                    <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
-                                        <div class="error-message" *ngIf="form.controls['email'].errors?.['required']">
-                                            Email is required.
+                                    <div class="fcf-form-group">
+                                        <div class="fcf-input-group">
+                                            <input type="email" class="fcf-form-control"
+                                                placeholder="Your email address" formControlName="email">
+                                            <img src="./assets/img/icon_mail.png">
+                                        </div>
+                                        <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
+                                            <div class="error-message"
+                                                *ngIf="form.controls['email'].errors?.['required']">
+                                                Email is required.
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="fcf-form-group">
-                                    <div class="fcf-input-group">
-                                        <input type="tel" class="fcf-form-control"
-                                            pattern="^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"
-                                            formControlName="phone" (blur)="form.controls['phone'].markAsTouched()">
-                                        <img src="./assets/img/icon_phone.png">
-                                    </div>
-                                    <div *ngIf="form.controls['phone'].invalid && form.controls['phone'].touched">
-                                        <div class="error-massage" *ngIf="form.controls['phone'].errors?.['required']">
-                                            Phone is required.
+                                    <div class="fcf-form-group">
+                                        <div class="fcf-input-group">
+                                            <input type="tel" class="fcf-form-control" placeholder="+49 1234 56789"
+                                                pattern="^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"
+                                                formControlName="phone" (blur)="form.controls['phone'].markAsTouched()">
+                                            <img src="./assets/img/icon_phone.png">
+                                        </div>
+                                        <div *ngIf="form.controls['phone'].invalid && form.controls['phone'].touched">
+                                            <div class="error-massage"
+                                                *ngIf="form.controls['phone'].errors?.['required']">
+                                                Phone is required.
+                                            </div>
                                         </div>
                                     </div>
+                                </form>
+                                <div class="button-container">
+                                    <button class="button-style-cancel" (click)="cancelContactsForm()">Cancel<img
+                                            src="./assets/img/icon_close.png">
+                                    </button>
+                                    <button class="button-style-submit" (click)="createContacts()">Create
+                                        contact <img src="./assets/img/icon_create.png">
+                                    </button>
                                 </div>
-                            </form>
-                            <div class="button-container">
-                                <button class="button-style-cancel" (click)="cancelContactsForm()">Cancel<img
-                                        src="./assets/img/icon_close.png">
-                                </button>
-                                <button class="button-style-submit" (click)="createContacts()">Create
-                                    contact <img src="./assets/img/icon_create.png">
-                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div *ngIf="editContacts">
-                <div class="add-contact-overlay">
-                    <div class="left-overlay">
-                        <div>
-                            <img src="./assets/img/join_logo_light.png">
-                            <h1>Edit Contact</h1>
-                            <p>Change contact information</p>
-                            <img src="./assets/img/icon_line.png">
+                <div *ngIf="editContacts">
+                    <div class="edit-contact-overlay">
+                        <div class="left-overlay">
+                            <div>
+                                <img src="./assets/img/join_logo_light.png">
+                                <h1>Edit Contact</h1>
+                                <p>Change contact information</p>
+                                <img src="./assets/img/icon_line.png">
+                            </div>
+                        </div>
+                        <div class="add-contact-inputs" *ngIf="selectedContact">
+                            <div class="profile"><img src="./assets/img/icon_person.png" alt="#"></div>
+                            <div class="input-fields">
+                                <form [formGroup]="form">
+                                    <div class="fcf-form-group">
+                                        <label class="fcf-label"></label>
+                                        <div class="fcf-input-group">
+                                            <input type="text" class="fcf-form-control" placeholder="Your name"
+                                                formControlName="name">
+                                            <img src="./assets/img/icon_name.png">
+                                            <div *ngIf="form.controls['name'].invalid && form.controls['name'].touched">
+                                                <div class="error-massage"
+                                                    *ngIf="form.controls['name'].errors?.['required']">
+                                                    Name is required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="fcf-form-group">
+                                        <label class="fcf-label"></label>
+                                        <div class="fcf-input-group">
+                                            <input type="email" class="fcf-form-control"
+                                                placeholder="Your email address" formControlName="email">
+                                            <img src="./assets/img/icon_mail.png">
+                                            <div
+                                                *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
+                                                <div class="error-massage"
+                                                    *ngIf="form.controls['email'].errors?.['required']">
+                                                    Email is required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="fcf-form-group">
+                                        <label class="fcf-label"></label>
+                                        <div class="fcf-input-group">
+                                            <input type="tel" class="fcf-form-control" placeholder="+49 1234 56789"
+                                                pattern="^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"
+                                                formControlName="phone" (blur)="form.controls['phone'].markAsTouched()">
+                                            <img src="./assets/img/icon_phone.png">
+                                            <div
+                                                *ngIf="form.controls['phone'].invalid && form.controls['phone'].touched">
+                                                <div class="error-massage"
+                                                    *ngIf="form.controls['phone'].errors?.['required']">
+                                                    Phone is required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="button-container">
+                                    <button class="button-style-cancel" (click)="closeEditContats()">Cancel
+                                        <img src="./assets/img/icon_close.png">
+                                    </button>
+                                    <button class="button-style-submit" id="requireFill" (click)="updateContacts()">Edit
+                                        contact
+                                        <img src="./assets/img/icon_create.png">
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="add-contact-inputs">
-                        <div class="profile"><img src="./assets/img/icon_person.png" alt="#"></div>
-                        <div class="input-fields">
-                            <form [formGroup]="form">
-                                <div class="fcf-form-group">
-                                    <label class="fcf-label"></label>
-                                    <div class="fcf-input-group">
-                                        <input type="text" id="name" value="${storedContactsArray[userId].userName}"
-                                            name="Name" class="fcf-form-control" placeholder="Your name" required>
-                                        <img src="./assets/img/icon_name.png">
+                </div>
+                <div class="overlay" *ngIf="addTaskToContact">
+                    <div class="popup-container">
+                        <div id="taskCard" class="task-card">
+                            <h1>Add Task</h1>
+                            <form [formGroup]="form" class="column-container">
+                                <div class="column-left">
+                                    <label>Title</label>
+                                    <input type="text" placeholder="Enter a title" formControlName="title">
+                                    <div *ngIf="form.controls['title'].invalid && form.controls['title'].touched">
+                                        <div class="error-massage" *ngIf="form.controls['title'].errors?.['required']">
+                                            Title is required.
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="fcf-form-group">
-                                    <label class="fcf-label"></label>
-                                    <div class="fcf-input-group">
-                                        <input type="email" id="mail" value="${storedContactsArray[userId].userMail}"
-                                            name="Email" class="fcf-form-control" placeholder="Your email address"
-                                            required>
-                                        <img src="./assets/img/icon_mail.png">
+                                    <label class="mt-15">Description</label>
+                                    <textarea placeholder="Enter a description"
+                                        formControlName="description"></textarea>
+                                    <div
+                                        *ngIf="form.controls['description'].invalid && form.controls['description'].touched">
+                                        <div class="error-massage"
+                                            *ngIf="form.controls['description'].errors?.['required']">Description is
+                                            required.
+                                        </div>
                                     </div>
+                                    <label class="mt-15">Category</label>
+                                    <div class="category-input-container">
+                                        <input readonly value="Select task category" (click)="toggleEditCategory()">
+                                        <img class="drop-down" src="./assets/img/icon_triangle.png">
+                                        <div class="dropdown-container" *ngIf="openCategory">
+                                            <div class="category" (click)="updateEditCategory($event)" data-target="0">
+                                                <div class="category-text" (click)="toggleShowInput()">
+                                                    <span *ngIf="!showInput">{{ categories[0] }}</span>
+                                                </div>
+                                                <input class="category-input" [hidden]="!showInput"
+                                                    formControlName="newCategory">
+                                                <div class="category-oninput" *ngIf="addCategory && showInput">
+                                                    <img src="./assets/img/icon_clear.png" (click)="cancelCategory()">
+                                                    <img src="./assets/img/icon_done.png" (click)="confirmCategory()">
+                                                </div>
+                                            </div>
+                                            <div class="category"
+                                                *ngFor="let category of categories.slice(1); let i = index"
+                                                (click)="updateEditCategory($event)" attr.data-target="{{ i + 1 }}">
+                                                <div class="category-text">{{ category }}</div>
+                                                <div (click)="selectColor(i)" class="color-dot"
+                                                    [ngClass]="getColorClass(i)"></div>
+                                            </div>
+                                        </div>
+                                        <div (click)="customizeColor($event)" class="colorContainer"
+                                            *ngIf="editingCategory">
+                                            <div (click)="selectedTargetIndex = 0" class="color-dot-orange"
+                                                [class.selected]="selectedTargetIndex === 0"></div>
+                                            <div (click)="selectedTargetIndex = 1" class="color-dot-red"
+                                                [class.selected]="selectedTargetIndex === 1"></div>
+                                            <div (click)="selectedTargetIndex = 2" class="color-dot-blue"
+                                                [class.selected]="selectedTargetIndex === 2"></div>
+                                            <div (click)="selectedTargetIndex = 3" class="color-dot-lightblue"
+                                                [class.selected]="selectedTargetIndex === 3"></div>
+                                            <div (click)="selectedTargetIndex = 4" class="color-dot-pink"
+                                                [class.selected]="selectedTargetIndex === 4"></div>
+                                            <div (click)="selectedTargetIndex = 5" class="color-dot-lightpink"
+                                                [class.selected]="selectedTargetIndex === 5"></div>
+                                            <div (click)="selectedTargetIndex = 6" class="color-dot-green"
+                                                [class.selected]="selectedTargetIndex === 6"></div>
+                                            <div (click)="selectedTargetIndex = 7" class="color-dot-turquo"
+                                                [class.selected]="selectedTargetIndex === 7"></div>
+                                        </div>
+                                    </div>
+                                    <label>Assigned to</label>
+                                    <div class="contact-input-container">
+                                        <input readonly value="Select contacts to assign"
+                                            (click)="toggleAssignedToContact()">
+                                        <img class="drop-down" src="./assets/img/icon_triangle.png">
+                                    </div>
+                                    <div class="contactsDropdownContainer"></div>
                                 </div>
-                                <div class="fcf-form-group">
-                                    <label for="Phone" class="fcf-label"></label>
-                                    <div class="fcf-input-group">
-                                        <input type="tel" id="phone" value="${storedContactsArray[userId].userPhone}"
-                                            name="Phone" placeholder="+49 1234 56789" required>
-                                        <img src="./assets/img/icon_phone.png">
+                                <div class="column-right">
+                                    <label>Due Date</label>
+                                    <input type="date" min="2023-05-30" formControlName="date">
+                                    <!-- {{ date | date:'yyyy-MM-dd' }} -->
+                                    <div *ngIf="form.controls['date'].invalid && form.controls['date'].touched">
+                                        <div class="error-massage" *ngIf="form.controls['date'].errors?.['required']">
+                                            Title is required.
+                                        </div>
+                                    </div>
+                                    <label class="mt-15">Prio</label>
+                                    <div class="prio">
+                                        <div class="prio-btn">Urgent
+                                            <img src="./assets/img/icon_up.png" alt="#">
+                                        </div>
+                                        <div class="prio-btn">Medium
+                                            <img src="./assets/img/icon_medium.png" alt="#">
+                                        </div>
+                                        <div class="prio-btn">Low
+                                            <img src="./assets/img/icon_down.png" alt="#">
+                                        </div>
+                                    </div>
+                                    <label class="mt-15">Subtasks</label>
+                                    <div class="subtask-input-container">
+                                        <div class="subtask">
+                                            <input type="text" placeholder="Enter a subtask"
+                                                formControlName="newSubtask">
+                                            <div class="subtask-oninput">
+                                                <img src="./assets/img/icon_clear.png" (click)="cancelSubtask()">
+                                                <img src="./assets/img/icon_done.png" (click)="confirmSubtask()">
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-container" *ngIf="openSubtask">
+                                            <div class="subtasks" *ngFor="let subtask of subtasks; let s = index"
+                                                attr.data-target="{{ s + 1 }}">
+                                                <div class="subtask-text">{{ subtask }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="action-button-container">
+                                        <button (click)=" clearTaskForm()">Clear<img
+                                                src="./assets/img/icon_close.png"></button>
+                                        <button (click)="createTask()">Create Task<img
+                                                src="./assets/img/icon_create.png"></button>
                                     </div>
                                 </div>
                             </form>
-                            <div class="button-container">
-                                <button class="button-style-cancel" onclick="closeEditOverlay()">Cancel
-                                    <img src="./assets/img/icon_close.png">
-                                </button>
-                                <button class="button-style-submit" id="requireFill" (click)="saveContactData()">Edit
-                                    contact
-                                    <img src="./assets/img/icon_create.png">
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>

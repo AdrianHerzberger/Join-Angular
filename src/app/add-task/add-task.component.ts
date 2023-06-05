@@ -54,7 +54,6 @@ export class AddTaskComponent implements OnInit {
       newCategory: ['', [Validators.required]],
       newSubtask: ['', [Validators.required]]
     });
-
   }
 
   toggleEditCategory() {
@@ -137,7 +136,7 @@ export class AddTaskComponent implements OnInit {
       this.categoryColors.push('');
       this.addCategory = false;
       this.showInput = false;
-      /* this.form.get('newCategory')?.patchValue(''); */
+      this.form.get('newCategory')?.patchValue('');
     }
   }
 
@@ -162,8 +161,8 @@ export class AddTaskComponent implements OnInit {
 
   async createTask() {
     if (this.form.valid) {
-      this.createdTaskArray.push(this.form.value);
-      console.log(this.form.value)
+    /*   this.createdTaskArray.push(this.form.value);
+      console.log(this.form.value) */
       const tasksCollectionRef = collection(this.firestore, 'tasks');
       await addDoc(tasksCollectionRef, this.form.value);
       this.clearTaskForm();

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Firestore, collection, query, where, getDocs } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User } from 'src/models/user.class';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +10,6 @@ import { User } from 'src/models/user.class';
 })
 export class LoginComponent implements OnInit {
   form!: FormGroup;
-  user = new User();
 
   constructor(
     private router: Router,
