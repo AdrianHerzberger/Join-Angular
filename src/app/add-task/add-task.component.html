@@ -90,16 +90,16 @@
                 </div>
                 <label class="mt-15">Subtasks</label>
                 <div class="subtask-input-container">
-                    <div class="subtask">
+                    <div class="subtasks">
                         <input type="text"  placeholder="Enter a subtask"
                             formControlName="newSubtask">
-                        <div class="subtask-oninput">
+                        <div type="submit" class="subtask-oninput">
                             <img src="./assets/img/icon_clear.png" (click)="cancelSubtask()">
                             <img src="./assets/img/icon_done.png" (click)="confirmSubtask()">
                         </div>
                     </div>
                     <div class="dropdown-container" *ngIf="openSubtask">
-                        <div class="subtasks" *ngFor="let subtask of subtasks; let s = index"
+                        <div class="subtask" *ngFor="let subtask of subtasks; let s = index"
                             attr.data-target="{{ s + 1 }}">
                             <div class="subtask-text">{{ subtask }}</div>
                         </div>
