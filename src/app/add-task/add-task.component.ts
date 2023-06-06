@@ -51,6 +51,7 @@ export class AddTaskComponent implements OnInit {
   selectedTargetIndex: number = -1;
 
   createdTaskArray:TaskInterface[] = [];
+  tasks: any;
 
   constructor(
     private firestore: Firestore,
@@ -65,7 +66,7 @@ export class AddTaskComponent implements OnInit {
       newCategory: ['', [Validators.required]],
       newSubtask: ['', [Validators.required]]
     });
-
+    this.getContactColor();
     this.showContactTaskArray();
   }
 
@@ -211,6 +212,27 @@ export class AddTaskComponent implements OnInit {
       } catch (error) {
         console.log('Error logging in:', error);
       }
+    }
+  }
+
+  async getContactColor() {
+    try {
+      const contactColors = collection(this.firestore, 'contacts');
+      const q = query(contactColors);
+      const querySnapshotContactColors = await getDocs(q);
+
+
+      querySnapshotContactColors.forEach((doc) => {
+        this.tasks.forEach((task: TaskInterface) => {
+          const taskColor = task.color; 
+          // Do something with the task color
+          console.log(taskColor);
+        });
+      })
+      
+
+    } catch {
+
     }
   }
 

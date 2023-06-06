@@ -79,7 +79,6 @@ export class ContactsComponent implements OnInit {
     });
     this.showContactInList();
     this.showTaskskInContacts();
-    this.getContactColor();
   }
 
   addContact() {
@@ -159,27 +158,6 @@ export class ContactsComponent implements OnInit {
 
     } catch (error) {
       console.log('Error logging tasks:', error);
-    }
-  }
-
-  async getContactColor() {
-    try {
-      const contactColors = collection(this.firestore, 'contacts');
-      const q = query(contactColors);
-      const querySnapshotContactColors = await getDocs(q);
-
-
-      querySnapshotContactColors.forEach((doc) => {
-        this.tasks.forEach((task: TaskInterface) => {
-          const taskColor = task.color; 
-          // Do something with the task color
-          console.log(taskColor);
-        });
-      })
-      
-
-    } catch {
-
     }
   }
 
