@@ -1,18 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { Firestore, addDoc, collection } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, getDocs, query } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-interface Category{
-  name: string,
-  color: string
+interface ContactsInterface {
+  tasks: any;
+  name: string;
+  email: string;
+  phone: string;
+  id: string;
+  selected: boolean;
+  initials: any;
+  color: any;
 }
 
 interface TaskInterface {
-  title: string,
-  description: string,
-  date: Date | string,
-  newCategory: string,
-  newSubtask: string,
+  title: string;
+  description: string;
+  date: Date | string;
+  newCategory: string;
+  newSubtask: string;
+  color: any;
 }
 
 @Component({
@@ -24,13 +31,17 @@ interface TaskInterface {
 export class AddTaskComponent implements OnInit {
   form!: FormGroup;
 
+  contacts: ContactsInterface[] = [];
+  selectedContact: ContactsInterface | null | undefined = null;
+
   openCategory: boolean = false;
   openSubtask: boolean = false;
-
+  openAssignedTo:boolean = false;
   editingCategory: boolean = false;
   addCategory: boolean = false;
   addSubtask: boolean = false;
   showInput: boolean = false;
+  contactInList: boolean = true;
 
   categories = ["New Category", "Sales", "Marketing"];
   subtasks: string[] = [];
@@ -54,6 +65,8 @@ export class AddTaskComponent implements OnInit {
       newCategory: ['', [Validators.required]],
       newSubtask: ['', [Validators.required]]
     });
+
+    this.showContactTaskArray();
   }
 
   toggleEditCategory() {
@@ -61,7 +74,7 @@ export class AddTaskComponent implements OnInit {
   }
 
   toggleAssignedToContact() {
-
+    this.openAssignedTo = !this.openAssignedTo;
   }
 
   updateEditCategory(event: any) {
@@ -90,6 +103,15 @@ export class AddTaskComponent implements OnInit {
     if (this.showInput) {
       this.addCategory = true;
     }
+  }
+
+  toggleBetweenContacts(userID: any) {
+    this.selectedContact = this.getUserById(userID);
+    console.log(this.selectedContact);
+  }
+
+  getUserById(userID: any) {
+    return this.contacts.find(contact => contact.id === userID) || null;
   }
 
   getColorClass(index: number) {
@@ -156,6 +178,39 @@ export class AddTaskComponent implements OnInit {
         this.subtasks.push(this.form.get('newSubtask')?.value);
       }
       this.openSubtask = true;
+    }
+  }
+
+  async showContactTaskArray() {
+    if (this.contactInList !== null) {
+      try {
+        const contactsCollection = collection(this.firestore, 'contacts');
+        const q = query(contactsCollection);
+        const querySnapshotfromContacts = await getDocs(q);
+
+        const storedContactData: ContactsInterface[] = [];
+
+        querySnapshotfromContacts.forEach((doc) => {
+          const data = doc.data();
+          const { name, email, phone, color, initials } = data;
+          const contact: ContactsInterface = {
+            id: doc.id,
+            name: name,
+            email: email,
+            phone: phone,
+            selected: false,
+            color: color,
+            initials: initials,
+            tasks: undefined
+          };
+          storedContactData.push(contact);
+        });
+
+        this.contacts = storedContactData;
+
+      } catch (error) {
+        console.log('Error logging in:', error);
+      }
     }
   }
 

@@ -14,11 +14,12 @@ interface ContactsInterface {
 }
 
 interface TaskInterface {
-  title: string,
-  description: string,
-  date: Date | string,
-  newCategory: string,
-  newSubtask: string,
+  title: string;
+  description: string;
+  date: Date | string;
+  newCategory: string;
+  newSubtask: string;
+  color: any;
 }
 
 @Component({
@@ -41,8 +42,9 @@ export class ContactsComponent implements OnInit {
   updatedContacts: boolean = false;
   contactInList: boolean = true;
 
-  addTaskToContact: boolean = false;
+  addTaskToContact: boolean = true;
   openCategory: boolean = false;
+
   openSubtask: boolean = false;
   editingCategory: boolean = false;
   addCategory: boolean = false;
@@ -77,6 +79,7 @@ export class ContactsComponent implements OnInit {
     });
     this.showContactInList();
     this.showTaskskInContacts();
+    this.getContactColor();
   }
 
   addContact() {
@@ -141,13 +144,14 @@ export class ContactsComponent implements OnInit {
 
       querySnapshotfromTasks.forEach((doc) => {
         const data = doc.data();
-        const { newCategory, title, description, date, newSubtask } = data;
+        const { newCategory, title, description, date, newSubtask, color } = data;
         const task: TaskInterface = {
           newCategory: newCategory,
           title: title,
           description: description,
           date: date,
           newSubtask: newSubtask,
+          color: color,
         }
         storedTaskData.push(task);
         console.log(storedTaskData);
@@ -158,8 +162,30 @@ export class ContactsComponent implements OnInit {
     }
   }
 
+  async getContactColor() {
+    try {
+      const contactColors = collection(this.firestore, 'contacts');
+      const q = query(contactColors);
+      const querySnapshotContactColors = await getDocs(q);
+
+
+      querySnapshotContactColors.forEach((doc) => {
+        this.tasks.forEach((task: TaskInterface) => {
+          const taskColor = task.color; 
+          // Do something with the task color
+          console.log(taskColor);
+        });
+      })
+      
+
+    } catch {
+
+    }
+  }
+
   toggleBetweenContacts(userID: any) {
     this.selectedContact = this.getUserById(userID);
+    console.log(this.selectedContact);
     this.updatedContacts = true;
   }
 
@@ -231,7 +257,7 @@ export class ContactsComponent implements OnInit {
       let index = parseInt(categoryIndex, 10);
       for (let i = 0; i < this.categories.length; i++) {
         if (i === index) {
-          if (i === 0)    {
+          if (i === 0) {
             this.toggleShowInput();
           } else if (i <= 1) {
             this.editingCategory = true;
@@ -304,10 +330,6 @@ export class ContactsComponent implements OnInit {
     }
   }
 
-  toggleAssignedToContact() {
-
-  }
-
   cancelSubtask() {
     this.taskForm.get('newSubtask')?.patchValue('');
   }
@@ -330,10 +352,12 @@ export class ContactsComponent implements OnInit {
         date: this.taskForm.value.date,
         newCategory: this.taskForm.value.newCategory,
         newSubtask: this.taskForm.value.newSubtask,
+        color: this.selectedContact.color,
       }
 
       this.selectedContact.tasks = this.selectedContact.tasks || [];
       this.selectedContact.tasks.push(task);
+      console.log(this.selectedContact);
 
       const contactsCollectionRef = collection(this.firestore, 'contacts');
       await updateDoc(doc(contactsCollectionRef, this.selectedContact.id), {

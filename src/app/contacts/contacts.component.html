@@ -34,7 +34,7 @@
                     <div class="header-secondary">
                         <p>Better with a team</p>
                     </div>
-                  <!--   <img src="./assets/img/left-arrow.png" alt="arrow-left" id="left-arrow-mobile"
+                    <!--   <img src="./assets/img/left-arrow.png" alt="arrow-left" id="left-arrow-mobile"
                         (click)="closeContactDataMobile()"> -->
                 </div>
                 <div *ngIf="updatedContacts">
@@ -87,7 +87,7 @@
                                         <div class="fcf-input-group">
                                             <input type="text" class="fcf-form-control" placeholder="Your name"
                                                 formControlName="name">
-                                            <img src="./assets/img/icon_name.png">
+                                            <img class="person-icon" src="./assets/img/icon_name.png">
                                         </div>
                                         <div *ngIf="form.controls['name'].invalid && form.controls['name'].touched">
                                             <div class="error-massage"
@@ -100,7 +100,7 @@
                                         <div class="fcf-input-group">
                                             <input type="email" class="fcf-form-control"
                                                 placeholder="Your email address" formControlName="email">
-                                            <img src="./assets/img/icon_mail.png">
+                                            <img class="mail-icon" src="./assets/img/icon_mail.png">
                                         </div>
                                         <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
                                             <div class="error-message"
@@ -114,7 +114,7 @@
                                             <input type="tel" class="fcf-form-control" placeholder="+49 1234 56789"
                                                 pattern="^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"
                                                 formControlName="phone" (blur)="form.controls['phone'].markAsTouched()">
-                                            <img src="./assets/img/icon_phone.png">
+                                            <img class="phone-icon" src="./assets/img/icon_phone.png">
                                         </div>
                                         <div *ngIf="form.controls['phone'].invalid && form.controls['phone'].touched">
                                             <div class="error-massage"
@@ -155,7 +155,7 @@
                                         <div class="fcf-input-group">
                                             <input type="text" class="fcf-form-control" placeholder="Your name"
                                                 formControlName="name">
-                                            <img src="./assets/img/icon_name.png">
+                                            <img class="person-icon-1" src="./assets/img/icon_name.png">
                                             <div *ngIf="form.controls['name'].invalid && form.controls['name'].touched">
                                                 <div class="error-massage"
                                                     *ngIf="form.controls['name'].errors?.['required']">
@@ -169,7 +169,7 @@
                                         <div class="fcf-input-group">
                                             <input type="email" class="fcf-form-control"
                                                 placeholder="Your email address" formControlName="email">
-                                            <img src="./assets/img/icon_mail.png">
+                                            <img class="mail-icon-1" src="./assets/img/icon_mail.png">
                                             <div
                                                 *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
                                                 <div class="error-massage"
@@ -185,7 +185,7 @@
                                             <input type="tel" class="fcf-form-control" placeholder="+49 1234 56789"
                                                 pattern="^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"
                                                 formControlName="phone" (blur)="form.controls['phone'].markAsTouched()">
-                                            <img src="./assets/img/icon_phone.png">
+                                            <img class="phone-icon-1" src="./assets/img/icon_phone.png">
                                             <div
                                                 *ngIf="form.controls['phone'].invalid && form.controls['phone'].touched">
                                                 <div class="error-massage"
@@ -217,8 +217,10 @@
                                 <div class="column-left">
                                     <label>Title</label>
                                     <input type="text" placeholder="Enter a title" formControlName="title">
-                                    <div *ngIf="taskForm.controls['title'].invalid && taskForm.controls['title'].touched">
-                                        <div class="error-massage" *ngIf="taskForm.controls['title'].errors?.['required']">
+                                    <div
+                                        *ngIf="taskForm.controls['title'].invalid && taskForm.controls['title'].touched">
+                                        <div class="error-massage"
+                                            *ngIf="taskForm.controls['title'].errors?.['required']">
                                             Title is required.
                                         </div>
                                     </div>
@@ -234,26 +236,34 @@
                                     </div>
                                     <label class="mt-15">Category</label>
                                     <div class="category-input-container">
-                                        <input readonly value="Select task category" (click)="toggleEditCategory()">
-                                        <img class="drop-down" src="./assets/img/icon_triangle.png">
+                                        <div class="dropdown-selection">
+                                            <input readonly value="Select task category">
+                                            <img class="drop-down" src="./assets/img/icon_triangle.png"
+                                                (click)="toggleEditCategory()">
+                                        </div>
                                         <div class="dropdown-container" *ngIf="openCategory">
-                                            <div class="category" (click)="updateEditCategory($event)" data-target="0">
-                                                <div class="category-text" (click)="toggleShowInput()">
-                                                    <span *ngIf="!showInput">{{ categories[0] }}</span>
+                                            <div class="category-list-overflow">
+                                                <div class="category" (click)="updateEditCategory($event)"
+                                                    data-target="0">
+                                                    <div class="category-text" (click)="toggleShowInput()">
+                                                        <span *ngIf="!showInput">{{ categories[0] }}</span>
+                                                    </div>
+                                                    <input class="category-input" [hidden]="!showInput"
+                                                        formControlName="newCategory">
+                                                    <div class="category-oninput" *ngIf="addCategory && showInput">
+                                                        <img src="./assets/img/icon_clear.png"
+                                                            (click)="cancelCategory()">
+                                                        <img src="./assets/img/icon_done.png"
+                                                            (click)="confirmCategory()">
+                                                    </div>
                                                 </div>
-                                                <input class="category-input" [hidden]="!showInput"
-                                                    formControlName="newCategory">
-                                                <div class="category-oninput" *ngIf="addCategory && showInput">
-                                                    <img src="./assets/img/icon_clear.png" (click)="cancelCategory()">
-                                                    <img src="./assets/img/icon_done.png" (click)="confirmCategory()">
+                                                <div class="category"
+                                                    *ngFor="let category of categories.slice(1); let i = index"
+                                                    (click)="updateEditCategory($event)" attr.data-target="{{ i + 1 }}">
+                                                    <div class="category-text">{{ category }}</div>
+                                                    <div (click)="selectColor(i)" class="color-dot"
+                                                        [ngClass]="getColorClass(i)"></div>
                                                 </div>
-                                            </div>
-                                            <div class="category"
-                                                *ngFor="let category of categories.slice(1); let i = index"
-                                                (click)="updateEditCategory($event)" attr.data-target="{{ i + 1 }}">
-                                                <div class="category-text">{{ category }}</div>
-                                                <div (click)="selectColor(i)" class="color-dot"
-                                                    [ngClass]="getColorClass(i)"></div>
                                             </div>
                                         </div>
                                         <div (click)="customizeColor($event)" class="colorContainer"
@@ -276,20 +286,14 @@
                                                 [class.selected]="selectedTargetIndex === 7"></div>
                                         </div>
                                     </div>
-                                    <label>Assigned to</label>
-                                    <div class="contact-input-container">
-                                        <input readonly value="Select contacts to assign"
-                                            (click)="toggleAssignedToContact()">
-                                        <img class="drop-down" src="./assets/img/icon_triangle.png">
-                                    </div>
-                                    <div class="contactsDropdownContainer"></div>
                                 </div>
                                 <div class="column-right">
                                     <label>Due Date</label>
                                     <input type="date" min="2023-05-30" formControlName="date">
                                     <!-- {{ date | date:'yyyy-MM-dd' }} -->
                                     <div *ngIf="taskForm.controls['date'].invalid && taskForm.controls['date'].touched">
-                                        <div class="error-massage" *ngIf="taskForm.controls['date'].errors?.['required']">
+                                        <div class="error-massage"
+                                            *ngIf="taskForm.controls['date'].errors?.['required']">
                                             Title is required.
                                         </div>
                                     </div>
@@ -316,9 +320,11 @@
                                             </div>
                                         </div>
                                         <div class="dropdown-container" *ngIf="openSubtask">
-                                            <div class="subtasks" *ngFor="let subtask of subtasks; let s = index"
-                                                attr.data-target="{{ s + 1 }}">
-                                                <div class="subtask-text">{{ subtask }}</div>
+                                            <div class="subtask-list-overflow">
+                                                <div class="subtasks" *ngFor="let subtask of subtasks; let s = index"
+                                                    attr.data-target="{{ s + 1 }}">
+                                                    <div class="subtask-text">{{ subtask }}</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

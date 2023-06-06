@@ -6,15 +6,14 @@
         <form [formGroup]="form" class="column-container">
             <div class="column-left">
                 <label>Title</label>
-                <input type="text"  placeholder="Enter a title" formControlName="title">
+                <input type="text" placeholder="Enter a title" formControlName="title">
                 <div *ngIf="form.controls['title'].invalid && form.controls['title'].touched">
                     <div class="error-massage" *ngIf="form.controls['title'].errors?.['required']">Title is required.
                     </div>
                 </div>
 
                 <label class="mt-15">Description</label>
-                <textarea placeholder="Enter a description"
-                    formControlName="description"></textarea>
+                <textarea placeholder="Enter a description" formControlName="description"></textarea>
                 <div *ngIf="form.controls['description'].invalid && form.controls['description'].touched">
                     <div class="error-massage" *ngIf="form.controls['description'].errors?.['required']">Description is
                         required.
@@ -22,26 +21,30 @@
                 </div>
                 <label class="mt-15">Category</label>
                 <div class="category-input-container">
-                    <input readonly value="Select task category" (click)="toggleEditCategory()">
-                    <img class="drop-down" src="./assets/img/icon_triangle.png">
+                    <div class="dropdown-selection">
+                        <input readonly value="Select task category">
+                        <img class="drop-down" src="./assets/img/icon_triangle.png" (click)="toggleEditCategory()">
+                    </div>
                     <div class="dropdown-container" *ngIf="openCategory">
-                        <div class="category" (click)="updateEditCategory($event)" data-target="0">
-                            <div class="category-text" (click)="toggleShowInput()">
-                                <span *ngIf="!showInput">{{ categories[0] }}</span>
+                        <div class="category-list-overflow">
+                            <div class="category" (click)="updateEditCategory($event)" data-target="0">
+                                <div class="category-text" (click)="toggleShowInput()">
+                                    <span *ngIf="!showInput">{{ categories[0] }}</span>
+                                </div>
+                                <input class="category-input" [hidden]="!showInput" formControlName="newCategory">
+                                <div class="category-oninput" *ngIf="addCategory && showInput">
+                                    <img src="./assets/img/icon_clear.png" (click)="cancelCategory()">
+                                    <img src="./assets/img/icon_done.png" (click)="confirmCategory()">
+                                </div>
                             </div>
-                            <input class="category-input" [hidden]="!showInput" 
-                                formControlName="newCategory">
-                            <div class="category-oninput" *ngIf="addCategory && showInput">
-                                <img src="./assets/img/icon_clear.png" (click)="cancelCategory()">
-                                <img src="./assets/img/icon_done.png" (click)="confirmCategory()">
+                            <div class="category" *ngFor="let category of categories.slice(1); let i = index"
+                                (click)="updateEditCategory($event)" attr.data-target="{{ i + 1 }}">
+                                <div class="category-text">{{ category }}</div>
+                                <div (click)="selectColor(i)" class="color-dot" [ngClass]="getColorClass(i)"></div>
                             </div>
                         </div>
-                        <div class="category" *ngFor="let category of categories.slice(1); let i = index" (click)="updateEditCategory($event)" attr.data-target="{{ i + 1 }}">
-                            <div class="category-text">{{ category }}</div>
-                            <div (click)="selectColor(i)" class="color-dot" [ngClass]="getColorClass(i)"></div>
-                        </div>             
                     </div>
-                    <div (click)="customizeColor($event)" class="colorContainer" *ngIf="editingCategory">
+                    <div (click)="customizeColor($event)" class="color-container" *ngIf="editingCategory">
                         <div (click)="selectedTargetIndex = 0" class="color-dot-orange"
                             [class.selected]="selectedTargetIndex === 0"></div>
                         <div (click)="selectedTargetIndex = 1" class="color-dot-red"
@@ -62,15 +65,33 @@
                 </div>
                 <label>Assigned to</label>
                 <div class="contact-input-container">
-                    <input readonly value="Select contacts to assign" (click)="toggleAssignedToContact()">
-                    <img class="drop-down" src="./assets/img/icon_triangle.png">
+                    <div class="dropdown-selection">
+                        <input readonly value="Select contacts to assign">
+                        <img class="drop-down" src="./assets/img/icon_triangle.png" (click)="toggleAssignedToContact()">
+                    </div>
                 </div>
-                <div class="contactsDropdownContainer"></div>
+                <div class="dropdown-container" *ngIf="openAssignedTo">
+                    <div class="contact-list-overflow">
+                        <ul *ngIf="contactInList">
+                            <li *ngFor="let contact of contacts">
+                                <div class="contact-box" (click)="toggleBetweenContacts(contact.id)">
+                                    <a href="#">
+                                        <div class="initials-container" [style.background]="contact.color">{{
+                                            contact.initials }}</div>
+                                    </a>
+                                    <div class="name-mail-container">
+                                        <div>{{ contact.name }}</div>
+                                        <div>{{ contact.email }}</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div class="column-right">
                 <label>Due Date</label>
-                <input type="date" min="2023-05-30"  
-                    formControlName="date">
+                <input type="date" min="2023-05-30" formControlName="date">
                 <!-- {{ date | date:'yyyy-MM-dd' }} -->
                 <div *ngIf="form.controls['date'].invalid && form.controls['date'].touched">
                     <div class="error-massage" *ngIf="form.controls['date'].errors?.['required']">Title is required.
@@ -91,24 +112,24 @@
                 <label class="mt-15">Subtasks</label>
                 <div class="subtask-input-container">
                     <div class="subtasks">
-                        <input type="text"  placeholder="Enter a subtask"
-                            formControlName="newSubtask">
+                        <input type="text" placeholder="Enter a subtask" formControlName="newSubtask">
                         <div type="submit" class="subtask-oninput">
                             <img src="./assets/img/icon_clear.png" (click)="cancelSubtask()">
                             <img src="./assets/img/icon_done.png" (click)="confirmSubtask()">
                         </div>
                     </div>
                     <div class="dropdown-container" *ngIf="openSubtask">
-                        <div class="subtask" *ngFor="let subtask of subtasks; let s = index"
-                            attr.data-target="{{ s + 1 }}">
-                            <div class="subtask-text">{{ subtask }}</div>
+                        <div class="subtask-list-overflow">
+                            <div class="subtask" *ngFor="let subtask of subtasks; let s = index"
+                                attr.data-target="{{ s + 1 }}">
+                                <div class="subtask-text">{{ subtask }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="action-button-container">
                     <button (click)=" clearTaskForm()">Clear<img src="./assets/img/icon_close.png"></button>
-                    <button (click)="createTask()">Create Task<img
-                            src="./assets/img/icon_create.png"></button>
+                    <button (click)="createTask()">Create Task<img src="./assets/img/icon_create.png"></button>
                 </div>
             </div>
         </form>

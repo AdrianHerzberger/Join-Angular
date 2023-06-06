@@ -339,7 +339,7 @@ ul {
 #searchContacts {
     padding: 10px;
     border: none;
-    display: none;
+    display: block;
     border-bottom: 2px solid var(--c-lightblue);
     border-top: 2px solid var(--dimmed);
 }
@@ -347,13 +347,6 @@ ul {
 form div {
     width: 100%;
     position: relative;
-}
-
-form div>img {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    width: 15px;
 }
 
 form input {
@@ -364,8 +357,50 @@ form input {
     font-size: 1.2rem;
     font-family: "Inter", sans-serif;
     height: 2.8rem;
-    width: 100%;
 }
+
+.person-icon {
+    position: absolute;
+    right: 62px;
+    top: 50%;
+    width: 15px;
+}
+
+.mail-icon {
+    position: absolute;
+    right: 62px;
+    top: 50%;
+    width: 15px;
+}
+
+.phone-icon {
+    position: absolute;
+    right: 62px;
+    top: 50%;
+    width: 15px;
+}
+
+.person-icon-1 {
+    position: absolute;
+    right: 38px;
+    top: 50%;
+    width: 15px;
+}
+
+.mail-icon-1 {
+    position: absolute;
+    right: 38px;
+    top: 50%;
+    width: 15px;
+}
+
+.phone-icon-1 {
+    position: absolute;
+    right: 38px;
+    top: 50%;
+    width: 15px;
+}
+
 
 .button-container {
     margin-top: 2rem;
@@ -500,7 +535,7 @@ form input::placeholder {
 }
 
 .popup-container {
-    width: 80%;
+    width: 1000px;
     height: 800px;
     background-color: white;
     border-radius: 25px;
@@ -701,7 +736,19 @@ textarea:focus {
     width: 10px;
 }
 
-.dropdown-container {
+.dropdown-selection {
+    display: flex;
+    flex-direction: row;
+    
+    .drop-down {
+        position: absolute;
+        left: 413px;
+        top: 20px;
+        cursor: pointer;
+    }
+}
+
+.contact-list-overflow {
     background: white;
     border: 1px solid #ccc;
     border-radius: 0 0 7px 7px;
@@ -710,21 +757,22 @@ textarea:focus {
     overflow-y: auto;
 }
 
-.drop-down {
-    position: absolute;
-    left: 370px;
-    top: 20px;
-}
-
-.contactsDropdownContainer {
+.category-list-overflow {
     background: white;
     border: 1px solid #ccc;
     border-radius: 0 0 7px 7px;
     border-top: none;
-    max-height: 100px;
+    max-height: 150px;
     overflow-y: auto;
-    display: none;
-    margin-bottom: 1rem;
+}
+
+.subtask-list-overflow {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 0 0 7px 7px;
+    border-top: none;
+    max-height: 150px;
+    overflow-y: auto;
 }
 
 .colorContainer {
@@ -749,7 +797,8 @@ textarea:focus {
 
 .category,
 .contact,
-.subtasks {
+.subtasks,
+.assigned {
     cursor: pointer;
     font-size: 1.2rem;
     display: flex;
@@ -803,6 +852,7 @@ input[type="date"] {
 label {
     margin-bottom: 7px;
     font-size: 1.3rem;
+    padding-left: 5px;
 }
 
 label:nth-of-type(4) {
@@ -970,14 +1020,15 @@ input[type="checkbox"]:checked::before {
 .category-oninput {
     display: flex;
     align-items: center;
+    padding-right: 36px;
 }
 
 .subtask-oninput {
     display: flex;
     align-items: center;
     position: absolute;
-    top: 38%;
-    right: 20px;
+    top: 14px;
+    right: 16px;
 }
 
 .subtask-container {
@@ -996,7 +1047,6 @@ input[type="checkbox"]:checked::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 7px 0;
 }
 
 .category img {

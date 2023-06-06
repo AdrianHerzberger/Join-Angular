@@ -12,6 +12,12 @@
     }
 }
 
+ul {
+    padding: 0 !important;
+    list-style-type: none;
+    margin: 0;
+}
+
 .color-dot-red {
     width: 10px;
     height: 10px;
@@ -183,7 +189,7 @@ textarea:focus {
     width: 10px;
 }
 
-.dropdown-container {
+.contact-list-overflow {
     background: white;
     border: 1px solid #ccc;
     border-radius: 0 0 7px 7px;
@@ -192,24 +198,56 @@ textarea:focus {
     overflow-y: auto;
 }
 
-.drop-down {
-    position: absolute;
-    left: 370px;
-    top: 20px;
+.contact-box {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 15px 0 15px 7px;
 }
 
-.contactsDropdownContainer {
+.initials-container {
+    border-radius: 100%;
+    padding: 7px;
+    width: 30px;
+    height: 30px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1rem;
+}
+
+.dropdown-selection {
+    display: flex;
+    flex-direction: row;
+
+    .drop-down {
+        position: absolute;
+        left: 370px;
+        top: 20px;
+        cursor: pointer;
+    }
+}
+
+.category-list-overflow {
     background: white;
     border: 1px solid #ccc;
     border-radius: 0 0 7px 7px;
     border-top: none;
-    max-height: 100px;
+    max-height: 150px;
     overflow-y: auto;
-    display: none;
-    margin-bottom: 1rem;
 }
 
-.colorContainer {
+.subtask-list-overflow {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 0 0 7px 7px;
+    border-top: none;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.color-container {
     display: flex;
     margin-top: 1rem;
     width: 100%;
@@ -463,9 +501,9 @@ input[type="checkbox"]:checked::before {
 .subtask-oninput {
     display: flex;
     align-items: center;
-    position: relative;
-    top: 38%;
-    right: 20px;
+    position: absolute;
+    top: 14px;
+    right: 16px;
 }
 
 .subtask-container {
