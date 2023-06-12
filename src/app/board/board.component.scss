@@ -1,3 +1,9 @@
+ul {
+    padding: 0 !important;
+    list-style-type: none;
+    margin: 0;
+}
+
 .headline {
     height: 150px;
     display: flex;
@@ -135,6 +141,18 @@
         transition: all 225ms ease-in-out;
         box-shadow: 2px 11px 7px -6px #afafaf;
     }
+}
+
+.task {
+    width: 220px;
+    margin-top: 30px;
+    background-color: white;
+    border-radius: 18px;
+    padding: 13px;
+    font-size: .9rem;
+    border: 1px solid lightgray;
+    cursor: pointer;
+    box-sizing: border-box;
 }
 
 .plusButton {
@@ -389,6 +407,25 @@ textarea:focus {
     border-top: none;
     max-height: 150px;
     overflow-y: auto;
+}
+
+.contact-box {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 15px 0 15px 7px;
+}
+
+.initials-container {
+    border-radius: 100%;
+    padding: 7px;
+    width: 30px;
+    height: 30px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1rem;
 }
 
 .category-list-overflow {

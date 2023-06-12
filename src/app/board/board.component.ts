@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Firestore, collection, doc, updateDoc } from '@angular/fire/firestore';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';;
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Firestore, collection, doc, getDocs, query, updateDoc } from '@angular/fire/firestore';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+
 
 interface TaskInterface {
   title: string;
@@ -12,7 +14,6 @@ interface TaskInterface {
 }
 
 interface ContactsInterface {
-  tasks: any;
   name: string;
   email: string;
   phone: string;
@@ -20,10 +21,7 @@ interface ContactsInterface {
   selected: boolean;
   initials: any;
   color: any;
-}
-
-interface BoardInterface {
-
+  tasks: TaskInterface[] | undefined;
 }
 
 @Component({
@@ -33,6 +31,8 @@ interface BoardInterface {
 })
 
 export class BoardComponent implements OnInit {
+  @ViewChild('dropAreaOne', { static: true }) dropAreaOne!: ElementRef;
+
   taskForm!: FormGroup;
 
   contacts: ContactsInterface[] = [];
@@ -74,14 +74,38 @@ export class BoardComponent implements OnInit {
       newCategory: ['', Validators.required],
       newSubtask: ['', Validators.required],
     });
+    this.showContactTaskArray();
   }
+
+  drop(event: CdkDragDrop<any[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    }
+  }
+  
 
   searchTask() {
 
   }
 
-  addTask() {
-    this.addTaskToBoard = true;
+  addTask(section: string) {
+    if (section === 'todo'|| this.dropAreaOne) {
+      const cardsTodo = this.dropAreaOne.nativeElement;
+      cardsTodo.classList.add('task-card');
+      this.addTaskToBoard = true;  
+    } else if (section === 'inProgress') {
+      this.addTaskToBoard = true;
+    } else if (section === 'awaitingFeedback') {
+      this.addTaskToBoard = true;
+    } else if (section === 'done') {
+      this.addTaskToBoard = true;
+    } else if (section === 'generell') {
+      this.addTaskToBoard = true;
+    }
   }
 
   cancelCategory() {
@@ -158,6 +182,21 @@ export class BoardComponent implements OnInit {
     };
   }
 
+  createInitials(name: string) {
+    let matches = name.match(/\b\w/g) || [];
+    return (
+      (matches[0] || "") + (matches[matches.length - 1] || "")
+    ).toUpperCase();
+  }
+
+  newColor() {
+    var randomColor = "#000000".replace(/0/g, () => {
+      return (~~(Math.random() * 16)).toString(16);
+    });
+
+    return randomColor;
+  }
+
   selectColor(index: number) {
     this.selectedTargetIndex = index;
   }
@@ -223,6 +262,39 @@ export class BoardComponent implements OnInit {
 
       this.taskForm.reset();
       this.addTaskToBoard = false;
+    }
+  }
+
+  async showContactTaskArray() {
+    if (this.contactInList !== null) {
+      try {
+        const contactsCollection = collection(this.firestore, 'contacts');
+        const q = query(contactsCollection);
+        const querySnapshotfromContacts = await getDocs(q);
+
+        const storedContactData: ContactsInterface[] = [];
+
+        querySnapshotfromContacts.forEach((doc) => {
+          const data = doc.data();
+          const { name, email, phone } = data;
+          const contact: ContactsInterface = {
+            id: doc.id,
+            name: name,
+            email: email,
+            phone: phone,
+            selected: false,
+            initials: this.createInitials(name),
+            color: this.newColor(),
+            tasks: undefined
+          };
+          storedContactData.push(contact);
+        });
+
+        this.contacts = storedContactData;
+
+      } catch (error) {
+        console.log('Error logging in:', error);
+      }
     }
   }
 
