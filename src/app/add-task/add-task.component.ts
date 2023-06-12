@@ -51,7 +51,7 @@ export class AddTaskComponent implements OnInit {
   selectedTargetIndex: number = -1;
 
   createdTaskArray:TaskInterface[] = [];
-  tasks: any;
+
 
   constructor(
     private firestore: Firestore,
@@ -66,7 +66,6 @@ export class AddTaskComponent implements OnInit {
       newCategory: ['', [Validators.required]],
       newSubtask: ['', [Validators.required]]
     });
-    this.getContactColor();
     this.showContactTaskArray();
   }
 
@@ -193,15 +192,15 @@ export class AddTaskComponent implements OnInit {
 
         querySnapshotfromContacts.forEach((doc) => {
           const data = doc.data();
-          const { name, email, phone, color, initials } = data;
+          const { name, email, phone } = data;
           const contact: ContactsInterface = {
             id: doc.id,
             name: name,
             email: email,
             phone: phone,
             selected: false,
-            color: color,
-            initials: initials,
+            initials: this.createInitials(name),
+            color: this.newColor(),
             tasks: undefined
           };
           storedContactData.push(contact);
@@ -215,25 +214,19 @@ export class AddTaskComponent implements OnInit {
     }
   }
 
-  async getContactColor() {
-    try {
-      const contactColors = collection(this.firestore, 'contacts');
-      const q = query(contactColors);
-      const querySnapshotContactColors = await getDocs(q);
+  createInitials(name: string) {
+    let matches = name.match(/\b\w/g) || [];
+    return (
+      (matches[0] || "") + (matches[matches.length - 1] || "")
+    ).toUpperCase();
+  }
 
+  newColor() {
+    var randomColor = "#000000".replace(/0/g, () => {
+      return (~~(Math.random() * 16)).toString(16);
+    });
 
-      querySnapshotContactColors.forEach((doc) => {
-        this.tasks.forEach((task: TaskInterface) => {
-          const taskColor = task.color; 
-          // Do something with the task color
-          console.log(taskColor);
-        });
-      })
-      
-
-    } catch {
-
-    }
+    return randomColor;
   }
 
   async createTask() {
