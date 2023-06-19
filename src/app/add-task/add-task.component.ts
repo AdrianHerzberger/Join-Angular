@@ -52,7 +52,6 @@ export class AddTaskComponent implements OnInit {
 
   createdTaskArray:TaskInterface[] = [];
 
-
   constructor(
     private firestore: Firestore,
     private fb: FormBuilder,

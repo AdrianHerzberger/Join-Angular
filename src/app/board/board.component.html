@@ -32,15 +32,21 @@
                         </svg>
                     </div>
                 </div>
-                <div *ngFor="let contact of contacts" class="task" cdkDrag>
-                    <div class="title-1 title">{{ contact.name }}</div>
-                    <div class="task-area" cdkDropList (cdkDropListDropped)="drop($event)">
-                      <div *ngFor="let task of contact.tasks" cdkDrag>
-                        <div class="task-title">{{ task.title }}</div>
-                        <div class="task-description">{{ task.description }}</div>
-                      </div>
-                    </div>
-                </div>      
+                <div *ngIf="dropAreaOneClicked">
+                    <div *ngFor="let contact of contacts" class="task">
+                        <div class="title-1 title">{{ contact.name }}</div>
+                        <div class="task-area">
+                            <div *ngFor="let task of contact.tasks">
+                                <div class="task-title">{{ task.title }}</div>
+                                <div class="task-description">{{ task.description }}</div>
+                                <div class="task-date">{{ task.date }}</div>
+                                <div class="task-category">{{ task.newCategory }}</div>
+                                <div class="task-subtask">{{ task.newSubtask }}</div>
+                                <div class="task-color">{{ task.color }}</div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>            
             </div>
             <div #dropAreaTwo class="drag-drop-area-2 drag-drop-containers">
                 <div class="title-2 title">

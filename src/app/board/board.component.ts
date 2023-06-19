@@ -1,8 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Firestore, collection, doc, getDocs, query, updateDoc } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-
+import { BoardService } from '../services/board.service';
 
 interface TaskInterface {
   title: string;
@@ -21,7 +20,7 @@ interface ContactsInterface {
   selected: boolean;
   initials: any;
   color: any;
-  tasks: TaskInterface[] | undefined;
+  tasks: TaskInterface[];
 }
 
 @Component({
@@ -31,8 +30,6 @@ interface ContactsInterface {
 })
 
 export class BoardComponent implements OnInit {
-  @ViewChild('dropAreaOne', { static: true }) dropAreaOne!: ElementRef;
-
   taskForm!: FormGroup;
 
   contacts: ContactsInterface[] = [];
@@ -61,6 +58,8 @@ export class BoardComponent implements OnInit {
   selectedColorClass: string = '';
   selectedTargetIndex: number = -1;
 
+  dropAreaOneClicked: boolean =  false;
+
   constructor(
     private firestore: Firestore,
     private fb: FormBuilder
@@ -77,32 +76,32 @@ export class BoardComponent implements OnInit {
     this.showContactTaskArray();
   }
 
-  drop(event: CdkDragDrop<any[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    }
-  }
-  
-
   searchTask() {
 
   }
 
   addTask(section: string) {
-    if (section === 'todo'|| this.dropAreaOne) {
-      const cardsTodo = this.dropAreaOne.nativeElement;
-      cardsTodo.classList.add('task-card');
+    if (section === 'todo') {
+      /* const dropAreaOneElement = this.dropAreaOne.nativeElement;
+      dropAreaOneElement.classList.add('task-card-board'); */
+      this.dropAreaOneClicked = true;
       this.addTaskToBoard = true;  
+
     } else if (section === 'inProgress') {
+      /* const dropAreaTwoElement = this.dropAreaTwo.nativeElement;
+      dropAreaTwoElement.classList.add('task-card-board'); */
       this.addTaskToBoard = true;
+
     } else if (section === 'awaitingFeedback') {
-      this.addTaskToBoard = true;
+      /* const dropAreaThreeElement = this.dropAreaThree.nativeElement;
+      dropAreaThreeElement.classList.add('task-card-board'); */
+      this.addTaskToBoard = true;  
+
     } else if (section === 'done') {
-      this.addTaskToBoard = true;
+     /*  const dropAreaFourElement = this.dropAreaFour.nativeElement;
+      dropAreaFourElement.classList.add('task-card-board'); */
+      this.addTaskToBoard = true;  
+
     } else if (section === 'generell') {
       this.addTaskToBoard = true;
     }
@@ -285,7 +284,7 @@ export class BoardComponent implements OnInit {
             selected: false,
             initials: this.createInitials(name),
             color: this.newColor(),
-            tasks: undefined
+            tasks: this.tasks || [], 
           };
           storedContactData.push(contact);
         });
