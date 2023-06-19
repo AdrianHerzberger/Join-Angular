@@ -3,7 +3,6 @@ import { Firestore, addDoc, collection, getDocs, query } from '@angular/fire/fir
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 interface ContactsInterface {
-  tasks: any;
   name: string;
   email: string;
   phone: string;
@@ -200,13 +199,11 @@ export class AddTaskComponent implements OnInit {
             selected: false,
             initials: this.createInitials(name),
             color: this.newColor(),
-            tasks: undefined
           };
           storedContactData.push(contact);
-        });
-
+        }); 
         this.contacts = storedContactData;
-
+        console.log(storedContactData);
       } catch (error) {
         console.log('Error logging in:', error);
       }

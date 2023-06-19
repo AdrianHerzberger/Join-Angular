@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Firestore, collection, doc, getDocs, query, updateDoc } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BoardService } from '../services/board.service';
+import { TaskService } from '../services/task.service';
 
 interface TaskInterface {
   title: string;
@@ -20,7 +20,7 @@ interface ContactsInterface {
   selected: boolean;
   initials: any;
   color: any;
-  tasks: TaskInterface[];
+  tasks: TaskInterface[] | null;
 }
 
 @Component({
@@ -63,7 +63,7 @@ export class BoardComponent implements OnInit {
   constructor(
     private firestore: Firestore,
     private fb: FormBuilder,
-    private boardService: BoardService,
+    public taskService: TaskService,
   ) { }
 
   ngOnInit(): void {
@@ -74,12 +74,13 @@ export class BoardComponent implements OnInit {
       newCategory: ['', Validators.required],
       newSubtask: ['', Validators.required],
     });
-    this.showContactTaskArray();
+    this.showContactInTaskForm();
+    this.showTaskskInBoard();
     this.getTaskService();
   }
 
   getTaskService(): void {
-    this.boardService.getTasks();
+    this.taskService.getTaskData();
   }
 
   searchTask() {
@@ -270,7 +271,7 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  async showContactTaskArray() {
+  async showContactInTaskForm() {
     if (this.contactInList !== null) {
       try {
         const contactsCollection = collection(this.firestore, 'contacts');
@@ -281,7 +282,7 @@ export class BoardComponent implements OnInit {
 
         querySnapshotfromContacts.forEach((doc) => {
           const data = doc.data();
-          const { name, email, phone, tasks } = data;
+          const { name, email, phone} = data;
           const contact: ContactsInterface = {
             id: doc.id,
             name: name,
@@ -301,6 +302,34 @@ export class BoardComponent implements OnInit {
       } catch (error) {
         console.log('Error logging in:', error);
       }
+    }
+  }
+
+  async showTaskskInBoard() {
+    try {
+      const taskCollection = collection(this.firestore, 'tasks');
+      const q = query(taskCollection);
+      const querySnapshotfromTasks = await getDocs(q);
+
+      const storedTaskData: TaskInterface[] = [];
+
+      querySnapshotfromTasks.forEach((doc) => {
+        const data = doc.data();
+        const { newCategory, title, description, date, newSubtask, color } = data;
+        const task: TaskInterface = {
+          newCategory: newCategory,
+          title: title,
+          description: description,
+          date: date,
+          newSubtask: newSubtask,
+          color: color,
+        }
+        storedTaskData.push(task);
+        console.log(storedTaskData);
+      })
+
+    } catch (error) {
+      console.log('Error logging tasks:', error);
     }
   }
 }

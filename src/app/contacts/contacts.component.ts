@@ -42,7 +42,7 @@ export class ContactsComponent implements OnInit {
   updatedContacts: boolean = false;
   contactInList: boolean = true;
 
-  addTaskToContact: boolean = true;
+  addTaskToContact: boolean = false;
   openCategory: boolean = false;
 
   openSubtask: boolean = false;

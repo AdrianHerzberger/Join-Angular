@@ -4,24 +4,24 @@ import { Firestore, collection, doc, getDocs, query, updateDoc } from '@angular/
 @Injectable({
   providedIn: 'root'
 })
-export class BoardService {
+export class ContactService {
 
-  arrayBoardServie: { [key: string]: any }[] = [];
+  Data_Contacts_All: { [key: string]: any }[] = [];
 
   constructor(
     private firestore: Firestore,
   ) { }
 
-  async getTasks() {
+  async getContactData() {
     const contactsCollection = collection(this.firestore, 'contacts');
     const q = query(contactsCollection);
     const querySnapshotFromContacts = await getDocs(q);
 
     querySnapshotFromContacts.forEach((doc) => {
       const data = doc.data();
-      this.arrayBoardServie.push(data);
+      this.Data_Contacts_All.push(data);
     });
 
-    console.log(this.arrayBoardServie);
+    console.log(this.Data_Contacts_All);
   }
 }
