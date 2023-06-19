@@ -62,7 +62,8 @@ export class BoardComponent implements OnInit {
 
   constructor(
     private firestore: Firestore,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private boardService: BoardService,
   ) { }
 
   ngOnInit(): void {
@@ -74,6 +75,11 @@ export class BoardComponent implements OnInit {
       newSubtask: ['', Validators.required],
     });
     this.showContactTaskArray();
+    this.getTaskService();
+  }
+
+  getTaskService(): void {
+    this.boardService.getTasks();
   }
 
   searchTask() {
@@ -256,7 +262,7 @@ export class BoardComponent implements OnInit {
 
       const contactsCollectionRef = collection(this.firestore, 'contacts');
       await updateDoc(doc(contactsCollectionRef, this.selectedContact.id), {
-        tasks: this.selectedContact.tasks,
+        tasks: this.selectedContact.tasks
       });
 
       this.taskForm.reset();
@@ -275,7 +281,7 @@ export class BoardComponent implements OnInit {
 
         querySnapshotfromContacts.forEach((doc) => {
           const data = doc.data();
-          const { name, email, phone } = data;
+          const { name, email, phone, tasks } = data;
           const contact: ContactsInterface = {
             id: doc.id,
             name: name,
@@ -284,17 +290,17 @@ export class BoardComponent implements OnInit {
             selected: false,
             initials: this.createInitials(name),
             color: this.newColor(),
-            tasks: this.tasks || [], 
+            tasks: this.tasks || []
           };
           storedContactData.push(contact);
         });
 
         this.contacts = storedContactData;
+        console.log(storedContactData);
 
       } catch (error) {
         console.log('Error logging in:', error);
       }
     }
   }
-
 }
