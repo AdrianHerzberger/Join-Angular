@@ -1,9 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Firestore, collection, doc, getDocs, query, updateDoc } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TaskService } from '../services/task.service';
 
 interface TaskInterface {
+  id?: string;
+  status?: string;
   title: string;
   description: string;
   date: Date | string;
@@ -20,7 +21,7 @@ interface ContactsInterface {
   selected: boolean;
   initials: any;
   color: any;
-  tasks: TaskInterface[] | null;
+  tasks: TaskInterface[];
 }
 
 @Component({
@@ -30,6 +31,8 @@ interface ContactsInterface {
 })
 
 export class BoardComponent implements OnInit {
+  @ViewChildren('dap') levels!: QueryList<ElementRef>;
+
   taskForm!: FormGroup;
 
   contacts: ContactsInterface[] = [];
@@ -41,7 +44,7 @@ export class BoardComponent implements OnInit {
   editContacts: boolean = false;
   updatedContacts: boolean = false;
   contactInList: boolean = true;
-  openAssignedTo:boolean = false;
+  openAssignedTo: boolean = false;
   addTaskToBoard: boolean = false;
   openCategory: boolean = false;
 
@@ -58,12 +61,12 @@ export class BoardComponent implements OnInit {
   selectedColorClass: string = '';
   selectedTargetIndex: number = -1;
 
-  dropAreaOneClicked: boolean =  false;
+  dropAreaOneClicked: boolean = false;
+  dragEl: HTMLElement | null = null;
 
   constructor(
     private firestore: Firestore,
     private fb: FormBuilder,
-    public taskService: TaskService,
   ) { }
 
   ngOnInit(): void {
@@ -74,40 +77,98 @@ export class BoardComponent implements OnInit {
       newCategory: ['', Validators.required],
       newSubtask: ['', Validators.required],
     });
-    this.showContactInTaskForm();
-    this.showTaskskInBoard();
-    this.getTaskService();
+    this.showAllDataInBoard();
+    this.showContactsWithTasks();
   }
 
-  getTaskService(): void {
-    this.taskService.getTaskData();
+  ngAfterViewInit() {
+    if (this.levels['_results']) {
+      var items = this.levels['_results'].map((el: any) => el.nativeElement);
+
+      items.forEach((item: HTMLElement) => {
+        item.addEventListener('dragstart', (e: DragEvent) => this.handleDragStart(e, item));
+        item.addEventListener('dragenter', (e: DragEvent) => this.handleDragEnter(e, item));
+        item.addEventListener('dragover', this.handleDragOver.bind(this));
+        item.addEventListener('dragleave', (e: DragEvent) => this.handleDragLeave(e, item));
+        item.addEventListener('drop', (e: DragEvent) => this.handleDrop(e, item));
+        item.addEventListener('dragend', (e: DragEvent) => this.handleDragEnd(e, item));
+      });
+
+    }
   }
 
-  searchTask() {
+  handleDragStart(e: DragEvent, item: HTMLElement) {
+    this.dragEl = item;
+    if (this.dragEl) {
+      this.dragEl.style.opacity = '0.4';
+      e.dataTransfer!.effectAllowed = 'move';
+      e.dataTransfer!.setData('text', this.dragEl.innerHTML);
+    }
+  }
+  
+  handleDragOver(e: DragEvent) {
+    e.preventDefault();
+    e.dataTransfer!.dropEffect = 'move';
+  }
 
+  handleDragEnter(_e: DragEvent, item: HTMLElement) {
+    item.classList.add('over');
+  }
+
+
+  handleDragLeave(_e: DragEvent, item: HTMLElement) {
+    item.classList.remove('over');
+  }
+
+  handleDrop(e: DragEvent, item: HTMLElement) {
+    e.preventDefault();
+    if (this.dragEl && this.dragEl !== item) {
+      var draggedTaskId = this.dragEl.id;
+      var droppedTaskId = item.id;
+  
+      var draggedTask = this.tasks.find((task) => task.id === draggedTaskId);
+      var droppedTask = this.tasks.find((task) => task.id === droppedTaskId);
+  
+      if (draggedTask && droppedTask) {
+        var draggedTaskStatus = draggedTask.status;
+        draggedTask.status = droppedTask.status;
+        droppedTask.status = draggedTaskStatus;
+      }
+  
+      item.innerHTML = this.dragEl.innerHTML;
+      this.dragEl.innerHTML = e.dataTransfer!.getData('text');
+    }
+    item.classList.remove('over');
+  }
+  
+  handleDragEnd(_e: DragEvent, item: HTMLElement) {
+    item.style.opacity = '1';
   }
 
   addTask(section: string) {
     if (section === 'todo') {
-      /* const dropAreaOneElement = this.dropAreaOne.nativeElement;
-      dropAreaOneElement.classList.add('task-card-board'); */
       this.dropAreaOneClicked = true;
-      this.addTaskToBoard = true;  
-
+      this.addTaskToBoard = true;
+      const todoId = 'todo';
+      const task: TaskInterface = {
+        id: todoId,
+        title: this.taskForm.value.title,
+        description: this.taskForm.value.description,
+        date: this.taskForm.value.date,
+        newCategory: this.taskForm.value.newCategory,
+        newSubtask: this.taskForm.value.newSubtask,
+        color: this.selectedContact?.color,
+      };
+      this.selectedContact?.tasks.push(task);
+      console.log(this.selectedContact);
     } else if (section === 'inProgress') {
-      /* const dropAreaTwoElement = this.dropAreaTwo.nativeElement;
-      dropAreaTwoElement.classList.add('task-card-board'); */
       this.addTaskToBoard = true;
 
     } else if (section === 'awaitingFeedback') {
-      /* const dropAreaThreeElement = this.dropAreaThree.nativeElement;
-      dropAreaThreeElement.classList.add('task-card-board'); */
-      this.addTaskToBoard = true;  
+      this.addTaskToBoard = true;
 
     } else if (section === 'done') {
-     /*  const dropAreaFourElement = this.dropAreaFour.nativeElement;
-      dropAreaFourElement.classList.add('task-card-board'); */
-      this.addTaskToBoard = true;  
+      this.addTaskToBoard = true;
 
     } else if (section === 'generell') {
       this.addTaskToBoard = true;
@@ -271,7 +332,7 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  async showContactInTaskForm() {
+  async showAllDataInBoard() {
     if (this.contactInList !== null) {
       try {
         const contactsCollection = collection(this.firestore, 'contacts');
@@ -282,7 +343,7 @@ export class BoardComponent implements OnInit {
 
         querySnapshotfromContacts.forEach((doc) => {
           const data = doc.data();
-          const { name, email, phone} = data;
+          const { name, email, phone, tasks } = data;
           const contact: ContactsInterface = {
             id: doc.id,
             name: name,
@@ -291,7 +352,7 @@ export class BoardComponent implements OnInit {
             selected: false,
             initials: this.createInitials(name),
             color: this.newColor(),
-            tasks: this.tasks || []
+            tasks: tasks || []
           };
           storedContactData.push(contact);
         });
@@ -305,31 +366,18 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  async showTaskskInBoard() {
-    try {
-      const taskCollection = collection(this.firestore, 'tasks');
-      const q = query(taskCollection);
-      const querySnapshotfromTasks = await getDocs(q);
-
-      const storedTaskData: TaskInterface[] = [];
-
-      querySnapshotfromTasks.forEach((doc) => {
-        const data = doc.data();
-        const { newCategory, title, description, date, newSubtask, color } = data;
-        const task: TaskInterface = {
-          newCategory: newCategory,
-          title: title,
-          description: description,
-          date: date,
-          newSubtask: newSubtask,
-          color: color,
-        }
-        storedTaskData.push(task);
-        console.log(storedTaskData);
-      })
-
-    } catch (error) {
-      console.log('Error logging tasks:', error);
-    }
+  async showContactsWithTasks() {
+    await this.showAllDataInBoard();
+    this.tasks = [];
+    this.contacts.forEach(contact => {
+      if (contact.tasks) {
+        this.tasks.push(...contact.tasks);
+      }
+    });
   }
+
+  searchTask() {
+
+  }
+
 }

@@ -1,27 +1,48 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, doc, getDocs, query, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, getDocs, query } from '@angular/fire/firestore';
+
+interface TaskInterface {
+  title: string;
+  description: string;
+  date: Date | string;
+  newCategory: string;
+  newSubtask: string;
+  color: any;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
+  tasks: TaskInterface[] = [];
 
-  Data_Tasks: { [key: string]: any }[] = [];
-  
-  constructor(
-    private firestore: Firestore,
-  ) { }
+  constructor(public firestore: Firestore) {}
 
   async getTaskData() {
-    const taskCollection = collection(this.firestore, 'tasks');
-    const q = query(taskCollection);
-    const querySnapshotFromTasks = await getDocs(q);
+    try {
+      const taskCollection = collection(this.firestore, 'tasks');
+      const q = query(taskCollection);
+      const querySnapshotfromTasks = await getDocs(q);
 
-    querySnapshotFromTasks.forEach((doc) => {
-      const data = doc.data();
-      this.Data_Tasks.push(data);
-    });
+      const storedTaskData: TaskInterface[] = [];
 
-    console.log(this.Data_Tasks);
+      querySnapshotfromTasks.forEach((doc) => {
+        const data = doc.data();
+        const { newCategory, title, description, date, newSubtask, color } = data;
+        const task: TaskInterface = {
+          newCategory: newCategory,
+          title: title,
+          description: description,
+          date: date,
+          newSubtask: newSubtask,
+          color: color,
+        }
+        storedTaskData.push(task);
+        console.log(storedTaskData);
+      })
+
+    } catch (error) {
+      console.log('Error logging tasks:', error);
+    }
   }
 }

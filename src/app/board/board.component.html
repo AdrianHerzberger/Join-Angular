@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="tasks-board">
-            <div #dropAreaOne class="drag-drop-area-1 drag-drop-containers">
+            <div id="todo" class="drag-drop-containers">
                 <div class="title-1 title">
                     <div>To do</div>
                     <div (click)="addTask('todo')">
@@ -32,20 +32,22 @@
                         </svg>
                     </div>
                 </div>
-                <div>
-                    <div *ngFor="let task of tasks" class="task">
-                        <div class="title-1 title">{{ task.title }}</div>
-                        <div class="task-area">
-                            <div class="task-description">{{ task.description }}</div>
-                            <div class="task-date">{{ task.date }}</div>
-                            <div class="task-category">{{ task.newCategory }}</div>
-                            <div class="task-subtask">{{ task.newSubtask }}</div>
-                            <div class="task-color">{{ task.color }}</div>
-                        </div>
+                <div *ngFor="let task of tasks" class="task" id="{{ task.id }}" #dap draggable="true">
+                    <div class="task-area">                       
+                        <div class="task-category" [style.background]="task.color">{{ task.newCategory }}</div>
+                        <div class="task-subtask">{{ task.newSubtask }}</div>
+                        <div class="task-description">{{ task.description }}</div>
+                    </div>
+                    <div class="status">
+                        <div class="status-bar"></div>
+                        <div></div>
+                    </div>
+                    <div class="contact-icons">
+
                     </div>
                 </div>
             </div>
-            <div #dropAreaTwo class="drag-drop-area-2 drag-drop-containers">
+            <div id="inProgress" class="drag-drop-containers">
                 <div class="title-2 title">
                     <div class="title-task-area">In progress</div>
                     <div (click)="addTask('inProgress')">
@@ -58,12 +60,22 @@
                         </svg>
                     </div>
                 </div>
-                <div id="taskArea-2" class="tasks-area-2 task-area" ondragleave="ondragLeave('taskArea-2')"
-                    ondragenter="ondragEnter('taskArea-2')" ondragend="finishedDragging()"
-                    ondrop="moveTo('inProgress',event,'taskArea-2')" ondragover="allowDrop(event)">
+                <div *ngFor="let task of tasks" class="task" #dap draggable="true">
+                    <div class="task-area">                       
+                        <div class="task-category" [style.background]="task.color">{{ task.newCategory }}</div>
+                        <div class="task-subtask">{{ task.newSubtask }}</div>
+                        <div class="task-description">{{ task.description }}</div>
+                    </div>
+                    <div class="status">
+                        <div class="status-bar"></div>
+                        <div></div>
+                    </div>
+                    <div class="contact-icons">
+
+                    </div>
                 </div>
             </div>
-            <div #dropAreaThree class="drag-drop-area-3 drag-drop-containers">
+            <div id="awaitingFeedback" class="drag-drop-containers">
                 <div class="title-3 title">
                     <div>Await Feedback</div>
                     <div (click)="addTask('awaitingFeedback')">
@@ -76,12 +88,22 @@
                         </svg>
                     </div>
                 </div>
-                <div id="taskArea-3" class="tasks-area-3 task-area" ondragleave="ondragLeave('taskArea-3')"
-                    ondragenter="ondragEnter('taskArea-3')" ondragend="finishedDragging()"
-                    ondrop="moveTo('awaitingFeedback',event,'taskArea-3')" ondragover="allowDrop(event)">
+                <div *ngFor="let task of tasks" class="task" #dap draggable="true">
+                    <div class="task-area">                       
+                        <div class="task-category" [style.background]="task.color">{{ task.newCategory }}</div>
+                        <div class="task-subtask">{{ task.newSubtask }}</div>
+                        <div class="task-description">{{ task.description }}</div>
+                    </div>
+                    <div class="status">
+                        <div class="status-bar"></div>
+                        <div></div>
+                    </div>
+                    <div class="contact-icons">
+
+                    </div>
                 </div>
             </div>
-            <div #dropAreaFour class="drag-drop-area-4 drag-drop-containers">
+            <div id="done" class="drag-drop-containers">
                 <div class="title-4 title">
                     <div>Done</div>
                     <div (click)="addTask('done')">
@@ -94,9 +116,19 @@
                         </svg>
                     </div>
                 </div>
-                <div id="taskArea-4" class="tasks-area-4 task-area" ondragleave="ondragLeave('taskArea-4')"
-                    ondragenter="ondragEnter('taskArea-4')" ondragend="finishedDragging()"
-                    ondrop="moveTo('done',event,'taskArea-4')" ondragover="allowDrop(event)">
+                <div *ngFor="let task of tasks" class="task" #dap draggable="true">
+                    <div class="task-area">                       
+                        <div class="task-category" [style.background]="task.color">{{ task.newCategory }}</div>
+                        <div class="task-subtask">{{ task.newSubtask }}</div>
+                        <div class="task-description">{{ task.description }}</div>
+                    </div>
+                    <div class="status">
+                        <div class="status-bar"></div>
+                        <div></div>
+                    </div>
+                    <div class="contact-icons">
+
+                    </div>
                 </div>
             </div>
         </div>

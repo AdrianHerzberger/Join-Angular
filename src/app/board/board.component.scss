@@ -121,7 +121,39 @@ ul {
 
 .task-area {
     box-sizing: border-box;
-    padding-bottom: 200px;
+}
+
+.task-category {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding: 7px;
+    border-radius: 10px;
+    max-width: 100px;
+    color: var(--bg-body);
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.task-subtask {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--c-darkblue);
+    padding: 7px;
+}
+
+.task-description {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--dimmed);
+    padding: 7px;
 }
 
 .add-task-btn-board {
@@ -145,6 +177,7 @@ ul {
 
 .task {
     width: 220px;
+    height: 160px;
     margin-top: 30px;
     background-color: white;
     border-radius: 18px;
@@ -153,6 +186,11 @@ ul {
     border: 1px solid lightgray;
     cursor: pointer;
     box-sizing: border-box;
+    cursor: move;
+
+    &:hover {
+        border: 3px solid var(--c-lightblue)
+    }
 }
 
 .plusButton {
@@ -391,7 +429,7 @@ textarea:focus {
 .dropdown-selection {
     display: flex;
     flex-direction: row;
-    
+
     .drop-down {
         position: absolute;
         left: 413px;
