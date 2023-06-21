@@ -61,7 +61,6 @@ export class BoardComponent implements OnInit {
   selectedColorClass: string = '';
   selectedTargetIndex: number = -1;
 
-  dropAreaOneClicked: boolean = false;
   dragEl: HTMLElement | null = null;
 
   constructor(
@@ -93,7 +92,6 @@ export class BoardComponent implements OnInit {
         item.addEventListener('drop', (e: DragEvent) => this.handleDrop(e, item));
         item.addEventListener('dragend', (e: DragEvent) => this.handleDragEnd(e, item));
       });
-
     }
   }
 
@@ -146,32 +144,34 @@ export class BoardComponent implements OnInit {
   }
 
   addTask(section: string) {
+    /* debugger */
     if (section === 'todo') {
-      this.dropAreaOneClicked = true;
       this.addTaskToBoard = true;
       const todoId = 'todo';
-      const task: TaskInterface = {
-        id: todoId,
-        title: this.taskForm.value.title,
-        description: this.taskForm.value.description,
-        date: this.taskForm.value.date,
-        newCategory: this.taskForm.value.newCategory,
-        newSubtask: this.taskForm.value.newSubtask,
-        color: this.selectedContact?.color,
-      };
-      this.selectedContact?.tasks.push(task);
-      console.log(this.selectedContact);
+      if(section === todoId) {
+        this.createTask(todoId);
+      }
     } else if (section === 'inProgress') {
       this.addTaskToBoard = true;
-
+      const inProgressId = 'inProgress';
+      if(section === inProgressId) {
+        this.createTask(inProgressId);
+      }
     } else if (section === 'awaitingFeedback') {
       this.addTaskToBoard = true;
-
+      const awaitingFeedbackId = 'awaitingFeedback';
+      if(section === awaitingFeedbackId) {
+        this.createTask(awaitingFeedbackId);
+      }
     } else if (section === 'done') {
       this.addTaskToBoard = true;
-
+      const doneId = 'done';
+      if(section === doneId) {
+        this.createTask(doneId);
+      }
     } else if (section === 'generell') {
       this.addTaskToBoard = true;
+      this.createTask('')
     }
   }
 
@@ -307,9 +307,10 @@ export class BoardComponent implements OnInit {
     this.taskForm.reset();
   }
 
-  async createTask() {
+  async createTask(id: string) {
     if (this.taskForm.valid && this.selectedContact) {
       const task: TaskInterface = {
+        id: id,
         title: this.taskForm.value.title,
         description: this.taskForm.value.description,
         date: this.taskForm.value.date,
