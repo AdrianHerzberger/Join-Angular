@@ -144,34 +144,24 @@ export class BoardComponent implements OnInit {
   }
 
   addTask(section: string) {
-    /* debugger */
+    let id: string = '';
+    this.addTaskToBoard = true;
+  
     if (section === 'todo') {
-      this.addTaskToBoard = true;
-      const todoId = 'todo';
-      if(section === todoId) {
-        this.createTask(todoId);
-      }
+      id = 'todo';
+      this.createTask(id);
     } else if (section === 'inProgress') {
-      this.addTaskToBoard = true;
-      const inProgressId = 'inProgress';
-      if(section === inProgressId) {
-        this.createTask(inProgressId);
-      }
+      id = 'inProgress';
+      this.createTask(id);
     } else if (section === 'awaitingFeedback') {
-      this.addTaskToBoard = true;
-      const awaitingFeedbackId = 'awaitingFeedback';
-      if(section === awaitingFeedbackId) {
-        this.createTask(awaitingFeedbackId);
-      }
+      id = 'awaitingFeedback';
+      this.createTask(id);
     } else if (section === 'done') {
-      this.addTaskToBoard = true;
-      const doneId = 'done';
-      if(section === doneId) {
-        this.createTask(doneId);
-      }
+      id = 'done';
+      this.createTask(id);
     } else if (section === 'generell') {
-      this.addTaskToBoard = true;
-      this.createTask('')
+      id = 'generell';
+      this.createTask(id);
     }
   }
 
@@ -318,16 +308,16 @@ export class BoardComponent implements OnInit {
         newSubtask: this.taskForm.value.newSubtask,
         color: this.selectedContact.color,
       }
-
+  
       this.selectedContact.tasks = this.selectedContact.tasks || [];
       this.selectedContact.tasks.push(task);
       console.log(this.selectedContact);
-
+  
       const contactsCollectionRef = collection(this.firestore, 'contacts');
       await updateDoc(doc(contactsCollectionRef, this.selectedContact.id), {
         tasks: this.selectedContact.tasks
       });
-
+  
       this.taskForm.reset();
       this.addTaskToBoard = false;
     }
