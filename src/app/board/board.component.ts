@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Firestore, addDoc, collection, doc, getDocs, query, updateDoc } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -41,6 +41,7 @@ export class BoardComponent implements OnInit {
   selectedContact: ContactsInterface | null | undefined = null;
 
   tasks: TaskInterface[] = [];
+  contactsToView: TaskInterface[] = [];
 
   addContacts: boolean = false;
   editContacts: boolean = false;
@@ -66,7 +67,6 @@ export class BoardComponent implements OnInit {
   dragEl: HTMLElement | null = null;
 
   id: string = '';
-  contactsView: any[] = [];
 
   constructor(
     private firestore: Firestore,
@@ -84,8 +84,8 @@ export class BoardComponent implements OnInit {
     this.showAllDataInBoard();
     this.showContactsWithTasks();
     this.getContactsInTaskView()
-      .then((result) => {
-        this.contactsView = result;
+    .then((result) => {
+      this.contactsToView = result;
     });
   }
 
@@ -151,24 +151,7 @@ export class BoardComponent implements OnInit {
   handleDragEnd(_e: DragEvent, item: HTMLElement) {
     item.style.opacity = '1';
   }
-
-  getContactsInTaskView(): Promise<any[]> {
-    const tasksCollectionRef = collection(this.firestore, 'tasks');
-    return getDocs(tasksCollectionRef)
-      .then((querySnapshot) => {
-        this.tasks = querySnapshot.docs.map((doc) => doc.data() as TaskInterface);
-        console.log(this.tasks);
-        const newContactsView = this.contacts.slice(0, 2).map((contact) => {
-          return {
-            id: contact.id,
-            initials: contact.initials,
-            color: contact.color
-          };
-        });
-        return newContactsView;
-      });
-  }
-
+  
   addTask(section: string) {
     this.addTaskToBoard = true;
     if (section === 'todo') {
@@ -394,6 +377,25 @@ export class BoardComponent implements OnInit {
         this.tasks.push(...contact.tasks);
       }
     });
+  }
+
+  async getContactsInTaskView() {
+    const tasksCollectionRef = collection(this.firestore, 'tasks');
+    const querySnapshot = await getDocs(tasksCollectionRef);
+    this.contactsToView = querySnapshot.docs.map((doc) => doc.data() as TaskInterface);
+    const newContactsView = this.tasks.map((task) => {
+      const contactstoAssign = task.contactstoAssign;
+      if (contactstoAssign) {
+        return {
+          id: contactstoAssign.id,
+          initials: contactstoAssign.initials,
+          color: contactstoAssign.color,
+        };
+      }
+      return contactstoAssign;
+    }).filter((contact) => contact !== null);
+    console.log(newContactsView);
+    return newContactsView;
   }
 
   searchTask() {
