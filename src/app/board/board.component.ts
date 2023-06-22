@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { Firestore, collection, doc, getDocs, query, updateDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, doc, getDocs, query, updateDoc } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 interface TaskInterface {
@@ -11,6 +11,7 @@ interface TaskInterface {
   newCategory: string;
   newSubtask: string;
   color: any;
+  contactstoAssign?: any
 }
 
 interface ContactsInterface {
@@ -21,6 +22,7 @@ interface ContactsInterface {
   selected: boolean;
   initials: any;
   color: any;
+  newContactsView?: any,
   tasks: TaskInterface[];
 }
 
@@ -63,6 +65,9 @@ export class BoardComponent implements OnInit {
 
   dragEl: HTMLElement | null = null;
 
+  id: string = '';
+  contactsView: any[] = [];
+
   constructor(
     private firestore: Firestore,
     private fb: FormBuilder,
@@ -78,6 +83,10 @@ export class BoardComponent implements OnInit {
     });
     this.showAllDataInBoard();
     this.showContactsWithTasks();
+    this.getContactsInTaskView()
+      .then((result) => {
+        this.contactsView = result;
+    });
   }
 
   ngAfterViewInit() {
@@ -103,7 +112,7 @@ export class BoardComponent implements OnInit {
       e.dataTransfer!.setData('text', this.dragEl.innerHTML);
     }
   }
-  
+
   handleDragOver(e: DragEvent) {
     e.preventDefault();
     e.dataTransfer!.dropEffect = 'move';
@@ -123,45 +132,60 @@ export class BoardComponent implements OnInit {
     if (this.dragEl && this.dragEl !== item) {
       var draggedTaskId = this.dragEl.id;
       var droppedTaskId = item.id;
-  
+
       var draggedTask = this.tasks.find((task) => task.id === draggedTaskId);
       var droppedTask = this.tasks.find((task) => task.id === droppedTaskId);
-  
+
       if (draggedTask && droppedTask) {
         var draggedTaskStatus = draggedTask.status;
         draggedTask.status = droppedTask.status;
         droppedTask.status = draggedTaskStatus;
       }
-  
+
       item.innerHTML = this.dragEl.innerHTML;
       this.dragEl.innerHTML = e.dataTransfer!.getData('text');
     }
     item.classList.remove('over');
   }
-  
+
   handleDragEnd(_e: DragEvent, item: HTMLElement) {
     item.style.opacity = '1';
   }
 
+  getContactsInTaskView(): Promise<any[]> {
+    const tasksCollectionRef = collection(this.firestore, 'tasks');
+    return getDocs(tasksCollectionRef)
+      .then((querySnapshot) => {
+        this.tasks = querySnapshot.docs.map((doc) => doc.data() as TaskInterface);
+        console.log(this.tasks);
+        const newContactsView = this.contacts.slice(0, 2).map((contact) => {
+          return {
+            id: contact.id,
+            initials: contact.initials,
+            color: contact.color
+          };
+        });
+        return newContactsView;
+      });
+  }
+
   addTask(section: string) {
-    let id: string = '';
     this.addTaskToBoard = true;
-  
     if (section === 'todo') {
-      id = 'todo';
-      this.createTask(id);
+      this.id = 'todo';
+      this.createTask(this.id);
     } else if (section === 'inProgress') {
-      id = 'inProgress';
-      this.createTask(id);
+      this.id = 'inProgress';
+      this.createTask(this.id);
     } else if (section === 'awaitingFeedback') {
-      id = 'awaitingFeedback';
-      this.createTask(id);
+      this.id = 'awaitingFeedback';
+      this.createTask(this.id);
     } else if (section === 'done') {
-      id = 'done';
-      this.createTask(id);
+      this.id = 'done';
+      this.createTask(this.id);
     } else if (section === 'generell') {
-      id = 'generell';
-      this.createTask(id);
+      this.id = 'generell';
+      this.createTask(this.id);
     }
   }
 
@@ -308,16 +332,21 @@ export class BoardComponent implements OnInit {
         newSubtask: this.taskForm.value.newSubtask,
         color: this.selectedContact.color,
       }
-  
+
       this.selectedContact.tasks = this.selectedContact.tasks || [];
       this.selectedContact.tasks.push(task);
       console.log(this.selectedContact);
-  
+
       const contactsCollectionRef = collection(this.firestore, 'contacts');
       await updateDoc(doc(contactsCollectionRef, this.selectedContact.id), {
         tasks: this.selectedContact.tasks
       });
-  
+
+      const tasksCollectionRef = collection(this.firestore, 'tasks');
+      await addDoc(tasksCollectionRef, {
+        contactstoAssign: this.selectedContact
+      });
+
       this.taskForm.reset();
       this.addTaskToBoard = false;
     }
