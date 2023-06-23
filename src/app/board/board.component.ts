@@ -41,7 +41,7 @@ export class BoardComponent implements OnInit {
   selectedContact: ContactsInterface | null | undefined = null;
 
   tasks: TaskInterface[] = [];
-  contactsToView: TaskInterface[] = [];
+  contactsToView: any[] = [];
 
   addContacts: boolean = false;
   editContacts: boolean = false;
@@ -379,25 +379,32 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  async getContactsInTaskView() {
+  async getContactsInTaskView(): Promise<any> {
     const tasksCollectionRef = collection(this.firestore, 'tasks');
-    const querySnapshot = await getDocs(tasksCollectionRef);
-    this.contactsToView = querySnapshot.docs.map((doc) => doc.data() as TaskInterface);
-    const newContactsView = this.tasks.map((task) => {
-      const contactstoAssign = task.contactstoAssign;
-      if (contactstoAssign) {
-        return {
-          id: contactstoAssign.id,
-          initials: contactstoAssign.initials,
-          color: contactstoAssign.color,
-        };
-      }
-      return contactstoAssign;
-    }).filter((contact) => contact !== null);
-    console.log(newContactsView);
-    return newContactsView;
-  }
+    const q = query(tasksCollectionRef);
+    const querySnapshot = await getDocs(q);
+    const tasksData = querySnapshot.docs.map((doc) => doc.data() as TaskInterface);
 
+    const todoTask = tasksData.find((task) => task.id === "todo");
+    if(todoTask) {
+      const newContactsView = tasksData.map((task) => {
+        const contactstoAssign = task.contactstoAssign;
+        if (contactstoAssign) {
+          return {
+            id: contactstoAssign.id,
+            initials: contactstoAssign.initials,
+            color: contactstoAssign.color
+          };
+        }
+        return null;
+      }).filter((contact) => contact !== null);
+    
+      console.log(newContactsView);
+      return newContactsView;
+    }
+    console.log(todoTask);
+  }
+  
   searchTask() {
 
   }

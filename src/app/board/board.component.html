@@ -44,8 +44,9 @@
                             <div class="types">1/2 Done</div>
                         </div>
                         <div *ngFor="let viewContact of contactsToView" class="contact-icons">
-                            <div class="initials-container" [style.background]="viewContact.contactstoAssign.color">{{
-                                viewContact.contactstoAssign.initials }}</div>                        
+                            <div class="initials-container" [style.background]="viewContact.color">
+                                {{ viewContact.initials }}
+                            </div>                        
                         </div>
                     </div>
                 </div>
@@ -104,9 +105,6 @@
                             <div class="status-bar"></div>
                             <div class="types">1/2 Done</div>
                         </div>
-                        <div class="contact-icons">
-
-                        </div>
                     </div>
                 </div>
             </div>
@@ -134,8 +132,10 @@
                             <div class="status-bar"></div>
                             <div class="types">1/2 Done</div>
                         </div>
-                        <div class="contact-icons">
-
+                        <div *ngFor="let viewContact of contactsToView" class="contact-icons">
+                            <div class="initials-container" [style.background]="viewContact.color">
+                                {{ viewContact.initials }}
+                            </div>                        
                         </div>
                     </div>
                 </div>
