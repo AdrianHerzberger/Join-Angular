@@ -3,7 +3,7 @@ import { Firestore, addDoc, collection, doc, getDocs, query, updateDoc } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 interface TaskInterface {
-  id?: string;
+  id: string;
   status?: string;
   title: string;
   description: string;
@@ -84,9 +84,9 @@ export class BoardComponent implements OnInit {
     this.showAllDataInBoard();
     this.showContactsWithTasks();
     this.getContactsInTaskView()
-    .then((result) => {
-      this.contactsToView = result;
-    });
+      .then((result) => {
+        this.contactsToView = result;
+      });
   }
 
   ngAfterViewInit() {
@@ -151,7 +151,7 @@ export class BoardComponent implements OnInit {
   handleDragEnd(_e: DragEvent, item: HTMLElement) {
     item.style.opacity = '1';
   }
-  
+
   addTask(section: string) {
     this.addTaskToBoard = true;
     if (section === 'todo') {
@@ -379,14 +379,20 @@ export class BoardComponent implements OnInit {
     });
   }
 
+  checkAssignedId(id: string): boolean {
+    return this.tasks.some(task => task.id === id);
+  }
+
   async getContactsInTaskView(): Promise<any> {
+    debugger
     const tasksCollectionRef = collection(this.firestore, 'tasks');
     const q = query(tasksCollectionRef);
     const querySnapshot = await getDocs(q);
     const tasksData = querySnapshot.docs.map((doc) => doc.data() as TaskInterface);
 
-    const todoTask = tasksData.find((task) => task.id === "todo");
-    if(todoTask) {
+    const assignedIds = ['todo', 'inProgress', 'awaitingFeedback', 'done'];
+
+    if (assignedIds) {
       const newContactsView = tasksData.map((task) => {
         const contactstoAssign = task.contactstoAssign;
         if (contactstoAssign) {
@@ -398,13 +404,12 @@ export class BoardComponent implements OnInit {
         }
         return null;
       }).filter((contact) => contact !== null);
-    
+
       console.log(newContactsView);
       return newContactsView;
     }
-    console.log(todoTask);
   }
-  
+
   searchTask() {
 
   }
