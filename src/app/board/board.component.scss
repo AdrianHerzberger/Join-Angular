@@ -215,12 +215,11 @@ ul {
         }
     
         .contact-icons {
+            position: relative;
+            bottom: 44px;
+            left: 22px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 10px 8px;
-            width: 200px;
         }
     }
 }

@@ -384,7 +384,6 @@ export class BoardComponent implements OnInit {
   }
 
   async getContactsInTaskView(): Promise<any> {
-    debugger
     const tasksCollectionRef = collection(this.firestore, 'tasks');
     const q = query(tasksCollectionRef);
     const querySnapshot = await getDocs(q);
