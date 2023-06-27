@@ -18,6 +18,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { AddTaskComponent } from './add-task/add-task.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { SummaryComponent } from './summary/summary.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { SummaryComponent } from './summary/summary.component';
     SidebarComponent,
     AddTaskComponent,
     ContactsComponent,
-    SummaryComponent
+    SummaryComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,

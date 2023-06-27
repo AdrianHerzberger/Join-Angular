@@ -7,6 +7,7 @@ import { BoardComponent } from './board/board.component';
 import { AddTaskComponent } from './add-task/add-task.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { SummaryComponent } from './summary/summary.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -16,7 +17,8 @@ const routes: Routes = [
   { path: 'board', component: BoardComponent },
   { path: 'addTask', component: AddTaskComponent },
   { path: 'contacts', component: ContactsComponent },
-  { path: 'summary', component: SummaryComponent}
+  { path: 'summary', component: SummaryComponent},
+  { path: 'forgotPw', component: ForgotPasswordComponent}
 ];
 
 @NgModule({

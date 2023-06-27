@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   form!: FormGroup;
 
+  forgotPw: boolean = false;
+
   constructor(
     private router: Router,
     private fb: FormBuilder,
@@ -38,7 +40,7 @@ export class LoginComponent implements OnInit {
         console.log('Invalid email or password');
         return;
       }
-      this.router.navigateByUrl('/board');
+      this.router.navigateByUrl('/summary');
     } catch (error) {
       console.log('Error logging in:', error);
     }
@@ -49,7 +51,7 @@ export class LoginComponent implements OnInit {
   }
 
   renderForgotPassword() {
-
+    this.router.navigateByUrl('/forgotPw');
   }
 }
 

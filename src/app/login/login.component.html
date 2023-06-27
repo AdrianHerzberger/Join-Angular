@@ -6,35 +6,39 @@
         <button (click)="renderSignUp()">Sign up</button>
     </div>
 </header>
-<form [formGroup]="form" class='form-card'>
-    <h1>Log in</h1>
-    <img src="./assets/img/icon_line.png" class="line">
-    <div class='user-input'>
-        <input placeholder="Your Email" formControlName="email" />
-        <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
-            <div class="error-massage" *ngIf="form.controls['email'].errors?.['required']">Email is required.</div>
+<div class="login-container">
+    <form [formGroup]="form" class='form-card'>
+        <h1>Log in</h1>
+        <img src="./assets/img/icon_line.png" class="line">
+        <div class='user-input'>
+            <input placeholder="Your Email" formControlName="email" />
+            <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
+                <div class="error-massage" *ngIf="form.controls['email'].errors?.['required']">Email is required.
+                </div>
+            </div>
+            <img src="./assets/img/icon_mail.png" />
         </div>
-        <img src="./assets/img/icon_mail.png"/>
-    </div>
-    <div class="user-input">
-        <input placeholder="Your Password" formControlName="password" />
-        <div *ngIf="form.controls['password'].invalid && form.controls['password'].touched">
-            <div class="error-massage" *ngIf="form.controls['password'].errors?.['required']">Password is required.
+        <div class="user-input">
+            <input placeholder="Your Password" formControlName="password" />
+            <div *ngIf="form.controls['password'].invalid && form.controls['password'].touched">
+                <div class="error-massage" *ngIf="form.controls['password'].errors?.['required']">Password is
+                    required.
+                </div>
+            </div>
+            <img src="./assets/img/icon_lock.png" />
+        </div>
+        <div class="login-options-container">
+            <div class="column1">
+                <div>
+                    <input type="checkbox" id="checkbox" />
+                    <p>Remember me</p>
+                </div>
+                <button (click)="logIn()">Log in</button>
+            </div>
+            <div class="column2">
+                <p (click)="renderForgotPassword()">Forgot my password</p>
+                <button id="guestLogin">Guest Log in</button>
             </div>
         </div>
-        <img src="./assets/img/icon_lock.png" />
-    </div>
-    <div class="login-options-container">
-        <div class="column1">
-            <div>
-                <input type="checkbox" id="checkbox" />
-                <p>Remember me</p>
-            </div>
-            <button (click)="logIn()">Log in</button>
-        </div>
-        <div class="column2">
-            <p (click)="renderForgotPassword()">Forgot my password</p>
-            <button id="guestLogin">Guest Log in</button>
-        </div>
-    </div>
-</form>
+    </form>
+</div>

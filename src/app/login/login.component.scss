@@ -1,3 +1,8 @@
+.login-container {
+    margin-top: 120px;
+    padding: 50px;
+}
+
 .login-header {
     display: flex;
     flex-direction: row;
@@ -35,16 +40,6 @@
     transition: all 225ms ease-in-out;
     background: var(--c-lightblue);
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.4);
-}
-
-
-#card-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50%;
-    max-width: 500px;
 }
 
 .form-card {
@@ -110,7 +105,7 @@
 .column2 button,
 .column3 button {
     width: 100%;
-    padding: 8px 0 8px 0;
+    padding: 8px 5px 8px 5px;
     font-weight: 600;
 }
 
@@ -120,7 +115,7 @@
     border: 1px solid transparent;
     border-radius: 5px;
     margin-top: 1rem;
-    transition: all 225MS ease-in-out;
+    transition: all 225ms ease-in-out;
 }
 
 .column1 button:hover {
