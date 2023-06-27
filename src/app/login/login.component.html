@@ -1,12 +1,15 @@
-<header class="login-header">
-    <div>
-        <p>Not a join user?</p>
-    </div>
-    <div class="column3">
-        <button (click)="renderSignUp()">Sign up</button>
+<header class="signin-wrapper">
+    <img class="join-logo" src="./assets/img/join_logo_dark.png">
+    <div class="login-header">
+        <div >
+            <p>Not a join user?</p>
+        </div>
+        <div class="column3">
+            <button (click)="renderSignUp()">Sign up</button>
+        </div>
     </div>
 </header>
-<div class="login-container">
+<div class="card-container">
     <form [formGroup]="form" class='form-card'>
         <h1>Log in</h1>
         <img src="./assets/img/icon_line.png" class="line">

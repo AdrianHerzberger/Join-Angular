@@ -1,23 +1,29 @@
-.login-container {
-    margin-top: 120px;
-    padding: 50px;
-}
+.signin-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}    
 
 .login-header {
+    position: relative;
+    float: right;
+    bottom: 27px;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
     column-gap: 50px;
-    padding: 2rem;
+    padding: 0 2rem;
 }
 
-.signup-wrapper {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    right: 3rem;
-    top: 3rem;
+.join-logo {
+    width: clamp(40px, 8%, 100px);
+    transform: translateX(-50%, -50%);
+    padding: 36px;
+    animation-name: movelogo;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
 }
 
 .signup-wrapper p {
@@ -40,6 +46,15 @@
     transition: all 225ms ease-in-out;
     background: var(--c-lightblue);
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.4);
+}
+
+.card-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    max-width: 500px;
 }
 
 .form-card {
@@ -86,7 +101,7 @@
 .user-input img {
     position: absolute;
     right: 10px;
-    width: 2%;
+    width: 5%;
     top: 50%;
     transform: translateY(-50%);
 }

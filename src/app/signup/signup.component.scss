@@ -1,3 +1,12 @@
+.card-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    max-width: 500px;
+}
+
 .form-card {
     display: flex;
     flex-direction: column;
@@ -42,7 +51,7 @@
 .user-input img {
     position: absolute;
     right: 10px;
-    width: 2%;
+    width: 5%;
     top: 50%;
     transform: translateY(-50%);
 }
@@ -73,13 +82,12 @@
     cursor: pointer;
 }
 
-#invalid,
-#noUser {
-    margin: 0;
+.error-massage {
     position: absolute;
-    bottom: -22px;
+    left: 60px;
+    top: 45px;
     font-size: .8rem;
-    color: red;
+    color: var(--c-darkblue);
 }
 
 #success {

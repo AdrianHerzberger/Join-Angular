@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'addTask', component: AddTaskComponent },
   { path: 'contacts', component: ContactsComponent },
   { path: 'summary', component: SummaryComponent},
-  { path: 'forgotPw', component: ForgotPasswordComponent}
+  { path: 'forgotpw', component: ForgotPasswordComponent}
 ];
 
 @NgModule({
