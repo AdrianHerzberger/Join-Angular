@@ -6,6 +6,7 @@ import { SignupComponent } from './signup/signup.component';
 import { BoardComponent } from './board/board.component';
 import { AddTaskComponent } from './add-task/add-task.component';
 import { ContactsComponent } from './contacts/contacts.component';
+import { SummaryComponent } from './summary/summary.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'board', component: BoardComponent },
   { path: 'addTask', component: AddTaskComponent },
   { path: 'contacts', component: ContactsComponent },
+  { path: 'summary', component: SummaryComponent}
 ];
 
 @NgModule({

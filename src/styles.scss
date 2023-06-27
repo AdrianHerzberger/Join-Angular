@@ -242,6 +242,12 @@ a {
     grid-column: 2/ 11;
   } 
 
-  
+  .summary-container {
+    grid-column: 2/ 11;
+    grid-row: 2/11;
+    overflow-y: auto;
+    margin-top: 2rem;
+    margin-left: 80px;
+  }
 }
 

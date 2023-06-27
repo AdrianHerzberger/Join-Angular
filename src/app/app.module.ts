@@ -17,6 +17,7 @@ import { BoardComponent } from './board/board.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { AddTaskComponent } from './add-task/add-task.component';
 import { ContactsComponent } from './contacts/contacts.component';
+import { SummaryComponent } from './summary/summary.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ContactsComponent } from './contacts/contacts.component';
     BoardComponent,
     SidebarComponent,
     AddTaskComponent,
-    ContactsComponent
+    ContactsComponent,
+    SummaryComponent
   ],
   imports: [
     BrowserModule,
