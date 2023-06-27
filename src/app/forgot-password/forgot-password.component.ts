@@ -14,10 +14,11 @@ interface UserInterface {
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.scss']
 })
+
 export class ForgotPasswordComponent implements OnInit {
   form!: FormGroup;
 
-  user: UserInterface[] = [];
+  users: UserInterface[] = [];
 
   constructor (
     private router: Router,

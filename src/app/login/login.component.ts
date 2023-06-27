@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Firestore, collection, query, where, getDocs } from '@angular/fire/firestore';
+import { Firestore, collection, query, where, getDocs, doc, setDoc } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
+interface UserInterface {
+  name?: string;
+  email: string;
+  password: string;
+  loggedIn: boolean;
+}
 
 @Component({
   selector: 'app-login',
@@ -27,19 +34,19 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  async signIn() {
+  async login() {
     const email = this.form.value.email;
     const password = this.form.value.password;
 
     try {
       const usersCollection = collection(this.firestore, 'users');
       const q = query(usersCollection, where('email', '==', email), where('password', '==', password));
-      const querySnapshot = await getDocs(q);
+      const querySnapshotfromUsers = await getDocs(q);
 
-      if (querySnapshot.empty) {
-        console.log('Invalid email or password');
-        return;
-      }
+      const userDoc = querySnapshotfromUsers.docs[0];
+      const userRef = doc(this.firestore, 'users', userDoc.id);
+      await setDoc(userRef, { loggedIn: true }, { merge: true });
+
       this.router.navigateByUrl('/summary');
     } catch (error) {
       console.log('Error logging in:', error);

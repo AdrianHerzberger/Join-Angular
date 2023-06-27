@@ -3,7 +3,6 @@
     <div class="header"><app-header-template></app-header-template></div>
     <div class="summary-container">
         <div class="summary-headline">
-            <span class="d-none">Kanban Project Management Tool</span>
             <span class="fw-700 f-47 summary-headline-headline">Summary</span>
             <div class="summary-headline-line"></div>
             <span class="fw-400 f-27">Everything in a nutshell!</span>
@@ -67,9 +66,9 @@
                 </div>
             </div>
 
-            <div class="summary-content-right">
-                <span class="fw-500 f-47" id="greetings">Good morning,</span>
-                <h1 class="fw-700 f-64" id="loggedInUser"></h1>
+            <div *ngFor="let user of users" class="summary-content-right">
+                <span class="fw-500 f-47">Good morning,</span>
+                <h1 class="fw-700 f-64">{{ user.name }}</h1>
             </div>
         </div>
     </div>
