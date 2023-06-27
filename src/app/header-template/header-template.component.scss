@@ -6,7 +6,7 @@
     box-shadow: 0 2px 10px 0 rgb(0 0 0 / 15%);
     background: white;
     z-index: 10;
- 
+
     .header-image-container {
         display: flex;
         flex-direction: row;
@@ -18,12 +18,33 @@
         object-fit: contain;
     }
 
-    .user {
-        width: 60px;
+    .icon-user {
+        cursor: pointer;
+        border: 1px solid transparent;
+        outline: 3px solid var(--c-darkblue);
+        border-radius: 100%;
+        width: 40px;
+        height: 40px;
+        margin-left: 2rem;
+
+        &:hover {
+            outline-color: var(--c-lightblue);
+            transition: all 225ms ease-in-out;
+        }
     }
 
     h1 {
         margin-left: 80px;
         font-size: 21px;
+    }
+
+    .logout-tooltip {
+        background-color: var(--c-darkblue);
+        color: white;
+        padding: 15px;
+        border-radius: 7px 0 7px 7px;
+        position: absolute;
+        top: 7%;
+        right: 3%;
     }
 }

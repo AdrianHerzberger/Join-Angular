@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
+interface UserInterface {
+  name?: string;
+  email?: string;
+  password: string
+}
 
 @Component({
   selector: 'app-reset-password',
@@ -11,6 +17,8 @@ import { Router } from '@angular/router';
 export class ResetPasswordComponent implements OnInit {
   form!: FormGroup;
 
+  user: UserInterface[] = [];
+
   constructor(
     private router: Router,
     private fb: FormBuilder,
@@ -18,7 +26,9 @@ export class ResetPasswordComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    
+    this.form = this.fb.group({
+      password: ['', [Validators.required]],
+    });
   }
 
   renderLogin() {
@@ -26,7 +36,7 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   resetPassword() {
-    
+
   }
 
 }

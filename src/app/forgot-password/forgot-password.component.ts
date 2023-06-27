@@ -15,7 +15,7 @@ interface UserInterface {
   styleUrls: ['./forgot-password.component.scss']
 })
 export class ForgotPasswordComponent implements OnInit {
-  form!: FormGroup
+  form!: FormGroup;
 
   user: UserInterface[] = [];
 
@@ -33,8 +33,11 @@ export class ForgotPasswordComponent implements OnInit {
   
   async findUserMail() {
     try {
-      const taskCollection = collection(this.firestore, 'users');
-      const q = query(taskCollection);
+      const { email } = this.form.value;
+      const userEmail = email; 
+
+      const userCollection = collection(this.firestore, 'users');
+      const q = query(userCollection);
       const querySnapshotfromTasks = await getDocs(q);
 
       const storedUserData: UserInterface[] = [];
@@ -50,7 +53,8 @@ export class ForgotPasswordComponent implements OnInit {
         storedUserData.push(user);
       })
 
-      const userExists = storedUserData.find((user) => user.email === 'email');
+      const userExists = storedUserData.find((user) => user.email === userEmail);
+
       if (userExists) {
         this.router.navigateByUrl('/resetpw');
       } else {
@@ -64,4 +68,5 @@ export class ForgotPasswordComponent implements OnInit {
   renderLogin() {
     this.router.navigateByUrl('/signin');
   }
+
 }
