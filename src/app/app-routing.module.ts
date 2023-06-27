@@ -8,6 +8,7 @@ import { AddTaskComponent } from './add-task/add-task.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { SummaryComponent } from './summary/summary.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -18,7 +19,8 @@ const routes: Routes = [
   { path: 'addTask', component: AddTaskComponent },
   { path: 'contacts', component: ContactsComponent },
   { path: 'summary', component: SummaryComponent},
-  { path: 'forgotpw', component: ForgotPasswordComponent}
+  { path: 'forgotpw', component: ForgotPasswordComponent},
+  { path: 'resetpw', component: ResetPasswordComponent }
 ];
 
 @NgModule({

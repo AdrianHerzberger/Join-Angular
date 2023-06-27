@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  async logIn() {
+  async signIn() {
     const email = this.form.value.email;
     const password = this.form.value.password;
 
@@ -52,6 +52,16 @@ export class LoginComponent implements OnInit {
 
   renderForgotPassword() {
     this.router.navigateByUrl('/forgotpw');
+  }
+
+  guestLogin() {
+    const password = (document.getElementById('login-password') as HTMLInputElement);
+    const email = (document.getElementById('login-mail') as HTMLInputElement);
+    password.value = 'guest';
+    email.value = 'guest@mail.de';
+    setTimeout(() => {
+      this.router.navigateByUrl('/summary');
+    }, 250);
   }
 }
 
